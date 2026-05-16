@@ -10,11 +10,11 @@ export async function POST(request: Request) {
     return Response.json({ error: "All fields are required" }, { status: 400 });
   }
 
-  if (!req.email.endsWith("u.nus.edu")) {
+  if (!req.email.endsWith("@u.nus.edu")) {
     return Response.json({ error: "Must use an NUS email" }, { status: 400 });
   }
 
-  if (req.password != req.confirmPassword) {
+  if (req.password !== req.confirmPassword) {
     return Response.json({ error: "Passwords do not match" }, { status: 400 });
   }
 
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     password: req.password,
   });
 
-  if (error) return Response.json({ error: error.message }, { status: 400 });
+  if (error) return Response.json({ error: error.message }, { status: 401 });
 
   await db.from("users").insert({
     id: data.user?.id,
@@ -37,6 +37,6 @@ export async function POST(request: Request) {
       message:
         "Registration successful, please check your email to verify your account",
     },
-    { status: 201 },
+    { status: 200 },
   );
 }
