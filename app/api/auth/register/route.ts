@@ -18,6 +18,19 @@ export async function POST(request: Request) {
     return Response.json({ error: "Passwords do not match" }, { status: 400 });
   }
 
+  // check if unique username
+  const { count, error: countError } = await db
+    .from("users")
+    .select("*", { count: "exact", head: true })
+    .eq("username", req.username);
+
+  if (countError)
+    return Response.json({ error: "Unable to register" }, { status: 401 });
+
+  if (count !== 0) {
+    return Response.json({ error: "Username already used" }, { status: 400 });
+  }
+
   // attempt to sign up
   const { data, error } = await db.auth.signUp({
     email: req.email,
