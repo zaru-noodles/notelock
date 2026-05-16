@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "next": "16.2.6",
@@ -22,6 +22,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "prettier": "3.8.3",
     "supabase": "^2.98.2",
     "tailwindcss": "^4",
