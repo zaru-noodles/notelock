@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { LoginRequest } from "@/types/api";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [loginRequest, setLoginRequest] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const router = useRouter();
 
@@ -16,10 +16,7 @@ export default function LoginForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        body: JSON.stringify(loginRequest),
       });
       const data = await response.json();
       if (response.ok) {
@@ -36,15 +33,19 @@ export default function LoginForm() {
     <div>
       <input
         type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        value={loginRequest.email}
+        onChange={(e) =>
+          setLoginRequest({ ...loginRequest, email: e.target.value })
+        }
         placeholder="Email"
       />
       <br />
       <input
         type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        value={loginRequest.password}
+        onChange={(e) =>
+          setLoginRequest({ ...loginRequest, password: e.target.value })
+        }
         placeholder="Password"
       />
       {error && <p>{error}</p>}
