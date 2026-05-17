@@ -1,4 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
+import dotenv from "dotenv";
+
+dotenv.config({ path: ".env.local" });
 
 // retrieves module data from NUSMods API, and loads it into "modules" table in the database
 // RESETS TABLE before seeding modules
@@ -12,3 +15,5 @@ async function loadModules() {
     await fetch("https://api.nusmods.com/v2/2025-2026/moduleList.json")
   ).json();
 }
+
+loadModules();
