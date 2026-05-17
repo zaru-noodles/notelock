@@ -16,6 +16,7 @@ export default function RegisterForm() {
   const handleRegister = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setError("");
+    setMessage("");
     setLoading(true);
     try {
       const response = await fetch("/api/auth/register", {
