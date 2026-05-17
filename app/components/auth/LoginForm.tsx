@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoginRequest } from "@/types/api";
+import Link from "next/link";
 
 export default function LoginForm() {
   const [loginRequest, setLoginRequest] = useState<LoginRequest>({
@@ -40,8 +41,9 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={handleLogin}
-      className="flex flex-col gap-3 w-80 p-8 bg-gray-200 rounded-lg shadow"
+      className="flex flex-col gap-3 w-80 p-8 bg-white/20 rounded-lg shadow-lg backdrop-blur-md border border-white/30"
     >
+      <h2 className="font-bold text-2xl text-gray-500">Login</h2>
       <input
         className="border border-gray-300 rounded px-3 py-2 focus:border-blue-500 focus:outline-none"
         type="email"
@@ -60,7 +62,7 @@ export default function LoginForm() {
         }
         placeholder="Password"
       />
-      {error && <p className="text-red-400 font-bold">{error}</p>}
+      {error && <p className="text-red-500 font-bold">{error}</p>}
       <button
         className="border border-gray-300 rounded px-3 py-2 bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300"
         type="submit"
@@ -68,6 +70,12 @@ export default function LoginForm() {
       >
         {loading ? "Logging in" : "Login"}
       </button>
+      <p>
+        No account?{" "}
+        <Link className="text-blue-500 hover:underline" href="/register-page">
+          Register here!
+        </Link>
+      </p>
     </form>
   );
 }
