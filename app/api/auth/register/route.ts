@@ -37,16 +37,13 @@ export async function POST(request: Request) {
     password: req.password,
     options: {
       emailRedirectTo: `${await getOriginURL()}`,
+      data: {
+        username: req.username,
+      },
     },
   });
 
   if (error) return Response.json({ error: error.message }, { status: 401 });
-
-  await db.from("users").insert({
-    id: data.user?.id,
-    email: req.email,
-    username: req.username,
-  });
 
   return Response.json(
     {
