@@ -41,7 +41,7 @@ export default function RegisterForm() {
   return (
     <form
       onSubmit={handleRegister}
-      className="flex flex-col gap-3 w-80 p-8 bg-white/20 rounded-lg shadow-lg backdrop-blur-md border border-white/30"
+      className="flex flex-col gap-3 p-8 bg-white/20 rounded-lg shadow-lg backdrop-blur-md border border-white/30 w-full md:w-96"
     >
       <h2 className="font-bold text-2xl text-gray-500">Sign up now!</h2>
       <input
