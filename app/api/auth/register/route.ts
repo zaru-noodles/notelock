@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import type { RegisterRequest } from "@/types/api.ts";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 export async function POST(request: Request) {
   const db = createClient(await cookies());
@@ -35,6 +35,9 @@ export async function POST(request: Request) {
   const { data, error } = await db.auth.signUp({
     email: req.email,
     password: req.password,
+    options: {
+      emailRedirectTo: `${await getOriginURL()}`,
+    },
   });
 
   if (error) return Response.json({ error: error.message }, { status: 401 });
@@ -52,4 +55,12 @@ export async function POST(request: Request) {
     },
     { status: 200 },
   );
+}
+
+// find the URL of the website
+async function getOriginURL() {
+  const headersList = await headers();
+  const host = headersList.get("host");
+  const proto = headersList.get("x-forwarded-proto") ?? "https";
+  return `${proto}://${host}`;
 }
