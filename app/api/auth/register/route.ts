@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     email: req.email,
     password: req.password,
     options: {
-      emailRedirectTo: `${await getOriginURL()}`,
+      emailRedirectTo: `${await getOriginURL()}/verify`,
       data: {
         username: req.username,
       },
