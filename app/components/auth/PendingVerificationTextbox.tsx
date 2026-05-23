@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 type Props = {
   email: string;
@@ -9,6 +9,7 @@ type Props = {
 export default function PendingVerificationTextbox({ email }: Props) {
   const QUERY_COOLDOWN = 3000;
   const router = useRouter();
+  const [message, setMessage] = useState("");
 
   // query the API on a set interval until email has been verified
   useEffect(() => {
@@ -40,13 +41,37 @@ export default function PendingVerificationTextbox({ email }: Props) {
     };
   }, []);
 
+  // requests backend to resend verification link
+  async function resendLink() {
+    const response = await fetch("/api/auth/resendVerification", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email }),
+    });
+
+    const data = await response.json();
+    setMessage(data?.error ? data.error : data.message);
+  }
+
   return (
     <div>
-      <h3>Please verify your account</h3>
-      <p>
-        A confirmation email has been sent to your email. It may be in your junk
-        mail.
-      </p>
+      <h2>Please verify your account</h2>
+      <p>A confirmation email has been sent to your email.</p>
+      <br />
+      <h3> Did not recieve the verification email? </h3>
+      <p> Check your junk inbox or</p>
+      <button
+        className="bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+        type="button"
+        onClick={resendLink}
+      >
+        {" "}
+        Resend verification link{" "}
+      </button>
+      <br />
+      <p>{message}</p>
     </div>
   );
 }
