@@ -71,7 +71,7 @@ export default function LoginForm() {
         {loading ? "Logging in" : "Login"}
       </button>
       <p>
-        No account?{" "}
+        No account?
         <Link className="text-blue-500 hover:underline" href="/register-page">
           Register here!
         </Link>
