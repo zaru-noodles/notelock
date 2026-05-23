@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import type { RegisterRequest } from "@/types/api.ts";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
+import { getOriginURL } from "@/utils/api/helper";
 
 export async function POST(request: Request) {
   const db = createClient(await cookies());
@@ -52,12 +53,4 @@ export async function POST(request: Request) {
     },
     { status: 200 },
   );
-}
-
-// find the URL of the website
-async function getOriginURL() {
-  const headersList = await headers();
-  const host = headersList.get("host");
-  const proto = headersList.get("x-forwarded-proto") ?? "https";
-  return `${proto}://${host}`;
 }
