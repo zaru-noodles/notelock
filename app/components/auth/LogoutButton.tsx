@@ -15,7 +15,7 @@ export default function LogoutButton() {
       }
 
       console.log(data.message);
-      router.push("/login-page");
+      router.push("/");
       router.refresh();
     } catch (err) {
       console.error("Failed to Log out");

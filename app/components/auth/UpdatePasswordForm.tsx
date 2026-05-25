@@ -35,7 +35,7 @@ export default function UpdatePasswordForm() {
     return (
       <>
         <p>{message}</p>
-        <Link className="text-blue-500 hover:underline" href="/login-page">
+        <Link className="text-blue-500 hover:underline" href="/">
           Return to login page
         </Link>
       </>
