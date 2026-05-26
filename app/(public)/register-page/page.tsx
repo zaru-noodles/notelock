@@ -2,11 +2,12 @@
 import RegisterForm from "@/app/components/auth/RegisterForm";
 import PendingVerificationTextbox from "@/app/components/auth/PendingVerificationTextbox";
 import { useState } from "react";
+import { LoginRequest } from "@/types/api";
 
 export default function Register() {
-  const [isRegistered, setIsRegistered] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>("");
+  const [loginInfomation, setLoginInfomation] = useState<LoginRequest>();
 
-  if (isRegistered) return <PendingVerificationTextbox email={email} />;
-  return <RegisterForm setIsRegistered={setIsRegistered} setEmail={setEmail} />;
+  if (loginInfomation !== undefined)
+    return <PendingVerificationTextbox loginRequest={loginInfomation} />;
+  return <RegisterForm setLoginInfomation={setLoginInfomation} />;
 }
