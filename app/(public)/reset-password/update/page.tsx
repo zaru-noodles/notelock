@@ -1,5 +1,5 @@
 import UpdatePasswordForm from "@/app/components/auth/UpdatePasswordForm";
 
-export default function Login() {
+export default function UpdatePassword() {
   return <UpdatePasswordForm />;
 }
