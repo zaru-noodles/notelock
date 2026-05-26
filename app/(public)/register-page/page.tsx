@@ -1,9 +1,12 @@
+"use client";
 import RegisterForm from "@/app/components/auth/RegisterForm";
+import PendingVerificationTextbox from "@/app/components/auth/PendingVerificationTextbox";
+import { useState } from "react";
 
 export default function Register() {
-  return (
-    <div className="flex flex-col justify-center items-center h-screen bg-linear-to-br from-purple-200 to-blue-400/50 px-4">
-      <RegisterForm />
-    </div>
-  );
+  const [isRegistered, setIsRegistered] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
+
+  if (isRegistered) return <PendingVerificationTextbox email={email} />;
+  return <RegisterForm setIsRegistered={setIsRegistered} setEmail={setEmail} />;
 }

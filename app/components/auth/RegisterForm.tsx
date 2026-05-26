@@ -2,7 +2,12 @@
 import { useState } from "react";
 import { RegisterRequest } from "@/types/api";
 
-export default function RegisterForm() {
+type Props = {
+  setIsRegistered: (value: boolean) => void;
+  setEmail: (value: string) => void;
+};
+
+export default function RegisterForm({ setIsRegistered, setEmail }: Props) {
   const [registerRequest, setRegisterRequest] = useState<RegisterRequest>({
     email: "",
     password: "",
@@ -11,12 +16,10 @@ export default function RegisterForm() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
 
   const handleRegister = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setError("");
-    setMessage("");
     setLoading(true);
     try {
       const response = await fetch("/api/auth/register", {
@@ -28,7 +31,8 @@ export default function RegisterForm() {
       });
       const data = await response.json();
       if (response.ok) {
-        setMessage(data.message);
+        setEmail(registerRequest.email);
+        setIsRegistered(true);
       } else {
         setError(data.error);
       }
@@ -85,7 +89,6 @@ export default function RegisterForm() {
         placeholder="Username"
       />
       {error && <p className="text-red-500 font-bold">{error}</p>}
-      {message && <p className="text-green-500 font-bold">{message}</p>}
       <button
         className="border border-gray-300 rounded px-3 py-2 bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300"
         type="submit"
