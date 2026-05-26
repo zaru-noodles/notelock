@@ -15,7 +15,9 @@ export default function ForgotPasswordForm() {
     e.preventDefault();
 
     setLoading(true);
-    const { data, error } = await db.auth.resetPasswordForEmail(email);
+    const { data, error } = await db.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin,
+    });
     setLoading(false);
 
     if (error !== null) {
