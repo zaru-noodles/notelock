@@ -3,28 +3,30 @@ import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 
-export default function ForgotPasswordForm() {
+export default function UpdatePasswordForm() {
   const db = createClient();
-  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
-  // if account with email exists and is verified, send reset password email
-  async function sendEmail(e: React.SyntheticEvent) {
+  async function updatePassword(e: React.SyntheticEvent) {
     e.preventDefault();
 
+    if (confirmPassword !== password) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
+
     setLoading(true);
-    const { data, error } = await db.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin,
-    });
+    const { data, error } = await db.auth.updateUser({ password: password });
     setLoading(false);
 
     if (error !== null) {
-      setMessage(error.message);
+      setErrorMessage(error.message);
     } else {
-      setMessage(
-        "A link to reset password has been successfully sent to your email!",
-      );
+      setMessage("Your password has been reset!");
     }
   }
 
@@ -41,16 +43,24 @@ export default function ForgotPasswordForm() {
 
   return (
     <form
-      onSubmit={sendEmail}
+      onSubmit={updatePassword}
       className="flex flex-col gap-3 p-8 bg-white/20 rounded-lg shadow-lg backdrop-blur-md border border-white/30 w-full md:w-96"
     >
       <h2 className="font-bold text-2xl text-gray-500">Reset Password</h2>
       <input
         className="border border-gray-300 rounded px-3 py-2 focus:border-blue-500 focus:outline-none"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+      />
+
+      <input
+        className="border border-gray-300 rounded px-3 py-2 focus:border-blue-500 focus:outline-none"
+        type="password"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        placeholder="Confirm password"
       />
 
       <button
@@ -58,8 +68,9 @@ export default function ForgotPasswordForm() {
         type="submit"
         disabled={loading}
       >
-        {loading ? "Sending link..." : "Send Password Reset Link"}
+        {loading ? "Updating Password..." : "Update Password"}
       </button>
+      {errorMessage && <p className="text-red-500 font-bold">{errorMessage}</p>}
     </form>
   );
 }
