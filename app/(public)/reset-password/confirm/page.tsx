@@ -14,7 +14,7 @@ export default async function ConfirmEmail({
 
   const endpoint =
     (await getOriginURL()) +
-    "/api/auth/confirmAccount?type=recovery&next=/forgot-password/update&token_hash=" +
+    "/api/auth/confirmAccount?type=recovery&next=/reset-password/update&token_hash=" +
     token_hash;
   return (
     <Link className="text-blue-800 hover:underline" href={endpoint}>

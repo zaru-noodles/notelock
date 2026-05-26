@@ -80,7 +80,7 @@ export default function LoginForm() {
 
       <p>
         Forgot Password?&nbsp;
-        <Link className="text-blue-500 hover:underline" href="/register-page">
+        <Link className="text-blue-500 hover:underline" href="/reset-password">
           Reset it here!
         </Link>
       </p>
