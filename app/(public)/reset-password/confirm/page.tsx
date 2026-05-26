@@ -16,8 +16,13 @@ export default async function ConfirmEmail({
     (await getOriginURL()) +
     "/api/auth/confirmAccount?type=recovery&next=/reset-password/update&token_hash=" +
     token_hash;
+
   return (
-    <Link className="text-blue-800 hover:underline" href={endpoint}>
+    <Link
+      className="text-blue-800 hover:underline"
+      href={endpoint}
+      prefetch={false}
+    >
       Reset Password
     </Link>
   );
