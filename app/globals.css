@@ -68,3 +68,11 @@
   --shadow-sh-4:
     0 4px 0 rgba(74, 61, 41, 0.05), 0 18px 36px -10px rgba(74, 61, 41, 0.22);
 }
+
+@utility paper-bg {
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent 0 31px,
+    color-mix(in srgb, var(--color-paper-3) 70%, transparent) 31px 32px
+  );
+}
