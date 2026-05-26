@@ -1,13 +1,12 @@
 "use client";
 import { useState } from "react";
-import { RegisterRequest } from "@/types/api";
+import { LoginRequest, RegisterRequest } from "@/types/api";
 
 type Props = {
-  setIsRegistered: (value: boolean) => void;
-  setEmail: (value: string) => void;
+  setLoginInfomation: (value: LoginRequest) => void;
 };
 
-export default function RegisterForm({ setIsRegistered, setEmail }: Props) {
+export default function RegisterForm({ setLoginInfomation }: Props) {
   const [registerRequest, setRegisterRequest] = useState<RegisterRequest>({
     email: "",
     password: "",
@@ -21,6 +20,7 @@ export default function RegisterForm({ setIsRegistered, setEmail }: Props) {
     e.preventDefault();
     setError("");
     setLoading(true);
+
     try {
       const response = await fetch("/api/auth/register", {
         method: "POST",
@@ -30,9 +30,12 @@ export default function RegisterForm({ setIsRegistered, setEmail }: Props) {
         body: JSON.stringify(registerRequest),
       });
       const data = await response.json();
+
       if (response.ok) {
-        setEmail(registerRequest.email);
-        setIsRegistered(true);
+        setLoginInfomation({
+          email: registerRequest.email,
+          password: registerRequest.password,
+        });
       } else {
         setError(data.error);
       }
@@ -52,9 +55,11 @@ export default function RegisterForm({ setIsRegistered, setEmail }: Props) {
       <input
         className="border border-gray-300 rounded px-3 py-2 focus:border-blue-500 focus:outline-none"
         type="email"
-        value={registerRequest.email}
         onChange={(e) =>
-          setRegisterRequest({ ...registerRequest, email: e.target.value })
+          setRegisterRequest({
+            ...registerRequest,
+            email: e.target.value.toLowerCase(),
+          })
         }
         placeholder="Email"
       />
