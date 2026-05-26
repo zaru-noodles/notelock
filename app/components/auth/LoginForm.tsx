@@ -70,10 +70,18 @@ export default function LoginForm() {
       >
         {loading ? "Logging in" : "Login"}
       </button>
+
       <p>
-        No account?
+        No account?&nbsp;
         <Link className="text-blue-500 hover:underline" href="/register-page">
           Register here!
+        </Link>
+      </p>
+
+      <p>
+        Forgot Password?&nbsp;
+        <Link className="text-blue-500 hover:underline" href="/register-page">
+          Reset it here!
         </Link>
       </p>
     </form>
