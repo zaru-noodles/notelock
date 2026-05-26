@@ -7,7 +7,7 @@ export default async function PublicLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient(await cookies());
+  const supabase = createClient(await cookies());
   const { data } = await supabase.auth.getClaims();
 
   if (data?.claims) {
