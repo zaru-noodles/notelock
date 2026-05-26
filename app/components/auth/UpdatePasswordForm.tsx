@@ -21,6 +21,7 @@ export default function UpdatePasswordForm() {
 
     setLoading(true);
     const { data, error } = await db.auth.updateUser({ password: password });
+    await db.auth.signOut();
     setLoading(false);
 
     if (error !== null) {
