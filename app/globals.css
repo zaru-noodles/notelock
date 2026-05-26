@@ -1,1 +1,42 @@
 @import "tailwindcss";
+
+@theme {
+  /* For paper background */
+  --color-paper-0: #fffcf3;
+  --color-paper-1: #fbf6e7;
+  --color-paper-2: #f4ecd4;
+  --color-paper-3: #ece0b8;
+  --color-paper-4: #ddcb97;
+
+  /* Mainly for text */
+  --color-ink-0: #1b140a;
+  --color-ink-1: #2a2113;
+  --color-ink-2: #4a3d29;
+  --color-ink-3: #7a6a4f;
+  --color-ink-4: #a9987a;
+
+  /* Honey primary color */
+  --color-honey-50: #fdf3d6;
+  --color-honey-100: #fae3a0;
+  --color-honey-200: #f6ce63;
+  --color-honey-300: #efb432;
+  --color-honey-400: #e89a1b;
+  --color-honey-500: #c77e10;
+  --color-honey-600: #9c620c;
+  --color-honey-700: #6e4408;
+
+  /* Accent color */
+  --color-terra-50: #fbe7d9;
+  --color-terra-100: #f5c5a5;
+  --color-terra-200: #ed9d6a;
+  --color-terra-300: #dd7440;
+  --color-terra-400: #c75a2e;
+  --color-terra-500: #a14620;
+  --color-terra-600: #7a3517;
+
+  /* Highlights color */
+  --color-hi-yellow: #f8d34c;
+  --color-hi-mint: #b8e0b0;
+  --color-hi-pink: #f4b6b6;
+  --color-hi-blue: #b6d3e8;
+}
