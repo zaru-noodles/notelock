@@ -15,7 +15,7 @@
   --color-ink-3: #7a6a4f;
   --color-ink-4: #a9987a;
 
-  /* Honey primary color */
+  /* Honey primary colour */
   --color-honey-50: #fdf3d6;
   --color-honey-100: #fae3a0;
   --color-honey-200: #f6ce63;
@@ -25,7 +25,7 @@
   --color-honey-600: #9c620c;
   --color-honey-700: #6e4408;
 
-  /* Accent color */
+  /* Accent colour */
   --color-terra-50: #fbe7d9;
   --color-terra-100: #f5c5a5;
   --color-terra-200: #ed9d6a;
@@ -34,9 +34,37 @@
   --color-terra-500: #a14620;
   --color-terra-600: #7a3517;
 
-  /* Highlights color */
+  /* Highlights colour */
   --color-hi-yellow: #f8d34c;
   --color-hi-mint: #b8e0b0;
   --color-hi-pink: #f4b6b6;
   --color-hi-blue: #b6d3e8;
+
+  /* Semantic colour */
+  --success: #6faa56;
+  --success-bg: #e4f0d6;
+  --warning-bg: #fcedc4;
+  --warning: #d89a2a;
+  --danger: #b5482e;
+  --danger-bg: #f6d9cb;
+  --info: #5d8aae;
+  --info-bg: #d9e5ee;
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
+  --radius-pill: 999px;
+
+  /* Shadow */
+  --shadow-sh-1:
+    0 1px 0 rgba(74, 61, 41, 0.06), 0 1px 2px rgba(74, 61, 41, 0.04);
+  --shadow-sh-2:
+    0 1px 0 rgba(74, 61, 41, 0.06), 0 2px 6px -1px rgba(74, 61, 41, 0.1);
+  --shadow-sh-3:
+    0 2px 0 rgba(74, 61, 41, 0.05), 0 8px 18px -6px rgba(74, 61, 41, 0.18);
+  --shadow-sh-4:
+    0 4px 0 rgba(74, 61, 41, 0.05), 0 18px 36px -10px rgba(74, 61, 41, 0.22);
 }
