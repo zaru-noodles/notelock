@@ -9,9 +9,8 @@ export default async function PublicLayout({
 }>) {
   const supabase = await createClient(await cookies());
   const { data } = await supabase.auth.getClaims();
-  const user = data?.claims;
 
-  if (user) {
+  if (data?.claims) {
     redirect("/dashboard");
   }
 
