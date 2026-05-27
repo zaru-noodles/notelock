@@ -10,6 +10,8 @@ export const metadata: Metadata = {
 const newsreader = Newsreader({
   subsets: ["latin"],
   variable: "--font-newsreader",
+  axes: ["opsz"],
+  style: ["normal", "italic"],
 });
 
 const geist = Geist({
