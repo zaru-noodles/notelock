@@ -43,7 +43,7 @@ export default function LoginForm() {
       onSubmit={handleLogin}
       className="flex flex-col gap-3 p-8 bg-white/20 rounded-lg shadow-lg backdrop-blur-md border border-white/30 w-full md:w-96"
     >
-      <h2 className="font-bold text-2xl text-gray-500">Login</h2>
+      <h2 className="font-bold text-2xl">Login</h2>
       <input
         className="border border-gray-300 rounded px-3 py-2 focus:border-blue-500 focus:outline-none"
         type="email"
@@ -66,7 +66,7 @@ export default function LoginForm() {
       />
       {error && <p className="text-red-500 font-bold">{error}</p>}
       <button
-        className="border border-gray-300 rounded px-3 py-2 bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300"
+        className="border border-honey-300 rounded px-3 py-2 bg-terra-400 text-white hover:bg-terra-500 disabled:bg-gray-300"
         type="submit"
         disabled={loading}
       >
