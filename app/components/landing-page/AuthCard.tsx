@@ -14,10 +14,12 @@ export default function AuthCard() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col bg-paper-0 border border-paper-3 shadow-sh-3 p-7 gap-4 rounded-xl">
       {/* Toggle mode */}
-      <button onClick={() => setMode("login")}>Log in</button>
-      <button onClick={() => setMode("signup")}>Create account</button>
+      <div className="flex justify-center">
+        <button onClick={() => setMode("login")}>Log in</button>
+        <button onClick={() => setMode("signup")}>Create account</button>
+      </div>
       <h2>{mode === "login" ? "Welcome back." : "Get the cheatsheets."}</h2>
       <p>
         {mode === "login"

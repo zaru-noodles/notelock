@@ -2,7 +2,7 @@ import AuthCard from "./AuthCard";
 
 export default function Hero() {
   return (
-    <section className="paper-bg relative px-12 pt-18 pb-22 max-w-7x1 mx-auto grid grid-cols-[minmax(0,1.05fr)_minmax(0,420px)] gap-14 items-start">
+    <section className="paper-bg relative px-12 pt-18 pb-22 max-w-7xl mx-auto grid grid-cols-[minmax(0,1.05fr)_minmax(0,420px)] gap-14 items-start">
       {/* Left Side with design */}
       <div>
         <span className="inline-flex items-center gap-2.5 font-mono font-semibold text-[11px] text-terra-500 bg-terra-50 border border-terra-100 px-1.25 py-1.25 rounded-pill mb-5.5">
