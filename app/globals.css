@@ -67,6 +67,12 @@
     0 2px 0 rgba(74, 61, 41, 0.05), 0 8px 18px -6px rgba(74, 61, 41, 0.18);
   --shadow-sh-4:
     0 4px 0 rgba(74, 61, 41, 0.05), 0 18px 36px -10px rgba(74, 61, 41, 0.22);
+
+  /* Font */
+  --font-display: var(--font-newsreader);
+  --font-sans: var(--font-geist);
+  --font-hand: var(--font-caveat);
+  --font-mono: var(--font-jetbrainsmono);
 }
 
 @utility paper-bg {
@@ -75,4 +81,18 @@
     transparent 0 31px,
     color-mix(in srgb, var(--color-paper-3) 70%, transparent) 31px 32px
   );
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-newsreader);
+  }
 }

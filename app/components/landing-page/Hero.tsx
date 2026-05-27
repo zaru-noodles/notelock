@@ -6,7 +6,11 @@ export default function Hero() {
         <h1 className="font-medium text-[76px] text-ink-0 max-w-160 mb-7 leading-none tracking-tight">
           Your notes, <br />
           <span className="text-terra-400 italic">
-            their <span>future</span>.
+            their{" "}
+            <span className="bg-linear-to-t from-hi-yellow to-transparent bg-size-[100%_60%] bg-no-repeat bg-bottom">
+              future
+            </span>
+            .
           </span>
         </h1>
         <p className="italic font-normal text-[22px] leading-[1.45] text-ink-2 mb-9 max-w-130">
