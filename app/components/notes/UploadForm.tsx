@@ -3,6 +3,7 @@ import type { UploadRequest } from "@/types/api";
 import Link from "next/link";
 import { useState } from "react";
 import ModuleInput from "./ModuleInput";
+import SemesterInput from "./SemesterInput";
 
 export default function UploadForm() {
   const [message, setMessage] = useState<string>("");
@@ -81,11 +82,8 @@ export default function UploadForm() {
         placeholder="Title"
       />
 
-      <input
-        type="text"
-        name="semester"
-        onChange={handleChange}
-        placeholder="Semester"
+      <SemesterInput
+        onChange={(sem) => setUploadReq({ ...uploadReq, semester: sem })}
       />
 
       <ModuleInput
