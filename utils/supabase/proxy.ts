@@ -41,22 +41,32 @@ export async function updateSession(request: NextRequest) {
   // IMPORTANT: If you remove getClaims() and you use server-side rendering
   // with the Supabase client, your users may be randomly logged out.
   const { data } = await supabase.auth.getClaims();
-
   const user = data?.claims;
 
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith("/login-page") &&
-    !request.nextUrl.pathname.startsWith("/register-page") &&
-    !request.nextUrl.pathname.startsWith("/verify") &&
-    !request.nextUrl.pathname.startsWith("/api/auth") &&
-    !request.nextUrl.pathname.startsWith("/reset-password") &&
-    !(request.nextUrl.pathname === "/")
-  ) {
-    // no user, potentially respond by redirecting the user to the login page
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
+  const isAuthRoute = request.nextUrl.pathname.startsWith("/api/auth");
+
+  const isPublicPage =
+    request.nextUrl.pathname.startsWith("/login-page") ||
+    request.nextUrl.pathname.startsWith("/register-page") ||
+    request.nextUrl.pathname.startsWith("/verify") ||
+    request.nextUrl.pathname.startsWith("/reset-password") ||
+    request.nextUrl.pathname === "/";
+
+  // unauthorized API call: give a 401 error
+  // unauthorized page GET request: redirect to landing page
+  if (!user) {
+    if (request.nextUrl.pathname.startsWith("/api")) {
+      if (!isAuthRoute) {
+        return NextResponse.json(
+          { error: "Unauthorized: User session needed" },
+          { status: 401 },
+        );
+      }
+    } else if (!isPublicPage) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/";
+      return NextResponse.redirect(url);
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
