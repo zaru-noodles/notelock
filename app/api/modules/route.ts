@@ -14,7 +14,7 @@ export async function GET(request: Request) {
   const { data: modsByCode, error: error1 } = await db
     .from("modules")
     .select("*")
-    .ilike("moduleCode", `%${search}%`)
+    .ilike("moduleCode", `${search}%`)
     .limit(10);
 
   if (error1) return Response.json({ error: error1.message }, { status: 500 });
