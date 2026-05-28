@@ -5,10 +5,6 @@ export default function Hero() {
     <section className="paper-bg relative px-12 pt-18 pb-22 max-w-7xl mx-auto grid grid-cols-[minmax(0,1.05fr)_minmax(0,420px)] gap-14 items-start">
       {/* Left Side with design */}
       <div>
-        <span className="inline-flex items-center gap-2.5 font-mono font-semibold text-[11px] text-terra-500 bg-terra-50 border border-terra-100 px-1.25 py-1.25 rounded-pill mb-5.5">
-          <span className="h-1.75 w-1.75 bg-terra-400 rounded-[50%] "></span>
-          BUILT FOR NUS
-        </span>
         <h1 className="font-medium text-[86px] text-ink-0 mb-7 leading-none tracking-tight [font-variation-settings:'opsz'_72]">
           Your notes, <br />
           <span className="font-display text-terra-400 italic">

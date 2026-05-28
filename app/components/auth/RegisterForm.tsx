@@ -125,7 +125,7 @@ export default function RegisterForm({ setLoginInfomation }: Props) {
           <span>Creating account...</span>
         ) : (
           <span className="flex justify-center">
-            Create an account <ArrowRight className="h-5.75"></ArrowRight>
+            Create an account&nbsp;<ArrowRight className="h-5.75"></ArrowRight>
           </span>
         )}
       </button>
