@@ -47,10 +47,7 @@ export default function RegisterForm({ setLoginInfomation }: Props) {
   };
 
   return (
-    <form
-      onSubmit={handleRegister}
-      className="flex flex-col gap-3 p-8 bg-white/20 rounded-lg shadow-lg backdrop-blur-md border border-white/30 w-full md:w-96"
-    >
+    <form onSubmit={handleRegister} className="flex flex-col gap-1 w-full">
       <h2 className="font-bold text-2xl text-gray-500">Sign up now!</h2>
       <input
         className="border border-gray-300 rounded px-3 py-2 focus:border-blue-500 focus:outline-none"

@@ -14,14 +14,16 @@ export default function AuthCard() {
   }
 
   return (
-    <div className="flex flex-col bg-paper-0 border border-paper-3 shadow-sh-3 p-7 gap-4 rounded-xl">
+    <div className="flex flex-col bg-paper-0 border border-paper-3 shadow-sh-3 p-7 gap-1 rounded-xl">
       {/* Toggle mode */}
       <div className="flex justify-center">
         <button onClick={() => setMode("login")}>Log in</button>
         <button onClick={() => setMode("signup")}>Create account</button>
       </div>
-      <h2>{mode === "login" ? "Welcome back." : "Get the cheatsheets."}</h2>
-      <p>
+      <h2 className="font-display text-[28px] font-medium text-ink-0 tracking-[-0.015em] mt-1.5">
+        {mode === "login" ? "Welcome back." : "Get the cheatsheets."}
+      </h2>
+      <p className="mb-1.5">
         {mode === "login"
           ? "Sign in with your NUS email"
           : "Use your NUS email to sign up now!"}

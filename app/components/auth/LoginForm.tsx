@@ -40,8 +40,11 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleLogin} className="flex flex-col gap-3 w-full">
-      <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl">
+    <form onSubmit={handleLogin} className="flex flex-col gap-1 w-full">
+      <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
+        NUS EMAIL
+      </label>
+      <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-3">
         <Mail className="h-5 w-5 text-ink-1 stroke-[1.5]" />
         <input
           className="rounded px-2 py-2 focus:outline-none w-[90%]"
@@ -56,7 +59,10 @@ export default function LoginForm() {
           placeholder="e0123456@u.nus.edu"
         />
       </div>
-      <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl">
+      <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
+        PASSWORD
+      </label>
+      <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-5">
         <Lock className="h-5 w-5 text-ink-1 stroke-[1.5]"></Lock>
         <input
           className="rounded px-2 py-2 focus:outline-none w-[90%]"
@@ -70,7 +76,7 @@ export default function LoginForm() {
       </div>
       {error && <p className="text-red-500 font-bold">{error}</p>}
       <button
-        className="border border-honey-500 rounded px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:translate-y-[-1px] hover:shadow-sh-4"
+        className="border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:translate-y-[-1px] hover:shadow-sh-4 mb-4.5"
         type="submit"
         disabled={loading}
       >
