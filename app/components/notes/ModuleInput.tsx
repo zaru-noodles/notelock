@@ -31,7 +31,7 @@ export default function ModuleInput({ onChange }: Props) {
   }, [textInput]);
 
   function handleClick(mod: Module) {
-    setTextInput(`${mod.moduleCode} ${mod.name}`);
+    setTextInput(`${mod.moduleCode} ${mod.title}`);
     onChange(`${mod.id}`);
   }
 
@@ -47,7 +47,7 @@ export default function ModuleInput({ onChange }: Props) {
       <ul>
         {modules.map((module) => (
           <li key={module.id} onClick={() => handleClick(module)}>
-            {module.moduleCode} {module.name}
+            {module.moduleCode} {module.title}
           </li>
         ))}
       </ul>

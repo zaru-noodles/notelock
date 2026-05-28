@@ -1,7 +1,7 @@
 export type Module = {
   id: string;
   moduleCode: string;
-  name: string;
+  title: string;
   faculty: string;
   department: string;
 };
