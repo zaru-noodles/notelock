@@ -2,6 +2,7 @@
 import type { UploadRequest } from "@/types/api";
 import Link from "next/link";
 import { useState } from "react";
+import ModuleInput from "./ModuleInput";
 
 export default function UploadForm() {
   const [message, setMessage] = useState<string>("");
@@ -87,11 +88,8 @@ export default function UploadForm() {
         placeholder="Semester"
       />
 
-      <input
-        type="text"
-        name="moduleId"
-        onChange={handleChange}
-        placeholder="Module"
+      <ModuleInput
+        onChange={(id) => setUploadReq({ ...uploadReq, moduleId: id })}
       />
 
       <input type="file" name="file" accept=".pdf" onChange={handleChange} />
