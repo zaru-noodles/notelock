@@ -16,24 +16,26 @@ export default function AuthCard() {
   return (
     <div className="flex flex-col bg-paper-0 border border-paper-3 shadow-sh-3 p-7 gap-1 rounded-xl">
       {/* Toggle mode */}
-      <div className="flex justify-evenly bg-paper-3 border border-paper-4 p-2.5 rounded-xl">
+      <div className="flex justify-evenly bg-paper-3 border border-paper-4 rounded-xl mb-3">
         <button
           onClick={() => setMode("login")}
-          className={
-            mode === "login"
-              ? `text-ink-2 font-semibold border border-paper-3 bg-paper-0 rounded-xl`
-              : `text-ink-1`
-          }
+          className={`px-4 py-2.25 rounded-pill font-sans text-[16px] font-semibold cursor-pointer transition-colors duration-150 w-full
+            ${
+              mode === "login"
+                ? "text-ink-0 bg-paper-0 shadow-sh-1"
+                : "text-ink-3"
+            }`}
         >
           Log in
         </button>
         <button
           onClick={() => setMode("signup")}
-          className={
-            mode === "signup"
-              ? `text-ink-2 font-semibold border border-paper-3 bg-paper-0 rounded-xl`
-              : `text-ink-1`
-          }
+          className={`px-4 py-2.25 rounded-pill font-sans text-[16px] font-semibold cursor-pointer transition-colors duration-150 w-full
+            ${
+              mode === "signup"
+                ? "text-ink-0 bg-paper-0 shadow-sh-1"
+                : "text-ink-3"
+            }`}
         >
           Sign up
         </button>
