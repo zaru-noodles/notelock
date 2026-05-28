@@ -54,7 +54,13 @@ export default function ModuleInput({ onChange }: Props) {
 
       <ul>
         {modules.map((module) => (
-          <li key={module.id} onClick={() => setModule(module)}>
+          <li
+            key={module.id}
+            onClick={() => {
+              setModule(module);
+              setModules([]);
+            }}
+          >
             {module.moduleCode} {module.title}
           </li>
         ))}
