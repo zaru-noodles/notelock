@@ -45,7 +45,7 @@ export default function LoginForm() {
         NUS EMAIL
       </label>
       <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-3">
-        <Mail className="h-5 w-5 text-ink-1 stroke-[1.5]" />
+        <Mail className="h-5 w-5 text-ink-1 stroke-2" />
         <input
           className="rounded px-2 py-2 focus:outline-none w-[90%]"
           type="email"
@@ -63,7 +63,7 @@ export default function LoginForm() {
         PASSWORD
       </label>
       <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-5">
-        <Lock className="h-5 w-5 text-ink-1 stroke-[1.5]"></Lock>
+        <Lock className="h-5 w-5 text-ink-1 stroke-2"></Lock>
         <input
           className="rounded px-2 py-2 focus:outline-none w-[90%]"
           type="password"
