@@ -9,3 +9,10 @@ export type LoginRequest = {
   email: string;
   password: string;
 };
+
+export type UploadRequest = {
+  title: string;
+  moduleId: string;
+  semester: string;
+  file: File | null;
+};
