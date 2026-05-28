@@ -47,6 +47,7 @@ export default function LoginForm() {
       <input
         className="border border-gray-300 rounded px-3 py-2 focus:border-blue-500 focus:outline-none"
         type="email"
+        value={loginRequest.email}
         onChange={(e) =>
           setLoginRequest({
             ...loginRequest,
