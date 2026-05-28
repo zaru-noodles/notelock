@@ -15,20 +15,38 @@ export default function UploadForm() {
   });
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setUploadReq({ ...uploadReq, [e.target.name]: e.target.value });
+    if (e.target.name == "file") {
+      const files = e.target.files;
+      if (files) setUploadReq({ ...uploadReq, [e.target.name]: files[0] });
+    } else {
+      setUploadReq({ ...uploadReq, [e.target.name]: e.target.value });
+    }
   }
 
   async function handleUpload(e: React.SyntheticEvent) {
     e.preventDefault();
     setError("");
+
+    if (uploadReq.file === null) {
+      setError("File not found");
+      return;
+    }
+
+    if (uploadReq.file.type !== "application/pdf") {
+      setError(`Invalid file type: ${uploadReq.file.type}`);
+      return;
+    }
+
     setLoading(true);
+    const formData = new FormData();
+    formData.append("file", uploadReq.file!);
+    formData.append("title", uploadReq.title);
+    formData.append("moduleId", uploadReq.moduleId);
+    formData.append("semester", uploadReq.semester);
 
     const response = await fetch("/api/notes/upload", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(uploadReq),
+      body: formData,
     });
 
     const data = await response.json();

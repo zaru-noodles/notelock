@@ -37,10 +37,15 @@ export async function POST(req: Request) {
   }
 
   // validate and get module code
+  const num = Number(uploadReq.moduleId);
+  if (!Number.isInteger(num) || uploadReq.moduleId.trim() === "") {
+    return Response.json({ error: "Invalid module ID" }, { status: 401 });
+  }
+
   const { data: module, error: moduleError } = await db
     .from("modules")
     .select("moduleCode")
-    .eq("id", uploadReq.moduleId)
+    .eq("id", num)
     .single();
 
   if (moduleError || !module) {
