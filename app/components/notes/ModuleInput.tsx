@@ -30,9 +30,14 @@ export default function ModuleInput({ onChange }: Props) {
     searchModules();
   }, [textInput]);
 
-  function handleClick(mod: Module) {
+  function setModule(mod: Module) {
     setTextInput(`${mod.moduleCode} ${mod.title}`);
     onChange(`${mod.id}`);
+  }
+
+  function resetModule() {
+    setTextInput("");
+    onChange("");
   }
 
   return (
@@ -40,13 +45,16 @@ export default function ModuleInput({ onChange }: Props) {
       <input
         type="text"
         value={textInput}
+        onBlur={() =>
+          modules.length != 0 ? setModule(modules[0]) : resetModule()
+        }
         onChange={(e) => setTextInput(e.target.value)}
         placeholder="Module"
       />
 
       <ul>
         {modules.map((module) => (
-          <li key={module.id} onClick={() => handleClick(module)}>
+          <li key={module.id} onClick={() => setModule(module)}>
             {module.moduleCode} {module.title}
           </li>
         ))}
