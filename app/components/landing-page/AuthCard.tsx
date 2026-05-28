@@ -16,10 +16,10 @@ export default function AuthCard() {
   return (
     <div className="flex flex-col bg-paper-0 border border-paper-3 shadow-sh-3 p-7 gap-1 rounded-xl">
       {/* Toggle mode */}
-      <div className="flex justify-evenly bg-paper-3 border border-paper-4 rounded-xl mb-3">
+      <div className="flex justify-evenly bg-paper-3 border border-paper-4 rounded-xl mb-3 px-0.5 py-0.5">
         <button
           onClick={() => setMode("login")}
-          className={`px-4 py-2.25 rounded-pill font-sans text-[16px] font-semibold cursor-pointer transition-colors duration-150 w-full
+          className={`px-6 py-2.25 rounded-pill font-sans text-[16px] font-semibold cursor-pointer transition-colors duration-150 w-full
             ${
               mode === "login"
                 ? "text-ink-0 bg-paper-0 shadow-sh-1"
