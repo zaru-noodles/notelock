@@ -50,7 +50,7 @@ export default function RegisterForm({ setLoginInfomation }: Props) {
   return (
     <form onSubmit={handleRegister} className="flex flex-col gap-1 w-full">
       <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
-        NUS EMAIL
+        EMAIL
       </label>
       <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-3">
         <Mail className="h-5 w-5 text-ink-1 stroke-2" />
@@ -121,14 +121,7 @@ export default function RegisterForm({ setLoginInfomation }: Props) {
         type="submit"
         disabled={loading}
       >
-        {loading ? (
-          <span>Creating account...</span>
-        ) : (
-          <div className="flex justify-center">
-            <span>Create an account&nbsp;</span>
-            <ArrowRight className="h-5.75"></ArrowRight>
-          </div>
-        )}
+        Create an Account
       </button>
     </form>
   );
