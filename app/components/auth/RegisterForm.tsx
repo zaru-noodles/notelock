@@ -121,7 +121,13 @@ export default function RegisterForm({ setLoginInfomation }: Props) {
         type="submit"
         disabled={loading}
       >
-        Create an Account
+        {loading ? (
+          <span>Creating account...</span>
+        ) : (
+          <span className="flex justify-center">
+            Create an account <ArrowRight className="h-5.75"></ArrowRight>
+          </span>
+        )}
       </button>
     </form>
   );
