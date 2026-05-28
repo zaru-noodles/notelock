@@ -1,8 +1,10 @@
 "use client";
 import type { UploadRequest } from "@/types/api";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function UploadForm() {
+  const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [uploadReq, setUploadReq] = useState<UploadRequest>({
@@ -17,7 +19,38 @@ export default function UploadForm() {
   }
 
   async function handleUpload(e: React.SyntheticEvent) {
-    return;
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    const response = await fetch("/api/notes/upload", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(uploadReq),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      setMessage("Note uploaded. Thank you!");
+    } else {
+      setError(data.error);
+    }
+
+    setLoading(false);
+  }
+
+  if (message !== "") {
+    return (
+      <>
+        <p> {message} </p>
+        <Link className="text-blue-500 hover:underline" href="/dashboard">
+          {" "}
+          Back to dashboard{" "}
+        </Link>
+      </>
+    );
   }
 
   return (
