@@ -55,7 +55,7 @@ export default function RegisterForm({ setLoginInfomation }: Props) {
       <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-3">
         <Mail className="h-5 w-5 text-ink-1 stroke-2" />
         <input
-          className="rounded px-2 py-2 focus:outline-none w-[90%]"
+          className="rounded px-2 py-2 focus:outline-none w-full"
           type="email"
           value={registerRequest.email}
           onChange={(e) =>
@@ -73,7 +73,7 @@ export default function RegisterForm({ setLoginInfomation }: Props) {
       <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-3">
         <Lock className="h-5 w-5 text-ink-1 stroke-2"></Lock>
         <input
-          className="rounded px-2 py-2 focus:outline-none w-[90%]"
+          className="rounded px-2 py-2 focus:outline-none w-full"
           type="password"
           value={registerRequest.password}
           onChange={(e) =>
@@ -88,7 +88,7 @@ export default function RegisterForm({ setLoginInfomation }: Props) {
       <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-3">
         <Lock className="h-5 w-5 text-ink-1 stroke-2"></Lock>
         <input
-          className="rounded px-2 py-2 focus:outline-none w-[90%]"
+          className="rounded px-2 py-2 focus:outline-none w-full"
           type="password"
           value={registerRequest.confirmPassword}
           onChange={(e) =>
@@ -106,7 +106,7 @@ export default function RegisterForm({ setLoginInfomation }: Props) {
       <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-3">
         <User className="h-5 w-5 text-ink-1 stroke-2"></User>
         <input
-          className="rounded px-2 py-2 focus:outline-none w-[90%]"
+          className="rounded px-2 py-2 focus:outline-none w-full"
           type="text"
           value={registerRequest.username}
           onChange={(e) =>
@@ -117,7 +117,7 @@ export default function RegisterForm({ setLoginInfomation }: Props) {
       </div>
       {error && <p className="text-red-500 font-bold">{error}</p>}
       <button
-        className="border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:translate-y-[-1px] hover:shadow-sh-4 mb-4.5"
+        className="cursor-pointer border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:translate-y-[-1px] hover:shadow-sh-4 mb-4.5"
         type="submit"
         disabled={loading}
       >
