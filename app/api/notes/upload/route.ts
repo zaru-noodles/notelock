@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import type { UploadRequest } from "@/types/api";
+import { SEMESTERS } from "@/utils/constants";
 
 export async function POST(req: Request) {
   const db = createClient(await cookies());
@@ -26,6 +27,11 @@ export async function POST(req: Request) {
     !uploadReq.semester
   ) {
     return Response.json({ error: "All fields are required" }, { status: 400 });
+  }
+
+  // validate semester
+  if (!SEMESTERS.includes(uploadReq.semester)) {
+    return Response.json({ error: "Semester is invalid" }, { status: 400 });
   }
 
   // validate file type
