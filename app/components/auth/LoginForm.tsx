@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoginRequest } from "@/types/api";
+import { Mail, Lock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function LoginForm() {
@@ -39,51 +40,72 @@ export default function LoginForm() {
   };
 
   return (
-    <form
-      onSubmit={handleLogin}
-      className="flex flex-col gap-3 p-8 bg-white/20 rounded-lg shadow-lg backdrop-blur-md border border-white/30 w-full md:w-96"
-    >
-      <h2 className="font-bold text-2xl text-gray-500">Login</h2>
-      <input
-        className="border border-gray-300 rounded px-3 py-2 focus:border-blue-500 focus:outline-none"
-        type="email"
-        value={loginRequest.email}
-        onChange={(e) =>
-          setLoginRequest({
-            ...loginRequest,
-            email: e.target.value.toLowerCase(),
-          })
-        }
-        placeholder="Email"
-      />
-      <input
-        className="border border-gray-300 rounded px-3 py-2 focus:border-blue-500 focus:outline-none"
-        type="password"
-        value={loginRequest.password}
-        onChange={(e) =>
-          setLoginRequest({ ...loginRequest, password: e.target.value })
-        }
-        placeholder="Password"
-      />
+    <form onSubmit={handleLogin} className="flex flex-col gap-1 w-full">
+      <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
+        NUS EMAIL
+      </label>
+      <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-3">
+        <Mail className="h-5 w-5 text-ink-1 stroke-2" />
+        <input
+          className="rounded px-2 py-2 focus:outline-none w-[90%]"
+          type="email"
+          value={loginRequest.email}
+          onChange={(e) =>
+            setLoginRequest({
+              ...loginRequest,
+              email: e.target.value.toLowerCase(),
+            })
+          }
+          placeholder="e0123456@u.nus.edu"
+        />
+      </div>
+      <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
+        PASSWORD
+      </label>
+      <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-5">
+        <Lock className="h-5 w-5 text-ink-1 stroke-2"></Lock>
+        <input
+          className="rounded px-2 py-2 focus:outline-none w-[90%]"
+          type="password"
+          value={loginRequest.password}
+          onChange={(e) =>
+            setLoginRequest({ ...loginRequest, password: e.target.value })
+          }
+          placeholder="••••••••"
+        />
+      </div>
       {error && <p className="text-red-500 font-bold">{error}</p>}
       <button
-        className="border border-gray-300 rounded px-3 py-2 bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300"
+        className="border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:translate-y-[-1px] hover:shadow-sh-4 mb-4.5"
         type="submit"
         disabled={loading}
       >
-        {loading ? "Logging in" : "Login"}
+        {loading ? (
+          <span>Logging in...</span>
+        ) : (
+          <div className="flex justify-center">
+            <span>Login&nbsp;</span>
+            <ArrowRight className="h-5.75"></ArrowRight>
+          </div>
+        )}
       </button>
 
       <p>
         No account?&nbsp;
-        <Link className="text-blue-500 hover:underline" href="/register-page">
+        <Link
+          className="font-medium text-terra-500 hover:underline"
+          href="/register-page"
+        >
           Register here!
         </Link>
       </p>
 
       <p>
         Forgot Password?&nbsp;
-        <Link className="text-blue-500 hover:underline" href="/reset-password">
+        <Link
+          className="font-medium text-terra-500 hover:underline"
+          href="/reset-password"
+        >
           Reset it here!
         </Link>
       </p>

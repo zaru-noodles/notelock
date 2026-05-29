@@ -21,14 +21,15 @@ export default function UpdatePasswordForm() {
 
     setLoading(true);
     const { data, error } = await db.auth.updateUser({ password: password });
-    await db.auth.signOut();
-    setLoading(false);
 
     if (error !== null) {
       setErrorMessage(error.message);
     } else {
       setMessage("Your password has been reset!");
+      await db.auth.signOut();
     }
+
+    setLoading(false);
   }
 
   if (message !== "") {
