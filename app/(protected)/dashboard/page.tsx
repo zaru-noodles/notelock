@@ -5,8 +5,17 @@ export default function Dashboard() {
   return (
     <>
       <div>Dashboard Page</div>
-      <Link className="text-blue-500 hover:underline" href="/upload">
+      <Link
+        className="font-medium text-terra-500 hover:underline"
+        href="/upload"
+      >
         Upload your notes!
+      </Link>
+      <Link
+        className="font-medium text-terra-500 hover:underline"
+        href="/notes"
+      >
+        View notes!
       </Link>
       <LogoutButton></LogoutButton>
     </>
