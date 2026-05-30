@@ -36,7 +36,10 @@ export default function UpdatePasswordForm() {
     return (
       <>
         <p>{message}</p>
-        <Link className="text-blue-500 hover:underline" href="/">
+        <Link
+          className="cursor-pointer border border-honey-500 rounded-md px-4 py-2 bg-honey-300 text-white hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:-translate-y-px hover:shadow-sh-4 mb-4.5"
+          href="/"
+        >
           Return to login page
         </Link>
       </>
