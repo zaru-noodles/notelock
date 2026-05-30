@@ -1,4 +1,4 @@
-import PdfViewer from "@/app/components/notes/PdfViewer";
+import PdfViewer from "@/app/components/notes/PdfViewer/PdfViewer";
 import { getNoteWithSignedUrl } from "@/utils/notes/queries";
 import { notFound } from "next/navigation";
 
@@ -10,9 +10,9 @@ type Props = {
 };
 
 export default async function Page({ params }: Props) {
-  const { module, id } = await params;
+  const { module: moduleCode, id } = await params;
   const result = await getNoteWithSignedUrl(id);
-  if (!result || module !== result.moduleCode) {
+  if (!result || moduleCode !== result.moduleCode) {
     notFound();
   }
 
@@ -20,7 +20,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <div>
-      <PdfViewer url={signedUrl}></PdfViewer>
+      <PdfViewer url={signedUrl} />
     </div>
   );
 }
