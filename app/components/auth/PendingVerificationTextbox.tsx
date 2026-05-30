@@ -66,7 +66,7 @@ export default function PendingVerificationTextbox({ loginRequest }: Props) {
       </p>
       <br />
       <button
-        className="cursor-pointer border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:translate-y-[-1px] hover:shadow-sh-4 mb-4.5"
+        className="cursor-pointer border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:-translate-y-px hover:shadow-sh-4 mb-4.5"
         type="button"
         onClick={resendLink}
       >

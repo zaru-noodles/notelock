@@ -43,18 +43,14 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleLogin} className="flex flex-col gap-1 w-full">
-      <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
-        NUS EMAIL
-      </label>
       <EmailInput
+        label="NUS EMAIL"
         value={loginRequest.email}
         onChange={(email) => setLoginRequest({ ...loginRequest, email: email })}
       />
 
-      <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
-        PASSWORD
-      </label>
       <PasswordInput
+        label="PASSWORD"
         value={loginRequest.password}
         onChange={(password) =>
           setLoginRequest({ ...loginRequest, password: password })
@@ -63,7 +59,7 @@ export default function LoginForm() {
 
       {error && <p className="text-red-500 font-bold">{error}</p>}
       <button
-        className="cursor-pointer border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:translate-y-[-1px] hover:shadow-sh-4 mb-4.5"
+        className="cursor-pointer border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:-translate-y-px hover:shadow-sh-4 mb-4.5"
         type="submit"
         disabled={loading}
       >

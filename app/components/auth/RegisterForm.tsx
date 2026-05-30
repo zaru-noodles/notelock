@@ -52,40 +52,32 @@ export default function RegisterForm({ setLoginInfomation }: Props) {
 
   return (
     <form onSubmit={handleRegister} className="flex flex-col gap-1 w-full">
-      <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
-        NUS EMAIL
-      </label>
       <EmailInput
+        label="NUS EMAIL"
         value={registerRequest.email}
         onChange={(email) =>
           setRegisterRequest({ ...registerRequest, email: email })
         }
       />
 
-      <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
-        PASSWORD
-      </label>
       <PasswordInput
+        label="PASSWORD"
         value={registerRequest.password}
         onChange={(password) =>
           setRegisterRequest({ ...registerRequest, password: password })
         }
       />
 
-      <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
-        CONFIRM PASSWORD
-      </label>
       <PasswordInput
+        label="CONFIRM PASSWORD"
         value={registerRequest.confirmPassword}
         onChange={(password) =>
           setRegisterRequest({ ...registerRequest, confirmPassword: password })
         }
       />
 
-      <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
-        USERNAME
-      </label>
       <UsernameInput
+        label="USERNAME"
         value={registerRequest.username}
         onChange={(username) =>
           setRegisterRequest({ ...registerRequest, username: username })
@@ -94,7 +86,7 @@ export default function RegisterForm({ setLoginInfomation }: Props) {
 
       {error && <p className="text-red-500 font-bold">{error}</p>}
       <button
-        className="cursor-pointer border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:translate-y-[-1px] hover:shadow-sh-4 mb-4.5"
+        className="cursor-pointer border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:-translate-y-px hover:shadow-sh-4 mb-4.5"
         type="submit"
         disabled={loading}
       >

@@ -46,10 +46,10 @@ export default function ForgotPasswordForm() {
       className="flex flex-col gap-3 p-8 bg-white/20 rounded-lg shadow-lg backdrop-blur-md border border-white/30 w-full md:w-96"
     >
       <h2 className="font-bold text-2xl text-gray-500">Reset Password</h2>
-      <EmailInput value={email} onChange={setEmail} />
+      <EmailInput label="EMAIL" value={email} onChange={setEmail} />
 
       <button
-        className="cursor-pointer border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:translate-y-[-1px] hover:shadow-sh-4 mb-4.5"
+        className="cursor-pointer border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:-translate-y-px hover:shadow-sh-4 mb-4.5"
         type="submit"
         disabled={loading}
       >
