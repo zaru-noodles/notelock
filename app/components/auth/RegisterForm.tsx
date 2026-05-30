@@ -2,6 +2,9 @@
 import { useState } from "react";
 import { LoginRequest, RegisterRequest } from "@/types/api";
 import { Mail, Lock, ArrowRight, User } from "lucide-react";
+import EmailInput from "./text-inputs/EmailInput";
+import PasswordInput from "./text-inputs/PasswordInput";
+import UsernameInput from "./text-inputs/UsernameInput";
 
 type Props = {
   setLoginInfomation: (value: LoginRequest) => void;
@@ -52,69 +55,43 @@ export default function RegisterForm({ setLoginInfomation }: Props) {
       <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
         NUS EMAIL
       </label>
-      <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-3">
-        <Mail className="h-5 w-5 text-ink-1 stroke-2" />
-        <input
-          className="rounded px-2 py-2 focus:outline-none w-full"
-          type="email"
-          value={registerRequest.email}
-          onChange={(e) =>
-            setRegisterRequest({
-              ...registerRequest,
-              email: e.target.value.toLowerCase(),
-            })
-          }
-          placeholder="e0123456@u.nus.edu"
-        />
-      </div>
+      <EmailInput
+        value={registerRequest.email}
+        onChange={(email) =>
+          setRegisterRequest({ ...registerRequest, email: email })
+        }
+      />
+
       <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
         PASSWORD
       </label>
-      <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-3">
-        <Lock className="h-5 w-5 text-ink-1 stroke-2"></Lock>
-        <input
-          className="rounded px-2 py-2 focus:outline-none w-full"
-          type="password"
-          value={registerRequest.password}
-          onChange={(e) =>
-            setRegisterRequest({ ...registerRequest, password: e.target.value })
-          }
-          placeholder="••••••••"
-        />
-      </div>
+      <PasswordInput
+        value={registerRequest.password}
+        onChange={(password) =>
+          setRegisterRequest({ ...registerRequest, password: password })
+        }
+      />
+
       <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
         CONFIRM PASSWORD
       </label>
-      <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-3">
-        <Lock className="h-5 w-5 text-ink-1 stroke-2"></Lock>
-        <input
-          className="rounded px-2 py-2 focus:outline-none w-full"
-          type="password"
-          value={registerRequest.confirmPassword}
-          onChange={(e) =>
-            setRegisterRequest({
-              ...registerRequest,
-              confirmPassword: e.target.value,
-            })
-          }
-          placeholder="••••••••"
-        />
-      </div>
+      <PasswordInput
+        value={registerRequest.confirmPassword}
+        onChange={(password) =>
+          setRegisterRequest({ ...registerRequest, confirmPassword: password })
+        }
+      />
+
       <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
         USERNAME
       </label>
-      <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-3">
-        <User className="h-5 w-5 text-ink-1 stroke-2"></User>
-        <input
-          className="rounded px-2 py-2 focus:outline-none w-full"
-          type="text"
-          value={registerRequest.username}
-          onChange={(e) =>
-            setRegisterRequest({ ...registerRequest, username: e.target.value })
-          }
-          placeholder="Zarufox"
-        />
-      </div>
+      <UsernameInput
+        value={registerRequest.username}
+        onChange={(username) =>
+          setRegisterRequest({ ...registerRequest, username: username })
+        }
+      />
+
       {error && <p className="text-red-500 font-bold">{error}</p>}
       <button
         className="cursor-pointer border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:translate-y-[-1px] hover:shadow-sh-4 mb-4.5"
