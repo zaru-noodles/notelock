@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { LoginRequest } from "@/types/api";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import EmailInput from "./text-inputs/EmailInput";
+import PasswordInput from "./text-inputs/PasswordInput";
 
 export default function LoginForm() {
   const [loginRequest, setLoginRequest] = useState<LoginRequest>({
@@ -44,36 +46,21 @@ export default function LoginForm() {
       <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
         NUS EMAIL
       </label>
-      <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-3">
-        <Mail className="h-5 w-5 text-ink-1 stroke-2" />
-        <input
-          className="rounded px-2 py-2 focus:outline-none w-full"
-          type="email"
-          value={loginRequest.email}
-          onChange={(e) =>
-            setLoginRequest({
-              ...loginRequest,
-              email: e.target.value.toLowerCase(),
-            })
-          }
-          placeholder="e0123456@u.nus.edu"
-        />
-      </div>
+      <EmailInput
+        value={loginRequest.email}
+        onChange={(email) => setLoginRequest({ ...loginRequest, email: email })}
+      />
+
       <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
         PASSWORD
       </label>
-      <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-5">
-        <Lock className="h-5 w-5 text-ink-1 stroke-2"></Lock>
-        <input
-          className="rounded px-2 py-2 focus:outline-none w-full"
-          type="password"
-          value={loginRequest.password}
-          onChange={(e) =>
-            setLoginRequest({ ...loginRequest, password: e.target.value })
-          }
-          placeholder="••••••••"
-        />
-      </div>
+      <PasswordInput
+        value={loginRequest.password}
+        onChange={(password) =>
+          setLoginRequest({ ...loginRequest, password: password })
+        }
+      />
+
       {error && <p className="text-red-500 font-bold">{error}</p>}
       <button
         className="cursor-pointer border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:translate-y-[-1px] hover:shadow-sh-4 mb-4.5"
