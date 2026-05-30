@@ -15,13 +15,15 @@ export default function PdfViewer({ url }: { url: string }) {
   }
 
   return (
-    <div>
+    <div className="overflow-y-auto border border-paper-3 bg-paper-0 rounded-md p-4 shadow-sh-2">
       <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>
-        <Page pageNumber={pageNumber} width={800} />
+        {numPages &&
+          Array.from({ length: numPages }, (_, i) => (
+            <div key={i} className="mb-4 shadow-sh-2">
+              <Page pageNumber={i + 1} width={800} />
+            </div>
+          ))}
       </Document>
-      <p>
-        Page {pageNumber} of {numPages}
-      </p>
     </div>
   );
 }
