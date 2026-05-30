@@ -122,3 +122,16 @@
     caret-color: var(--color-ink-1);
   }
 }
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility animate-scroll-left {
+  animation: scroll-left 200s linear infinite;
+}
