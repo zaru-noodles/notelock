@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 
 type PresetColor = "yellow" | "pink" | "blue" | "green" | "orange" | "purple";
@@ -14,7 +15,7 @@ const defaultColors: Record<PresetColor, { bg: string; shadow: string }> = {
   yellow: { bg: "#fef08a", shadow: "#eab308" },
   pink: { bg: "#fda4af", shadow: "#e11d48" },
   blue: { bg: "#93c5fd", shadow: "#2563eb" },
-  green: { bg: "#86efac", shadow: "#16a34a" },
+  green: { bg: "#86efa0", shadow: "#16a34a" },
   orange: { bg: "#fed7aa", shadow: "#ea580c" },
   purple: { bg: "#c4b5fd", shadow: "#7c3aed" },
 };
@@ -61,8 +62,8 @@ export default function PostItNote({
 
       {title && (
         <h3
-          className="text-sm font-bold tracking-tight leading-tight mb-2 mt-1"
-          style={{ color: "rgba(0,0,0,0.7)" }}
+          className="font-bold tracking-tight leading-tight mb-2 mt-1 text-lg"
+          style={{ color: "rgba(0,0,0,0.9)" }}
         >
           {title}
         </h3>
@@ -70,8 +71,8 @@ export default function PostItNote({
 
       <div className="flex-1 flex items-center justify-center">
         <p
-          className="text-sm leading-snug text-center break-words w-full"
-          style={{ color: "rgba(0,0,0,0.6)" }}
+          className="text-sm leading-snug text-center wrap-break-word w-full"
+          style={{ color: "rgba(0,0,0,0.8)" }}
         >
           {text}
         </p>

@@ -1,5 +1,6 @@
 import Navbar from "@/app/components/landing-page/Navbar";
 import Hero from "@/app/components/landing-page/Hero";
+import About from "./components/landing-page/AboutSection";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <div className="flex justify-center items-center">
         <Hero />
       </div>
+      <About />
     </>
   );
 }
