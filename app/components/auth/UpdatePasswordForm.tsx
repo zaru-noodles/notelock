@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
+import PasswordInput from "./text-inputs/PasswordInput";
 
 export default function UpdatePasswordForm() {
   const db = createClient();
@@ -36,7 +37,10 @@ export default function UpdatePasswordForm() {
     return (
       <>
         <p>{message}</p>
-        <Link className="text-blue-500 hover:underline" href="/login-page">
+        <Link
+          className="cursor-pointer border border-honey-500 rounded-md px-4 py-2 bg-honey-300 text-white hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:-translate-y-px hover:shadow-sh-4 mb-4.5"
+          href="/"
+        >
           Return to login page
         </Link>
       </>
@@ -48,25 +52,16 @@ export default function UpdatePasswordForm() {
       onSubmit={updatePassword}
       className="flex flex-col gap-3 p-8 bg-white/20 rounded-lg shadow-lg backdrop-blur-md border border-white/30 w-full md:w-96"
     >
-      <h2 className="font-bold text-2xl text-gray-500">Reset Password</h2>
-      <input
-        className="border border-gray-300 rounded px-3 py-2 focus:border-blue-500 focus:outline-none"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-      />
-
-      <input
-        className="border border-gray-300 rounded px-3 py-2 focus:border-blue-500 focus:outline-none"
-        type="password"
+      <h2 className="font-bold text-2xl">Reset Password</h2>
+      <PasswordInput label="PASSWORD" value={password} onChange={setPassword} />
+      <PasswordInput
+        label="CONFIRM PASSWORD"
         value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        placeholder="Confirm password"
+        onChange={setConfirmPassword}
       />
 
       <button
-        className="border border-gray-300 rounded px-3 py-2 bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300"
+        className="cursor-pointer border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:-translate-y-px hover:shadow-sh-4 mb-4.5"
         type="submit"
         disabled={loading}
       >

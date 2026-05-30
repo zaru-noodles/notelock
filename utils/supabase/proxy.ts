@@ -46,8 +46,6 @@ export async function updateSession(request: NextRequest) {
   const isAuthRoute = request.nextUrl.pathname.startsWith("/api/auth");
 
   const isPublicPage =
-    request.nextUrl.pathname.startsWith("/login-page") ||
-    request.nextUrl.pathname.startsWith("/register-page") ||
     request.nextUrl.pathname.startsWith("/verify") ||
     request.nextUrl.pathname.startsWith("/reset-password") ||
     request.nextUrl.pathname === "/";

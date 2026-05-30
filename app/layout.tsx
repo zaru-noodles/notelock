@@ -37,7 +37,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`h-full antialiased ${newsreader.variable} ${geist.variable} ${caveat.variable} ${jetbrainsMono.variable}`}
+      className={`h-full antialiased ${newsreader.variable} ${geist.variable} ${caveat.variable} ${jetbrainsMono.variable} scroll-smooth`}
     >
       <body className="min-h-full flex flex-col bg-paper-1 text-ink-1">
         {children}

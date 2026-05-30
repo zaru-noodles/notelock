@@ -5,6 +5,9 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-10 flex items-center gap-5.5 px-12 py-4 border-b border-paper-3 bg-paper-1/80 backdrop-blur-md">
       <div className="flex gap-6 ml-6">
+        <a className={navElemStyling} href="#login">
+          Login
+        </a>
         <a className={navElemStyling} href="#about">
           About
         </a>

@@ -2,9 +2,12 @@ import AuthCard from "./AuthCard";
 
 export default function Hero() {
   return (
-    <section className="paper-bg relative px-12 pt-18 pb-22 max-w-7xl mx-auto grid grid-cols-[minmax(0,1.05fr)_minmax(0,420px)] gap-14 items-start">
+    <section
+      id="login"
+      className="paper-bg relative px-12 pt-18 pb-22 w-[70%] h-[86vh] mx-auto grid grid-cols-[minmax(0,1.05fr)_minmax(0,420px)] gap-14 items-start"
+    >
       {/* Left Side with design */}
-      <div>
+      <div className="max-w-145">
         <h1 className="font-medium text-[86px] text-ink-0 mb-7 leading-none tracking-tight [font-variation-settings:'opsz'_72]">
           Your notes, <br />
           <span className="font-display text-terra-400 italic">
@@ -16,12 +19,16 @@ export default function Hero() {
           </span>
         </h1>
         <p className="font-display italic font-normal text-[22px] leading-[1.45] text-ink-2 mb-9">
-          Contribute now by sharing your notes with your fellow classmates! A
-          shared notebook for every NUS module, semester and examinations.
+          Contribute now by sharing your notes with your fellow classmates!
+          <br></br>A shared notebook for every NUS module, semester and
+          examination.
         </p>
       </div>
+
       {/* Right side with login and signup */}
-      <AuthCard />
+      <div className="flex flex-col bg-paper-0 border border-paper-3 shadow-sh-3 p-7 gap-1 rounded-xl">
+        <AuthCard />
+      </div>
     </section>
   );
 }

@@ -1,6 +1,5 @@
 "use client";
 import { LoginRequest } from "@/types/api";
-import { log } from "console";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -56,21 +55,25 @@ export default function PendingVerificationTextbox({ loginRequest }: Props) {
 
   return (
     <div>
-      <h2>Please verify your account</h2>
-      <p>A confirmation email has been sent to your email.</p>
+      <h2 className="font-display text-[28px] font-medium text-ink-0 tracking-[-0.015em] mt-1.5">
+        Verify your account
+      </h2>
+
       <br />
-      <h3> Did not recieve the verification email? </h3>
-      <p> Check your junk inbox or</p>
+      <p className="mb-1.5">
+        A verification email has been sent to your email! <br /> Check your junk
+        mail.
+      </p>
+      <br />
       <button
-        className="bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+        className="cursor-pointer border border-honey-500 rounded-md px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:-translate-y-px hover:shadow-sh-4 mb-4.5"
         type="button"
         onClick={resendLink}
       >
         {" "}
         Resend verification link{" "}
       </button>
-      <br />
-      <p>{message}</p>
+      {message && <p className="mb-1.5">{message}</p>}
     </div>
   );
 }
