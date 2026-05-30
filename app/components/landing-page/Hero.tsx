@@ -21,8 +21,11 @@ export default function Hero() {
           examination.
         </p>
       </div>
+
       {/* Right side with login and signup */}
-      <AuthCard />
+      <div className="flex flex-col bg-paper-0 border border-paper-3 shadow-sh-3 p-7 gap-1 rounded-xl">
+        <AuthCard />
+      </div>
     </section>
   );
 }
