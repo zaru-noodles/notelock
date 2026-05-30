@@ -11,6 +11,7 @@ export async function getNoteWithSignedUrl(noteId: string) {
   if (!user) {
     return null;
   }
+
   const { data: note, error: noteError } = await db
     .from("notes")
     .select("id, title, semester, module_id")
