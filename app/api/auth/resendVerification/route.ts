@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 
   return Response.json(
     {
-      message: "Verification link send!",
+      message: "Verification link sent!",
     },
     { status: 200 },
   );
