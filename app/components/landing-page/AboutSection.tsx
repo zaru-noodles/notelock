@@ -1,5 +1,6 @@
 import PostItNote from "./PostItNote";
 
+// about section
 export default function About() {
   return (
     <section id="about" className="py-16 px-6 grid-bg">
