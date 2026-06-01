@@ -1,1 +1,137 @@
 @import "tailwindcss";
+
+@theme {
+  /* For paper background */
+  --color-paper-0: #fffcf3;
+  --color-paper-1: #fbf6e7;
+  --color-paper-2: #f4ecd4;
+  --color-paper-3: #ece0b8;
+  --color-paper-4: #ddcb97;
+
+  /* Mainly for text */
+  --color-ink-0: #1b140a;
+  --color-ink-1: #2a2113;
+  --color-ink-2: #4a3d29;
+  --color-ink-3: #7a6a4f;
+  --color-ink-4: #a9987a;
+
+  /* Honey primary colour */
+  --color-honey-50: #fdf3d6;
+  --color-honey-100: #fae3a0;
+  --color-honey-200: #f6ce63;
+  --color-honey-300: #efb432;
+  --color-honey-400: #e89a1b;
+  --color-honey-500: #c77e10;
+  --color-honey-600: #9c620c;
+  --color-honey-700: #6e4408;
+
+  /* Accent colour */
+  --color-terra-50: #fbe7d9;
+  --color-terra-100: #f5c5a5;
+  --color-terra-200: #ed9d6a;
+  --color-terra-300: #dd7440;
+  --color-terra-400: #c75a2e;
+  --color-terra-500: #a14620;
+  --color-terra-600: #7a3517;
+
+  /* Highlights colour */
+  --color-hi-yellow: #f8d34c;
+  --color-hi-mint: #b8e0b0;
+  --color-hi-pink: #f4b6b6;
+  --color-hi-blue: #b6d3e8;
+
+  /* Semantic colour */
+  --success: #6faa56;
+  --success-bg: #e4f0d6;
+  --warning-bg: #fcedc4;
+  --warning: #d89a2a;
+  --danger: #b5482e;
+  --danger-bg: #f6d9cb;
+  --info: #5d8aae;
+  --info-bg: #d9e5ee;
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
+  --radius-pill: 9999px;
+
+  /* Shadow */
+  --shadow-sh-1:
+    0 1px 0 rgba(74, 61, 41, 0.06), 0 1px 2px rgba(74, 61, 41, 0.04);
+  --shadow-sh-2:
+    0 1px 0 rgba(74, 61, 41, 0.06), 0 2px 6px -1px rgba(74, 61, 41, 0.1);
+  --shadow-sh-3:
+    0 2px 0 rgba(74, 61, 41, 0.05), 0 8px 18px -6px rgba(74, 61, 41, 0.18);
+  --shadow-sh-4:
+    0 4px 0 rgba(74, 61, 41, 0.05), 0 18px 36px -10px rgba(74, 61, 41, 0.22);
+
+  /* Font */
+  --font-display: var(--font-newsreader);
+  --font-sans: var(--font-geist);
+  --font-hand: var(--font-caveat);
+  --font-mono: var(--font-jetbrainsmono);
+}
+
+@utility paper-bg {
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent 0 31px,
+    color-mix(in srgb, var(--color-paper-3) 70%, transparent) 31px 32px
+  );
+}
+
+@utility grid-bg {
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--color-paper-3) 70%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-paper-3) 70%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 24px 24px;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-newsreader);
+  }
+}
+
+@layer base {
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px var(--color-paper-1) inset;
+    -webkit-text-fill-color: var(--color-ink-1);
+    transition: background-color 5000s ease-in-out 0s;
+    caret-color: var(--color-ink-1);
+  }
+}
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility animate-scroll-left {
+  animation: scroll-left 200s linear infinite;
+}
