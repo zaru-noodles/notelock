@@ -19812,6 +19812,12 @@ initCom(PDFViewerApplication);
 PDFPrintServiceFactory.initGlobals(PDFViewerApplication);
 {
   const HOSTED_VIEWER_ORIGINS = new Set(["null", "http://mozilla.github.io", "https://mozilla.github.io", "http://localhost:3000", "https://notelock.vercel.app"]);
+  if (typeof window !== 'undefined' && window.location) {
+    var currentOrigin = window.location.origin;
+    if (currentOrigin.endsWith('-aidans-projects-11c67ab1.vercel.app')) {
+      HOSTED_VIEWER_ORIGINS.add(currentOrigin);
+    }
+  }
   var validateFileURL = function (file) {
     if (!file) {
       return;
