@@ -10,14 +10,7 @@ export default function Dashboard() {
         href="/upload"
       >
         Upload your notes!
-      </Link>
-      <Link
-        className="font-medium text-terra-500 hover:underline"
-        href="/notes"
-      >
-        View notes!
-      </Link>
-      <LogoutButton></LogoutButton>
+      </Link>   
     </>
   );
 }

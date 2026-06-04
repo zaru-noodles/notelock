@@ -14,7 +14,7 @@ export default function AuthCard() {
   }
 
   return (
-    <div className="flex flex-col bg-paper-0 border border-paper-3 shadow-sh-3 p-7 gap-1 rounded-xl">
+    <>
       {/* Toggle mode */}
       <div className="flex justify-evenly bg-paper-3 border border-paper-4 rounded-xl mb-3 px-0.5 py-0.5">
         <button
@@ -40,6 +40,7 @@ export default function AuthCard() {
           Sign up
         </button>
       </div>
+
       <h2 className="font-display text-[28px] font-medium text-ink-0 tracking-[-0.015em] mt-1.5">
         {mode === "login" ? "Welcome back." : "Get the cheatsheets."}
       </h2>
@@ -54,6 +55,6 @@ export default function AuthCard() {
       ) : (
         <RegisterForm setLoginInfomation={setLoginInfomation} />
       )}
-    </div>
+    </>
   );
 }

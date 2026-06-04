@@ -15,7 +15,7 @@ export default async function PublicLayout({
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen bg-linear-to-br from-terra-50 to-honey-400/50 px-4">
+    <div className="flex flex-col justify-center items-center h-screen grid-bg px-4">
       {children}
     </div>
   );
