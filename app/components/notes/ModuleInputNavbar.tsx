@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import type { Module } from "@/types/index";
+import { Search } from "lucide-react";
 
 type Props = {
   onChange: (input: string) => void;
@@ -43,22 +44,25 @@ export default function ModuleInputNavbar({ onChange }: Props) {
   }
 
   return (
-    <div className="w-120">
-      <input
-        className="w-120 px-4 py-2 text-2x1 rounded-2xl bg-paper-3 text-sm placeholder-gray-600 border border-transparent focus:outline-none focus:border-terra-200 focus:bg-paper-2 transition-all duration-200"
-        type="text"
-        value={textInput}
-        onBlur={() => {
-          // ignore blur if li was clicked
-          if (clickedItem.current) {
-            clickedItem.current = false;
-            return;
-          }
-          resetModule();
-        }}
-        onChange={(e) => setTextInput(e.target.value)}
-        placeholder="Search modules..."
-      />
+    <div className="w-120 px-4 py-2 text-2x1 rounded-2xl bg-paper-3 text-sm placeholder-gray-600 border border-transparent focus:outline-none focus:border-terra-200 focus:bg-paper-2 transition-all duration-200">
+      <div className="flex">
+        <Search className="h-5 w-5 text-ink-1 stroke-2" />
+        <input
+          type="text"
+          className="rounded focus:outline-none w-full pl-2"
+          value={textInput}
+          onBlur={() => {
+            // ignore blur if li was clicked
+            if (clickedItem.current) {
+              clickedItem.current = false;
+              return;
+            }
+            resetModule();
+          }}
+          onChange={(e) => setTextInput(e.target.value)}
+          placeholder="Search modules..."
+        />
+      </div>
 
       <ul className="absolute bg-paper-2 shadow-lg z-50 mt-1">
         {modules.map((module) => (

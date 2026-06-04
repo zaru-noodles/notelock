@@ -13,8 +13,8 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="sticky top-0 z-10 flex items-center gap-5.5 px-8 pt-4 pb-1 border-b border-paper-3 bg-paper-1/80 backdrop-blur-md">
-      <h1 className="text-4xl">NoteLock</h1>
+    <nav className="sticky top-0 z-10 flex items-center gap-5.5 px-8 pt-4 pb-3 border-b border-paper-3 bg-paper-2/80 backdrop-blur-md">
+      <h1 className="text-4xl leading-none translate-y-1">NoteLock</h1>
       <ModuleInputNavbar onChange={selectModule} />
     </nav>
   );
