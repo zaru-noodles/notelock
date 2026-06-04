@@ -28,7 +28,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="sticky top-0 z-10 flex items-center gap-5.5 px-12 pr-18 pt-4 pb-3 border-b border-paper-3 bg-paper-2/80 backdrop-blur-md">
+    <nav className="sticky top-0 z-10 flex items-center gap-5.5 px-12 pr-18 pt-4 pb-3 border-b border-paper-3 bg-paper-2/80 backdrop-blur-md desktop-only">
       <h1 className="text-4xl leading-none translate-y-1">NoteLock</h1>
       <ModuleInputNavbar onChange={selectModule} />
       <div className="ml-auto flex items-center gap-5.5">
