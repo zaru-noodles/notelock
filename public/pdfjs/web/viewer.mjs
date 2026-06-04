@@ -19815,7 +19815,7 @@ PDFPrintServiceFactory.initGlobals(PDFViewerApplication);
   if (typeof window !== 'undefined' && window.location) {
     var currentOrigin = window.location.origin;
     if (currentOrigin.endsWith('-aidans-projects-11c67ab1.vercel.app')) {
-      HOSTED_VIEWER_ORIGINS.push(currentOrigin);
+      HOSTED_VIEWER_ORIGINS.add(currentOrigin);
     }
   }
   var validateFileURL = function (file) {
