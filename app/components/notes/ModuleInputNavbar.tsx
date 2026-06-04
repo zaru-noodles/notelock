@@ -7,7 +7,7 @@ type Props = {
   onChange: (input: string) => void;
 };
 
-export default function ModuleInput({ onChange }: Props) {
+export default function ModuleInputNavbar({ onChange }: Props) {
   const [textInput, setTextInput] = useState("");
   const [modules, setModules] = useState<Module[]>([]);
   const clickedItem = useRef(false);
@@ -33,7 +33,7 @@ export default function ModuleInput({ onChange }: Props) {
 
   function setModule(mod: Module) {
     setTextInput(`${mod.moduleCode} ${mod.title}`);
-    onChange(`${mod.id}`);
+    onChange(`${mod.moduleCode}`);
   }
 
   function resetModule() {
@@ -54,10 +54,10 @@ export default function ModuleInput({ onChange }: Props) {
             clickedItem.current = false;
             return;
           }
-          modules.length != 0 ? setModule(modules[0]) : resetModule();
+          resetModule();
         }}
         onChange={(e) => setTextInput(e.target.value)}
-        placeholder="Module"
+        placeholder="Search modules..."
       />
 
       <ul className="absolute bg-paper-2 shadow-lg z-50 mt-1">
