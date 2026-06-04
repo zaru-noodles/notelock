@@ -19811,7 +19811,7 @@ const PDFViewerApplication = {
 initCom(PDFViewerApplication);
 PDFPrintServiceFactory.initGlobals(PDFViewerApplication);
 {
-  const HOSTED_VIEWER_ORIGINS = new Set(["null", "http://mozilla.github.io", "https://mozilla.github.io", "http://localhost:3000"]);
+  const HOSTED_VIEWER_ORIGINS = new Set(["null", "http://mozilla.github.io", "https://mozilla.github.io", "http://localhost:3000", "https://notelock.vercel.app"]);
   var validateFileURL = function (file) {
     if (!file) {
       return;
