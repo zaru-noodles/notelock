@@ -3,7 +3,7 @@ import AuthCard from "./AuthCard";
 export default function Hero() {
   return (
     <section id="login" className="paper-bg w-full">
-      <div className="relative xl:px-12 px-6 pt-18 pb-22 w-full xl:w-[70%] xl:h-[86vh] mx-auto grid grid-cols-1 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,420px)] gap-14 items-start">
+      <div className="relative xl:px-12 px-6 pt-18 pb-22 w-full max-w-7xl xl:w-[70%] mx-auto grid grid-cols-1 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,420px)] gap-14 items-center xl:content-center justify-items-center xl:justify-items-start">
         {/* Left Side with design */}
         <div className="max-w-145">
           <h1 className="font-medium xl:text-[86px] text-5xl text-ink-0 mb-7 leading-none tracking-tight">
@@ -24,7 +24,7 @@ export default function Hero() {
         </div>
 
         {/* Right side with login and signup */}
-        <div className="flex flex-col bg-paper-0 border border-paper-3 shadow-sh-3 p-7 gap-1 rounded-xl max-w-145">
+        <div className="bg-paper-0 border border-paper-3 shadow-sh-3 p-7 rounded-xl md:w-[70%] xl:w-full">
           <AuthCard />
         </div>
       </div>
