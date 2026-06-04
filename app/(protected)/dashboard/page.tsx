@@ -8,7 +8,6 @@ export default function Dashboard() {
       <Link className="text-blue-500 hover:underline" href="/upload">
         Upload your notes!
       </Link>
-      <LogoutButton></LogoutButton>
     </>
   );
 }
