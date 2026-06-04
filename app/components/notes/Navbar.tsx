@@ -28,14 +28,18 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="sticky top-0 z-10 flex items-center gap-5.5 px-8 pt-4 pb-3 border-b border-paper-3 bg-paper-2/80 backdrop-blur-md">
+    <nav className="sticky top-0 z-10 flex items-center gap-5.5 px-12 pr-18 pt-4 pb-3 border-b border-paper-3 bg-paper-2/80 backdrop-blur-md">
       <h1 className="text-4xl leading-none translate-y-1">NoteLock</h1>
       <ModuleInputNavbar onChange={selectModule} />
-      <div className="border-r border-terra-400 pr-1.5">
-        <p className="text-right leading-none pb-0.5">{username}</p>
-        <p className="text-sm text-gray-600 text-right leading-none">Student</p>
+      <div className="ml-auto flex items-center gap-5.5">
+        <div className="border-r-2 border-paper-4 pr-1.5">
+          <p className="text-right leading-none pb-0.5">{username}</p>
+          <p className="text-sm text-gray-600 text-right leading-none">
+            Student
+          </p>
+        </div>
+        <LogoutButton />
       </div>
-      <LogoutButton />
     </nav>
   );
 }
