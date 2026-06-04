@@ -19,8 +19,8 @@ export default async function Page({ params }: Props) {
   const { signedUrl } = result;
 
   return (
-    <div className="">
+    <>
       <PdfViewer url={signedUrl} />
-    </div>
+    </>
   );
 }
