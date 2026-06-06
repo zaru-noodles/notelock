@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import type { Module } from "@/types";
 import Link from "next/link";
+import { Search } from "lucide-react";
 
 type Props = {
   params: Promise<{
@@ -52,37 +53,24 @@ export default function ModulePage({ params }: Props) {
   return (
     <div className="px-8 py-10 w-full mx-4">
       {/* header */}
-      <div className="mb-8">
+      <div className="mb-6">
         <p className="text-sm text-gray-500 uppercase tracking-widest mb-1">
-          {moduleData?.faculty}
+          {moduleData?.faculty} | {moduleData?.department}
         </p>
-        <h1 className="text-5xl font-bold mb-2">{moduleData?.moduleCode}</h1>
-        <p className="text-xl text-gray-600">{moduleData?.title}</p>
+        <h1 className="text-5xl font-bold mb-0.5">{moduleData?.moduleCode}</h1>
+        <p className="text-2xl text-gray-700">{moduleData?.title}</p>
       </div>
 
       {/* search bar */}
-      <div className="relative mb-8">
+      <div className="flex w-120 px-4 py-2 text-2x1 rounded-2xl bg-paper-3 text-x1 placeholder-gray-600 border border-transparent focus:outline-none focus:border-terra-200 focus:bg-paper-2 transition-all duration-200">
+        <Search className="h-5 w-5 text-ink-1 stroke-2" />
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search notes..."
-          className="w-full px-4 py-3 pl-10 rounded-xl bg-gray-100 text-sm text-gray-700 placeholder-gray-400 border border-transparent focus:outline-none focus:border-gray-300 focus:bg-white transition-all duration-200"
+          className="rounded focus:outline-none w-full pl-2"
         />
-        <svg
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"
-          />
-        </svg>
       </div>
     </div>
   );
