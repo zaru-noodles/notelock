@@ -84,7 +84,6 @@ export default function ModulePage({ params }: Props) {
         <p className="text-3xl text-ink-1">{moduleData?.title}</p>
       </div>
 
-      {/* notes display */}
       <div className="flex grow h-screen">
         <div className="mr-4 py-3 w-[17%]">
           {/* search bar */}
@@ -101,7 +100,7 @@ export default function ModulePage({ params }: Props) {
         </div>
 
         {/* notes display */}
-        <div className="flex flex-col grow px-6 py-5 gap-4 border-paper-4 border-l border-t border-r paper-bg">
+        <div className="flex grow px-6 py-5 gap-4 mr-4 border-paper-4 border-l border-t border-r paper-bg">
           {notesError && <p>{notesError}</p>}
           {notesData.map((note: Note) => (
             <NotePanel key={note.id} noteData={note} />
