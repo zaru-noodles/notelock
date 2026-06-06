@@ -5,3 +5,13 @@ export type Module = {
   faculty: string;
   department: string;
 };
+
+export type Note = {
+  id: number;
+  title: string;
+  semester: string;
+  download_count: number;
+  users: {
+    username: string;
+  };
+};
