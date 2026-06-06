@@ -50,7 +50,7 @@ export default function ModulePage({ params }: Props) {
       const data = await response.json();
 
       if (data.notes.length === 0) {
-        setModuleError(`Invalid module code: ${moduleCode}`);
+        setNotesError(`No notes found`);
       }
       setNotesData(data.notes);
     };
@@ -76,12 +76,12 @@ export default function ModulePage({ params }: Props) {
   return (
     <div className="px-8 py-10 w-full mx-4">
       {/* header */}
-      <div className="mb-6">
-        <p className="text-sm text-gray-500 uppercase tracking-widest mb-1">
+      <div className="mb-6 ml-6">
+        <p className="text-sm text-gray-500 uppercase tracking-widest mb-2">
           {moduleData?.faculty} | {moduleData?.department}
         </p>
         <h1 className="text-5xl font-bold mb-0.5">{moduleData?.moduleCode}</h1>
-        <p className="text-2xl text-gray-700">{moduleData?.title}</p>
+        <p className="text-3xl text-ink-1">{moduleData?.title}</p>
       </div>
 
       {/* notes display */}
