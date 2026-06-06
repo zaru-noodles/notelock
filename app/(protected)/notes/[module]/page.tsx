@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Note, type Module } from "@/types";
 import Link from "next/link";
 import { Search } from "lucide-react";
+import NotePanel from "@/app/components/notes/NotePanel";
 
 type Props = {
   params: Promise<{
@@ -18,8 +19,7 @@ export default function ModulePage({ params }: Props) {
   const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
-    const fetchData = async () => {
-      // get module data
+    const fetchModuleData = async () => {
       const moduleCode = (await params).module;
       const response = await fetch(`/api/modules?search=${moduleCode}&count=1`);
 
@@ -36,7 +36,27 @@ export default function ModulePage({ params }: Props) {
       setModuleData(data.modules[0]);
     };
 
-    fetchData();
+    const fetchNotesData = async () => {
+      const moduleCode = (await params).module;
+      const response = await fetch(
+        `/api/notes/fetchNotesList?moduleCode=${moduleCode}&count=20`,
+      );
+
+      if (!response.ok) {
+        setNotesError(`Unable to retrieve data: Status: ${response.status}`);
+        return;
+      }
+
+      const data = await response.json();
+
+      if (data.notes.length === 0) {
+        setModuleError(`Invalid module code: ${moduleCode}`);
+      }
+      setNotesData(data.notes);
+    };
+
+    fetchModuleData();
+    fetchNotesData();
   }, []);
 
   if (moduleError !== "") {
@@ -64,6 +84,7 @@ export default function ModulePage({ params }: Props) {
         <p className="text-2xl text-gray-700">{moduleData?.title}</p>
       </div>
 
+      {/* notes display */}
       <div className="flex grow h-screen">
         <div className="mr-4 py-3 w-[17%]">
           {/* search bar */}
@@ -81,7 +102,10 @@ export default function ModulePage({ params }: Props) {
 
         {/* notes display */}
         <div className="flex flex-col grow px-6 py-5 gap-4 border-paper-4 border-l border-t border-r paper-bg">
-          <p>No notes found</p>
+          {notesError && <p>{notesError}</p>}
+          {notesData.map((note: Note) => (
+            <NotePanel key={note.id} noteData={note} />
+          ))}
         </div>
       </div>
     </div>
