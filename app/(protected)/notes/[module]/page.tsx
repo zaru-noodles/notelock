@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import type { Module } from "@/types";
+import { Note, type Module } from "@/types";
 import Link from "next/link";
 import { Search } from "lucide-react";
 
@@ -12,23 +12,26 @@ type Props = {
 
 export default function ModulePage({ params }: Props) {
   const [moduleData, setModuleData] = useState<Module>();
-  const [error, setError] = useState<string>("");
+  const [moduleError, setModuleError] = useState<string>("");
+  const [notesData, setNotesData] = useState<Note[]>([]);
+  const [notesError, setNotesError] = useState<string>("");
   const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
+      // get module data
       const moduleCode = (await params).module;
       const response = await fetch(`/api/modules?search=${moduleCode}&count=1`);
 
       if (!response.ok) {
-        setError(`Unable to retrieve data: Status: ${response.status}`);
+        setModuleError(`Unable to retrieve data: Status: ${response.status}`);
         return;
       }
 
       const data = await response.json();
 
       if (data.modules.length === 0) {
-        setError(`Invalid module code: ${moduleCode}`);
+        setModuleError(`Invalid module code: ${moduleCode}`);
       }
       setModuleData(data.modules[0]);
     };
@@ -36,10 +39,10 @@ export default function ModulePage({ params }: Props) {
     fetchData();
   }, []);
 
-  if (error !== "") {
+  if (moduleError !== "") {
     return (
       <>
-        <p>{error}</p>
+        <p>{moduleError}</p>
         <Link
           href="/dashboard"
           className="cursor-pointer border border-honey-500 rounded-md w-4 px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:-translate-y-px hover:shadow-sh-4 mb-4.5"
@@ -61,16 +64,25 @@ export default function ModulePage({ params }: Props) {
         <p className="text-2xl text-gray-700">{moduleData?.title}</p>
       </div>
 
-      {/* search bar */}
-      <div className="flex w-120 px-4 py-2 text-2x1 rounded-2xl bg-paper-3 text-x1 placeholder-gray-600 border border-transparent focus:outline-none focus:border-terra-200 focus:bg-paper-2 transition-all duration-200">
-        <Search className="h-5 w-5 text-ink-1 stroke-2" />
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search notes..."
-          className="rounded focus:outline-none w-full pl-2"
-        />
+      <div className="flex grow h-screen">
+        <div className="mr-4 py-3 w-[17%]">
+          {/* search bar */}
+          <div className="flex w-full h-10 mb-3 px-4 py-2 rounded-2xl bg-paper-3 text-sm placeholder-gray-600 border border-transparent focus:outline-none focus:border-terra-200 focus:bg-paper-2 transition-all duration-200">
+            <Search className="h-5 w-5 text-ink-1 stroke-2" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search notes..."
+              className="rounded focus:outline-none w-full pl-2"
+            />
+          </div>
+        </div>
+
+        {/* notes display */}
+        <div className="flex flex-col grow px-6 py-5 gap-4 border-paper-4 border-l border-t border-r paper-bg">
+          <p>No notes found</p>
+        </div>
       </div>
     </div>
   );
