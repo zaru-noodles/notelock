@@ -12,10 +12,10 @@ export async function POST(req: Request) {
   if (error) {
     console.error("Incrementing download count failed");
     return Response.json(
-      { error: "Failed to record download" },
+      { error: "Failed to increment download" },
       { status: 500 },
     );
   }
-
+  console.log(`Download button: ${noteId}`);
   return Response.json({ ok: true });
 }
