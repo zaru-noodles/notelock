@@ -42,9 +42,12 @@ export async function getNoteWithSignedUrl(noteId: string) {
     return null;
   }
 
+  const downloadUrl = `${urlData.signedUrl}&download=${encodeURIComponent(`${note.title}.pdf`)}`;
+
   return {
     ...note,
     moduleCode,
     signedUrl: urlData.signedUrl,
+    downloadUrl,
   };
 }
