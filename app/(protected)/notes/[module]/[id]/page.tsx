@@ -1,4 +1,5 @@
 import PdfViewer from "@/app/components/notes/PdfViewer/PdfViewer";
+import NoteHeader from "@/app/components/notes/NoteHeader";
 import { getNoteWithSignedUrl } from "@/utils/notes/queries";
 import { notFound } from "next/navigation";
 
@@ -16,10 +17,16 @@ export default async function Page({ params }: Props) {
     notFound();
   }
 
-  const { signedUrl } = result;
+  const { signedUrl, title, semester } = result;
 
   return (
     <>
+      <NoteHeader
+        moduleCode={moduleCode}
+        signedUrl={signedUrl}
+        title={title}
+        semester={semester}
+      />
       <PdfViewer url={signedUrl} />
     </>
   );
