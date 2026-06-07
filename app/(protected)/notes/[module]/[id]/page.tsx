@@ -27,6 +27,7 @@ export default async function Page({ params }: Props) {
         title={title}
         semester={semester}
         downloadUrl={downloadUrl}
+        noteId={id}
       />
     </>
   );

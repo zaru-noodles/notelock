@@ -9,6 +9,7 @@ import {
   Flag,
 } from "lucide-react";
 import PdfViewer from "./PdfViewer/PdfViewer";
+import DownloadButton from "./DownloadButton";
 
 type NoteViewProps = {
   moduleCode: string;
@@ -16,6 +17,7 @@ type NoteViewProps = {
   semester: string;
   signedUrl: string;
   downloadUrl: string;
+  noteId: string;
 };
 
 export default function NoteView({
@@ -24,6 +26,7 @@ export default function NoteView({
   semester,
   signedUrl,
   downloadUrl,
+  noteId,
 }: NoteViewProps) {
   return (
     <div>
@@ -57,9 +60,8 @@ export default function NoteView({
         </h1>
 
         <div className="flex items-center gap-3">
-          <a href={downloadUrl} download className="hover:text-ink-1">
-            <Download className="size-6" />
-          </a>
+          <DownloadButton downloadUrl={downloadUrl} noteId={noteId} />
+          {/*TODO: Report button for updating during permission */}
           <button className="hover:text-ink-1">
             <Flag className="size-6" />
           </button>
