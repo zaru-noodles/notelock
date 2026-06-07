@@ -67,7 +67,7 @@ export async function POST(req: Request) {
       semester: uploadReq.semester,
       author_id: user!.id,
     })
-    .select()
+    .select("id::text")
     .single();
 
   if (noteError) {

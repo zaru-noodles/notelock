@@ -14,14 +14,14 @@ export async function getNoteWithSignedUrl(noteId: string) {
 
   const { data: note, error: noteError } = await db
     .from("notes")
-    .select("id, title, semester, module_id")
+    .select("id::text, title, semester, module_id")
     .eq("id", noteId)
     .single();
 
   if (noteError || !note) {
     return null;
   }
-
+  console.log(note.id);
   const { data: moduleRow, error: moduleError } = await db
     .from("modules")
     .select("moduleCode")
