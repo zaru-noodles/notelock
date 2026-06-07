@@ -24,7 +24,7 @@ export async function GET(req: Request) {
     .from("notes")
     .select(
       `
-      id,
+      id::text,
       title,
       semester,
       download_count,

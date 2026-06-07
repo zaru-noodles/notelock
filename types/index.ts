@@ -7,7 +7,7 @@ export type Module = {
 };
 
 export type Note = {
-  id: number;
+  id: string;
   title: string;
   semester: string;
   download_count: number;
