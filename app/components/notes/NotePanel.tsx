@@ -22,7 +22,7 @@ export default function NotePanel({ noteData }: Props) {
       </div>
 
       <div className="flex justify-between text-sm text-gray-600">
-        <p>{noteData?.users?.username ?? "Deleted user"}</p>
+        <p>{noteData?.user_profiles?.username ?? "Deleted user"}</p>
 
         <p>{noteData.download_count} downloads</p>
       </div>

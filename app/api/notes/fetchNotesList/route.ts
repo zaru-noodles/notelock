@@ -28,7 +28,7 @@ export async function GET(req: Request) {
       title,
       semester,
       download_count,
-      users!notes_author_id_fkey ( username ),
+      user_profiles!notes_author_id_fkey ( username ),
       modules!inner ()`,
     )
     .eq("modules.moduleCode", moduleCode)
