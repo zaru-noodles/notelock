@@ -38,5 +38,18 @@ export async function GET(req: Request) {
     return Response.json({ error: "Unable to retrieve data" }, { status: 500 });
   }
 
-  return Response.json({ notes: data }, { status: 200 });
+  // generate signed URLs for thumbnails
+  const { data: signedUrls } = await db.storage
+    .from("thumbnail")
+    .createSignedUrls(
+      data.map((note) => `${moduleCode}/${note.id}`),
+      3600,
+    );
+
+  const notesWithUrl = data.map((note, index) => ({
+    ...note,
+    thumbnailUrl: signedUrls?.[index]?.signedUrl ?? null,
+  }));
+
+  return Response.json({ notes: notesWithUrl }, { status: 200 });
 }
