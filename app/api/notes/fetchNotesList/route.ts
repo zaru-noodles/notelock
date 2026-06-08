@@ -42,7 +42,7 @@ export async function GET(req: Request) {
   const { data: signedUrls } = await db.storage
     .from("thumbnail")
     .createSignedUrls(
-      data.map((note) => `${moduleCode}/${note.id}`),
+      data.map((note) => `${moduleCode}/${note.id}.png`),
       3600,
     );
 
