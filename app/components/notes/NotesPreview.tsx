@@ -1,9 +1,10 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Clock, Search } from "lucide-react";
 import NotePanel from "@/app/components/notes/NotePanel";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { Note } from "@/types";
+import { SEMESTERS } from "@/utils/constants";
 
 type Props = {
   moduleCode: string;
@@ -54,7 +55,7 @@ export default function NotesPreview({ moduleCode, initialNotes }: Props) {
     <div className="flex grow h-screen">
       <div className="mr-4 py-3 w-[17%]">
         {/* search bar */}
-        <div className="flex w-full h-10 mb-3 px-4 py-2 rounded-2xl bg-paper-3 text-sm placeholder-gray-600 border border-transparent focus:outline-none focus:border-terra-200 focus:bg-paper-2 transition-all duration-200">
+        <div className="flex w-full h-10 mb-3 px-4 py-2 rounded-2xl bg-paper-3 text-sm border border-transparent focus-within:border-terra-200 focus-within:bg-paper-2 transition-all duration-200">
           <Search className="h-5 w-5 text-ink-1 stroke-2" />
           <input
             type="text"
@@ -67,6 +68,27 @@ export default function NotesPreview({ moduleCode, initialNotes }: Props) {
             placeholder="Search notes..."
             className="rounded focus:outline-none w-full pl-2"
           />
+        </div>
+
+        {/* semester input */}
+        <div className="flex w-[56%] h-10 mb-3 px-4 py-2 rounded-2xl bg-paper-3 text-sm border border-transparent focus-within:border-terra-200 focus-within:bg-paper-2 transition-all duration-200">
+          <Clock className="h-5 w-5 text-ink-1 stroke-2 shrink-0" />
+          <select
+            value={searchParams.semester}
+            onChange={(e) => {
+              const updated = { ...searchParams, semester: e.target.value };
+              setSearchParams(updated);
+              fetchNotesData(updated);
+            }}
+            className="rounded focus:outline-none w-full pl-2 bg-transparent"
+          >
+            <option value="">All Semesters</option>
+            {SEMESTERS.map((sem) => (
+              <option key={sem} value={sem}>
+                {sem}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
