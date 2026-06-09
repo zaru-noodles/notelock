@@ -1,3 +1,4 @@
+import { Note } from "@/types";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
@@ -30,7 +31,6 @@ export async function GET(req: Request) {
     selected_semester: selectedSemester,
   });
 
-  console.log(error);
   if (error) {
     return Response.json({ error: "Unable to retrieve data" }, { status: 500 });
   }
@@ -39,11 +39,11 @@ export async function GET(req: Request) {
   const { data: signedUrls } = await db.storage
     .from("thumbnail")
     .createSignedUrls(
-      data.map((note) => `${moduleCode}/${note.id}.png`),
+      data.map((note: Note) => `${moduleCode}/${note.id}.png`),
       3600,
     );
 
-  const notesWithUrl = data.map((note, index) => ({
+  const notesWithUrl = data.map((note: Note, index: number) => ({
     ...note,
     thumbnailUrl: signedUrls?.[index]?.signedUrl ?? null,
   }));
