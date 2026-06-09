@@ -2,38 +2,20 @@
 
 import { Search } from "lucide-react";
 import NotePanel from "@/app/components/notes/NotePanel";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { Note } from "@/types";
 
 type Props = {
   moduleCode: string;
+  initialNotes: Note[];
 };
 
-export default function NotesPreview({ moduleCode }: Props) {
-  const [notesData, setNotesData] = useState<Note[]>([]);
-  const [notesError, setNotesError] = useState<string>("");
+export default function NotesPreview({ moduleCode, initialNotes }: Props) {
+  const [notesData, setNotesData] = useState<Note[]>(initialNotes);
+  const [notesError, setNotesError] = useState<string>(
+    initialNotes.length == 0 ? "No notes found" : "",
+  );
   const [search, setSearch] = useState<string>("");
-
-  useEffect(() => {
-    const fetchNotesData = async () => {
-      const response = await fetch(
-        `/api/notes/fetchNotesList?moduleCode=${moduleCode}&count=20`,
-      );
-
-      if (!response.ok) {
-        setNotesError(`Unable to retrieve data: Status: ${response.status}`);
-        return;
-      }
-
-      const data = await response.json();
-
-      if (data.notes.length === 0) {
-        setNotesError(`No notes found`);
-      }
-      setNotesData(data.notes);
-    };
-    fetchNotesData();
-  }, []);
 
   return (
     <div className="flex grow h-screen">

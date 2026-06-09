@@ -22,9 +22,25 @@ const fetchModuleData = async (moduleCode: string) => {
   return data;
 };
 
+const fetchNoteData = async (moduleCode: string) => {
+  const db = createClient(await cookies());
+
+  const { data, error } = await db.rpc("search_notes", {
+    search_query: "",
+    start_index: 0,
+    result_count: 20,
+    module_code: moduleCode,
+    selected_semester: "",
+  });
+
+  if (error) return [];
+  return data;
+};
+
 export default async function ModulePage({ params }: Props) {
   const moduleCode = (await params).module;
   const moduleData = await fetchModuleData(moduleCode);
+  const noteData = await fetchNoteData(moduleCode);
 
   if (moduleData === null) {
     return (
@@ -51,7 +67,7 @@ export default async function ModulePage({ params }: Props) {
         <p className="text-3xl text-ink-1">{moduleData?.title}</p>
       </div>
 
-      <NotesPreview moduleCode={moduleCode} />
+      <NotesPreview moduleCode={moduleCode} initialNotes={noteData} />
     </div>
   );
 }
