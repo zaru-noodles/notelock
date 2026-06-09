@@ -57,7 +57,7 @@ export default async function ModulePage({ params }: Props) {
   }
 
   return (
-    <div className="px-8 py-10 w-full mx-4">
+    <div className="px-8 py-10 max-w-screen mx-4">
       {/* header */}
       <div className="mb-6 ml-6">
         <p className="text-sm text-gray-500 uppercase tracking-widest mb-2">

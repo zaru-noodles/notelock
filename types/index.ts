@@ -11,6 +11,7 @@ export type Note = {
   title: string;
   semester: string;
   download_count: number;
+  thumbnailUrl?: string;
   user_profiles: {
     username: string;
   };
