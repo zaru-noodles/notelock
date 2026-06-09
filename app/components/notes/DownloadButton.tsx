@@ -16,6 +16,7 @@ export default function DownloadButton({
         fetch("/api/notes/download", {
           method: "POST",
           body: JSON.stringify({ noteId }),
+          keepalive: true,
         });
       }}
     >

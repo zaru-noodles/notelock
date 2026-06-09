@@ -1,4 +1,3 @@
-import PdfViewer from "@/app/components/notes/PdfViewer/PdfViewer";
 import NoteView from "@/app/components/notes/NoteView";
 import { getNoteWithSignedUrl } from "@/utils/notes/queries";
 import { notFound } from "next/navigation";
