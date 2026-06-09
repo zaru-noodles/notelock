@@ -74,7 +74,7 @@ export default function ModulePage({ params }: Props) {
   }
 
   return (
-    <div className="px-8 py-10 w-full mx-4">
+    <div className="px-8 py-10 max-w-screen mx-4">
       {/* header */}
       <div className="mb-6 ml-6">
         <p className="text-sm text-gray-500 uppercase tracking-widest mb-2">
@@ -100,7 +100,7 @@ export default function ModulePage({ params }: Props) {
         </div>
 
         {/* notes display */}
-        <div className="flex grow px-6 py-5 gap-4 mr-4 border-paper-4 border-l border-t border-r paper-bg">
+        <div className="flex flex-wrap content-start grow px-6 py-5 gap-4 mr-4 border-paper-4 border-l border-t border-r paper-bg">
           {notesError && <p>{notesError}</p>}
           {notesData.map((note: Note) => (
             <NotePanel key={note.id} noteData={note} />
