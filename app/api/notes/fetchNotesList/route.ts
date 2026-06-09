@@ -5,6 +5,8 @@ export async function GET(req: Request) {
   const db = createClient(await cookies());
   const { searchParams } = new URL(req.url);
   const moduleCode = searchParams.get("moduleCode");
+  const searchText = searchParams.get("search") ?? "";
+  const selectedSemester = searchParams.get("semester") ?? "";
   const count = Number(searchParams.get("count"));
   const start = Number(searchParams.get("start") ?? "0");
 
@@ -20,20 +22,15 @@ export async function GET(req: Request) {
     return Response.json({ error: "start is not a number" }, { status: 400 });
   }
 
-  const { data, error } = await db
-    .from("notes")
-    .select(
-      `
-      id::text,
-      title,
-      semester,
-      download_count,
-      user_profiles!notes_author_id_fkey ( username ),
-      modules!inner ()`,
-    )
-    .eq("modules.moduleCode", moduleCode)
-    .range(start, start + count);
+  const { data, error } = await db.rpc("search_notes", {
+    search_query: searchText,
+    start_index: start,
+    result_count: count,
+    module_code: moduleCode,
+    selected_semester: selectedSemester,
+  });
 
+  console.log(error);
   if (error) {
     return Response.json({ error: "Unable to retrieve data" }, { status: 500 });
   }
