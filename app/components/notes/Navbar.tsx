@@ -35,6 +35,12 @@ export default function Navbar() {
       </h1>
       <ModuleInputNavbar onChange={selectModule} />
       <div className="ml-auto flex items-center gap-5.5">
+        <Link
+          href="/upload"
+          className="inline-flex items-center rounded-full border border-honey-500 bg-honey-400 px-4 py-2 text-sm font-semibold text-paper-1 transition-colors duration-200 hover:bg-honey-500"
+        >
+          Upload notes
+        </Link>
         <div className="border-r-2 border-paper-4 pr-1.5">
           <p className="text-right leading-none pb-0.5">{username}</p>
           <p className="text-sm text-gray-600 text-right leading-none">
