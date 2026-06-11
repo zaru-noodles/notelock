@@ -93,7 +93,7 @@ export default function NotesPreview({ moduleCode, initialNotes }: Props) {
       </div>
 
       {/* notes display */}
-      <div className="flex flex-wrap content-start grow px-6 py-5 gap-4 mr-4 border-paper-4 border-l border-t border-r paper-bg">
+      <div className="flex flex-wrap content-start grow px-6 py-5 gap-4 mr-4 w-[80%] border-paper-4 border-l border-t border-r paper-bg">
         {notesError && !notesData && <p>{notesError}</p>}
         {notesData.map((note: Note) => (
           <NotePanel key={note.id} noteData={note} />
