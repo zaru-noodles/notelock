@@ -8,7 +8,6 @@ type Props = {
 export default function NotePanel({ noteData }: Props) {
   const router = useRouter();
   const pathname = usePathname();
-  console.log(noteData.thumbnailUrl);
 
   return (
     <div
