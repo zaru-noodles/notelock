@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 
 export async function postComment(_prev: unknown, formData: FormData) {
   const noteId = String(formData.get("noteId"));
-  const modulePath = String(formData.get("modulePath"));
+  const moduleCode = String(formData.get("moduleCode"));
   const content = String(formData.get("content") ?? "").trim();
 
   if (!content) return { error: "Comment cannot be empty" };
@@ -28,6 +28,6 @@ export async function postComment(_prev: unknown, formData: FormData) {
     return { error: "Could not post your comment, please try again" };
   }
 
-  revalidatePath(`/notes/${modulePath}/${noteId}`);
+  revalidatePath(`/notes/${moduleCode}/${noteId}`);
   return { ok: true };
 }

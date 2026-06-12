@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { NOTES_BUCKET, notePath } from "./storage";
+import { Comments } from "@/types/index";
 
 export async function getNoteWithSignedUrl(noteId: string) {
   const db = createClient(await cookies());
@@ -58,10 +59,11 @@ export async function getComments(noteId: string) {
     .from("comments")
     .select("id::text, content, created_at, author_id, author:users(username)")
     .eq("note_id", noteId)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .overrideTypes<Comments[]>();
 
   if (error) {
-    console.error("getComments failed:", error);
+    console.error("getComments failed:", error.message, error.code);
     return [];
   }
 

@@ -1,6 +1,8 @@
 import NoteView from "@/app/components/notes/NoteView";
 import { getNoteWithSignedUrl, getComments } from "@/utils/notes/queries";
 import { notFound } from "next/navigation";
+import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
 
 type Props = {
   params: Promise<{
@@ -12,6 +14,12 @@ type Props = {
 export default async function Page({ params }: Props) {
   const { module: moduleCode, id } = await params;
 
+  const db = createClient(await cookies());
+  const { data, error: authError } = await db.auth.getClaims();
+  if (!data?.claims || authError) {
+    return { error: "User not found" };
+  }
+
   const noteResult = await getNoteWithSignedUrl(id);
   if (!noteResult || moduleCode !== noteResult.moduleCode) {
     notFound();
@@ -19,9 +27,6 @@ export default async function Page({ params }: Props) {
   const { signedUrl, title, semester, downloadUrl } = noteResult;
 
   const commentResult = await getComments(id);
-  if (!commentResult) {
-    notFound();
-  }
 
   return (
     <>
@@ -32,6 +37,8 @@ export default async function Page({ params }: Props) {
         semester={semester}
         downloadUrl={downloadUrl}
         noteId={id}
+        comments={commentResult}
+        currentUserId={data.claims.sub}
       />
     </>
   );
