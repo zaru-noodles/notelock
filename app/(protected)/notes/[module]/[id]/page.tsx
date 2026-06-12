@@ -17,7 +17,7 @@ export default async function Page({ params }: Props) {
   const db = createClient(await cookies());
   const { data, error: authError } = await db.auth.getClaims();
   if (!data?.claims || authError) {
-    return { error: "User not found" };
+    return notFound();
   }
 
   const noteResult = await getNoteWithSignedUrl(id);
