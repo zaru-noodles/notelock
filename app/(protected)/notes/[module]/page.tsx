@@ -2,6 +2,7 @@ import Link from "next/link";
 import NotesPreview from "@/app/components/notes/NotesPreview";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
+import { Note } from "@/types";
 
 type Props = {
   params: Promise<{
@@ -19,6 +20,7 @@ const fetchModuleData = async (moduleCode: string) => {
     .single();
 
   if (error) return null;
+
   return data;
 };
 
@@ -34,7 +36,21 @@ const fetchNoteData = async (moduleCode: string) => {
   });
 
   if (error) return [];
-  return data;
+
+  // fetch thumbnail urls
+  const { data: signedUrls } = await db.storage
+    .from("thumbnail")
+    .createSignedUrls(
+      data.map((note: Note) => `${moduleCode}/${note.id}.png`),
+      3600,
+    );
+
+  const notesWithUrl = data.map((note: Note, index: number) => ({
+    ...note,
+    thumbnailUrl: signedUrls?.[index]?.signedUrl ?? null,
+  }));
+
+  return notesWithUrl;
 };
 
 export default async function ModulePage({ params }: Props) {

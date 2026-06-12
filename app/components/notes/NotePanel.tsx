@@ -8,11 +8,10 @@ type Props = {
 export default function NotePanel({ noteData }: Props) {
   const router = useRouter();
   const pathname = usePathname();
-  console.log(noteData.thumbnailUrl);
 
   return (
     <div
-      className="w-80 h-fit mx-4.5 my-3 p-4 bg-paper-2 hover:bg-paper-3 rounded-1x1 border border-terra-100 rounded-2xl transition-transform duration-200 hover:-translate-y-px hover:shadow-sh-4"
+      className="w-[21%] h-fit mx-4.5 my-3 p-4 bg-paper-2 hover:bg-paper-3 rounded-1x1 border border-terra-100 rounded-2xl transition-transform duration-200 hover:-translate-y-px hover:shadow-sh-4"
       onClick={() => router.push(`${pathname}/${noteData.id}`)}
     >
       <div className="flex justify-center items-center rounded-xl mb-3 h-44 overflow-hidden">
@@ -33,7 +32,7 @@ export default function NotePanel({ noteData }: Props) {
       </div>
 
       <div className="flex justify-between text-sm text-gray-600">
-        <p>{noteData?.user_profiles?.username ?? "Deleted user"}</p>
+        <p>{noteData?.username ?? "Deleted user"}</p>
 
         <p>{noteData.download_count} downloads</p>
       </div>
