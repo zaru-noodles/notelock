@@ -1,5 +1,5 @@
 import NoteView from "@/app/components/notes/NoteView";
-import { getNoteWithSignedUrl } from "@/utils/notes/queries";
+import { getNoteWithSignedUrl, getComments } from "@/utils/notes/queries";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -11,12 +11,17 @@ type Props = {
 
 export default async function Page({ params }: Props) {
   const { module: moduleCode, id } = await params;
-  const result = await getNoteWithSignedUrl(id);
-  if (!result || moduleCode !== result.moduleCode) {
+
+  const noteResult = await getNoteWithSignedUrl(id);
+  if (!noteResult || moduleCode !== noteResult.moduleCode) {
     notFound();
   }
+  const { signedUrl, title, semester, downloadUrl } = noteResult;
 
-  const { signedUrl, title, semester, downloadUrl } = result;
+  const commentResult = await getComments(id);
+  if (!commentResult) {
+    notFound();
+  }
 
   return (
     <>

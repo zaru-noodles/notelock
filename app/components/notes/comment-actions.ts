@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 export async function postComment(_prev: unknown, formData: FormData) {
   const noteId = String(formData.get("noteId"));
   const modulePath = String(formData.get("modulePath"));
-  const content = String(formData.get("content")).trim();
+  const content = String(formData.get("content") ?? "").trim();
 
   if (!content) return { error: "Comment cannot be empty" };
   if (content.length > 2000) return { error: "Comment is too long" };
