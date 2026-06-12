@@ -56,7 +56,14 @@ export async function getComments(noteId: string) {
   const db = createClient(await cookies());
   const { data, error } = await db
     .from("comments")
-    .select("id::text, content, created_at, author:users(username)")
+    .select("id::text, content, created_at, author_id, author:users(username)")
     .eq("note_id", noteId)
     .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("getComments failed:", error);
+    return [];
+  }
+
+  return data;
 }
