@@ -51,3 +51,12 @@ export async function getNoteWithSignedUrl(noteId: string) {
     downloadUrl,
   };
 }
+
+export async function getComments(noteId: string) {
+  const db = createClient(await cookies());
+  const { data, error } = await db
+    .from("comments")
+    .select("id::text, content, created_at, author:users(username)")
+    .eq("note_id", noteId)
+    .order("created_at", { ascending: false });
+}
