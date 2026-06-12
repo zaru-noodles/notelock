@@ -3,6 +3,7 @@ import { getNoteWithSignedUrl, getComments } from "@/utils/notes/queries";
 import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 type Props = {
   params: Promise<{
@@ -17,7 +18,7 @@ export default async function Page({ params }: Props) {
   const db = createClient(await cookies());
   const { data, error: authError } = await db.auth.getClaims();
   if (!data?.claims || authError) {
-    return notFound();
+    return redirect("/");
   }
 
   const noteResult = await getNoteWithSignedUrl(id);
