@@ -15,12 +15,12 @@ export async function GET(req: Request) {
   }
 
   const tmp: NoteListSearchParams = {
-    searchText: searchParams.get("search") ?? "",
+    searchText: searchParams.get("searchText") ?? "",
     start: start,
     count: count,
-    selectedModuleCode: searchParams.get("moduleCode") ?? "",
-    selectedSemester: searchParams.get("semester") ?? "",
-    selectedAuthorID: "",
+    selectedModuleCode: searchParams.get("selectedModuleCode") ?? "",
+    selectedSemester: searchParams.get("selectedSemester") ?? "",
+    selectedAuthorID: searchParams.get("selectedAuthorID") ?? "",
   };
   const data = await getNotesList(tmp);
 

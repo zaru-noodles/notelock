@@ -1,7 +1,10 @@
-import LogoutButton from "@/app/components/auth/LogoutButton";
+import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const db = createClient();
+  const user = await db.auth.getUser();
+
   return (
     <>
       <div>Dashboard Page</div>
@@ -10,7 +13,13 @@ export default function Dashboard() {
         href="/upload"
       >
         Upload your notes!
-      </Link>   
+      </Link>
+      <Link
+        className="font-medium text-terra-500 hover:underline"
+        href={`/users/${user.data.user?.id}`}
+      >
+        View your notes!
+      </Link>
     </>
   );
 }

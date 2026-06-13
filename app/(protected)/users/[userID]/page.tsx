@@ -7,22 +7,8 @@ import { cookies } from "next/headers";
 
 type Props = {
   params: Promise<{
-    module: string;
+    userID: string;
   }>;
-};
-
-const fetchModuleData = async (moduleCode: string) => {
-  const db = createClient(await cookies());
-
-  const { data, error } = await db
-    .from("modules")
-    .select("*")
-    .eq("moduleCode", moduleCode)
-    .single();
-
-  if (error) return null;
-
-  return data;
 };
 
 const fetchNoteData = async (searchParams: NoteListSearchParams) => {
@@ -30,22 +16,22 @@ const fetchNoteData = async (searchParams: NoteListSearchParams) => {
 };
 
 export default async function ModulePage({ params }: Props) {
-  const moduleCode = (await params).module;
+  const userID = (await params).userID;
   const searchParams: NoteListSearchParams = {
     searchText: "",
     start: 0,
     count: 50,
-    selectedModuleCode: moduleCode,
+    selectedModuleCode: "",
     selectedSemester: "",
-    selectedAuthorID: "",
+    selectedAuthorID: userID,
   };
-  const moduleData = await fetchModuleData(moduleCode);
   const noteData = await fetchNoteData(searchParams);
 
-  if (moduleData === null) {
+  // TODO validate userID
+  if (userID === null) {
     return (
       <>
-        <p>Unable to fetch module data</p>
+        <p>Unable to fetch user data</p>
         <Link
           href="/dashboard"
           className="cursor-pointer border border-honey-500 rounded-md w-10 px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:-translate-y-px hover:shadow-sh-4 mb-4.5"
@@ -61,10 +47,10 @@ export default async function ModulePage({ params }: Props) {
       {/* header */}
       <div className="mb-6 ml-6">
         <p className="text-sm text-gray-500 uppercase tracking-widest mb-2">
-          {moduleData?.faculty} | {moduleData?.department}
+          placeholder | placeholder
         </p>
-        <h1 className="text-5xl font-bold mb-0.5">{moduleData?.moduleCode}</h1>
-        <p className="text-3xl text-ink-1">{moduleData?.title}</p>
+        <h1 className="text-5xl font-bold mb-0.5">placeholder</h1>
+        <p className="text-3xl text-ink-1">placeholder</p>
       </div>
 
       <NotesPreview
