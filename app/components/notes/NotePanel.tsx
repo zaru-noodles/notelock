@@ -40,15 +40,15 @@ export default function NotePanel({ noteData }: Props) {
     >
       {/* thumbnail */}
       <div className="flex justify-center items-center rounded-xl mb-3 h-44 overflow-hidden">
-        {noteData.thumbnailUrl && (
+        {noteData.thumbnail_url && (
           <img
             className="h-40 w-auto object-contain rounded-lg shadow-sm"
             alt="Missing thumbnail"
-            src={noteData.thumbnailUrl}
+            src={noteData.thumbnail_url}
           />
         )}
 
-        {!noteData.thumbnailUrl && <p>Missing thumbnail</p>}
+        {!noteData.thumbnail_url && <p>Missing thumbnail</p>}
       </div>
 
       <div className="flex justify-between items-start mb-0">
