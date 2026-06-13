@@ -14,3 +14,11 @@ export type Note = {
   thumbnailUrl?: string;
   username?: string;
 };
+
+export type Comments = {
+  id: string;
+  content: string;
+  created_at: Date;
+  author_id: string;
+  author: { username: string };
+};

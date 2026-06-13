@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {
-  Download,
   Bookmark,
   Star,
   ThumbsUp,
@@ -10,6 +9,9 @@ import {
 } from "lucide-react";
 import PdfViewer from "./PdfViewer/PdfViewer";
 import DownloadButton from "./DownloadButton";
+import InsertComment from "./InsertComment";
+import CommentBody from "./CommentBody";
+import { Comments } from "@/types/index";
 
 type NoteViewProps = {
   moduleCode: string;
@@ -18,6 +20,8 @@ type NoteViewProps = {
   signedUrl: string;
   downloadUrl: string;
   noteId: string;
+  comments: Comments[];
+  currentUserId: string;
 };
 
 export default function NoteView({
@@ -27,6 +31,8 @@ export default function NoteView({
   signedUrl,
   downloadUrl,
   noteId,
+  comments,
+  currentUserId,
 }: NoteViewProps) {
   return (
     <div>
@@ -71,6 +77,18 @@ export default function NoteView({
       <div className="mt-5 h-[80vh] overflow-hidden rounded-xl border border-ink-4 shadow-sh-2">
         <PdfViewer url={signedUrl} />
       </div>
+      <InsertComment
+        noteId={noteId}
+        moduleCode={moduleCode}
+        comments={comments}
+        currentUserId={currentUserId}
+      />
+      <CommentBody
+        noteId={noteId}
+        moduleCode={moduleCode}
+        comments={comments}
+        currentUserId={currentUserId}
+      />
     </div>
   );
 }
