@@ -1,16 +1,10 @@
-import { getNotesListData } from "@/utils/notes/queries";
+import { NoteListSearchParams } from "@/types";
+import { getNotesList } from "@/utils/notes/queries";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const moduleCode = searchParams.get("moduleCode") ?? "";
-  const searchText = searchParams.get("search") ?? "";
-  const selectedSemester = searchParams.get("semester") ?? "";
-  const count = Number(searchParams.get("count"));
+  const count = Number(searchParams.get("count") ?? "5");
   const start = Number(searchParams.get("start") ?? "0");
-
-  if (count === null) {
-    return Response.json({ error: "All fields are required" }, { status: 400 });
-  }
 
   if (!Number.isInteger(count)) {
     return Response.json({ error: "count is not a number" }, { status: 400 });
@@ -20,13 +14,15 @@ export async function GET(req: Request) {
     return Response.json({ error: "start is not a number" }, { status: 400 });
   }
 
-  const data = await getNotesListData(
-    searchText,
-    start,
-    count,
-    moduleCode,
-    selectedSemester,
-  );
+  const tmp: NoteListSearchParams = {
+    searchText: searchParams.get("search") ?? "",
+    start: start,
+    count: count,
+    selectedModuleCode: searchParams.get("moduleCode") ?? "",
+    selectedSemester: searchParams.get("semester") ?? "",
+    selectedAuthorID: "",
+  };
+  const data = await getNotesList(tmp);
 
   if (data === null) {
     return Response.json(

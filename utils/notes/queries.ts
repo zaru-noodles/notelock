@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import { Note } from "@/types/index";
+import { Note, NoteListSearchParams } from "@/types/index";
 import { NOTES_BUCKET, notePath } from "./storage";
 import { Comments } from "@/types/index";
 
@@ -54,13 +54,7 @@ export async function getNoteWithSignedUrl(noteId: string) {
   };
 }
 
-export async function getNotesListData(
-  searchText: string,
-  start: number,
-  count: number,
-  selectedModuleCode: string,
-  selectedSemester: string,
-) {
+export async function getNotesList(params: NoteListSearchParams) {
   const db = createClient(await cookies());
 
   const {
@@ -71,11 +65,12 @@ export async function getNotesListData(
   }
 
   const { data, error } = await db.rpc("search_notes", {
-    search_query: searchText,
-    start_index: start,
-    result_count: count,
-    module_code: selectedModuleCode,
-    selected_semester: selectedSemester,
+    search_query: params.searchText,
+    start_index: params.start,
+    result_count: params.count,
+    module_code: params.selectedModuleCode,
+    selected_semester: params.selectedSemester,
+    selected_author_id: params.selectedAuthorID,
   });
 
   if (error) {

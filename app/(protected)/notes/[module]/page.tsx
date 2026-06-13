@@ -1,7 +1,7 @@
 import Link from "next/link";
 import NotesPreview from "@/app/components/notes/NotesPreview";
-import { Note } from "@/types";
-import { getNotesListData } from "@/utils/notes/queries";
+import { Note, NoteListSearchParams } from "@/types";
+import { getNotesList } from "@/utils/notes/queries";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
@@ -26,7 +26,15 @@ const fetchModuleData = async (moduleCode: string) => {
 };
 
 const fetchNoteData = async (moduleCode: string) => {
-  return ((await getNotesListData("", 0, 10, moduleCode, "")) ?? []) as Note[];
+  const params: NoteListSearchParams = {
+    searchText: "",
+    start: 0,
+    count: 50,
+    selectedModuleCode: moduleCode,
+    selectedSemester: "",
+    selectedAuthorID: "",
+  };
+  return ((await getNotesList(params)) ?? []) as Note[];
 };
 
 export default async function ModulePage({ params }: Props) {

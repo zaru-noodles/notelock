@@ -17,6 +17,15 @@ export type Note = {
   deletePermission: boolean;
 };
 
+export type NoteListSearchParams = {
+  searchText: string;
+  start: number;
+  count: number;
+  selectedModuleCode: string;
+  selectedSemester: string;
+  selectedAuthorID: string;
+};
+
 export type Comments = {
   id: string;
   content: string;
