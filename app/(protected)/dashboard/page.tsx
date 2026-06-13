@@ -1,9 +1,12 @@
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
 import Link from "next/link";
 
 export default async function Dashboard() {
-  const db = createClient();
-  const user = await db.auth.getUser();
+  const db = createClient(await cookies());
+  const {
+    data: { user },
+  } = await db.auth.getUser();
 
   return (
     <>
@@ -16,7 +19,7 @@ export default async function Dashboard() {
       </Link>
       <Link
         className="font-medium text-terra-500 hover:underline"
-        href={`/users/${user.data.user?.id}`}
+        href={`/users/${user?.id}`}
       >
         View your notes!
       </Link>
