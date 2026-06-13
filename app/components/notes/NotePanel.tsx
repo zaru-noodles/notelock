@@ -80,16 +80,24 @@ export default function NotePanel({ noteData }: Props) {
 
           {menuOpen && (
             <div className="absolute top-full w-40 overflow-hidden rounded border border-terra-100 bg-paper-1 shadow-sh-4 z-10">
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  setMenuOpen(false);
-                }}
-                className="w-full px-4 py-2 text-left text-sm text-gray-900 transition-colors duration-150 hover:bg-paper-2"
-              >
-                Delete note
-              </button>
+              {noteData.delete_permission && (
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setMenuOpen(false);
+                  }}
+                  className="w-full px-4 py-2 text-left text-sm text-gray-900 transition-colors duration-150 hover:bg-paper-2"
+                >
+                  Delete note
+                </button>
+              )}
+
+              {!noteData.delete_permission && (
+                <p className="w-full px-4 py-2 text-left text-sm text-gray-500">
+                  No actions available
+                </p>
+              )}
             </div>
           )}
         </div>
