@@ -49,9 +49,9 @@ export default function InsertComment({
     <form action={formAction} className="flex gap-3 mb-8 mt-8">
       <input type="hidden" name="noteId" value={noteId} />
       <input type="hidden" name="moduleCode" value={moduleCode} />
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-terra-200 text-sm font-medium text-paper-1">
-        {currentUsername?.[0] ?? "Deleted user"}
-      </div>
+      <span className="font-medium text-ink-1">
+        {currentUsername ?? "Deleted user"}
+      </span>
       <div className="flex-1">
         <textarea
           ref={textareaRef}
