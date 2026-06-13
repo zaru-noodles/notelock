@@ -9,11 +9,13 @@ import { SEMESTERS } from "@/utils/constants";
 type Props = {
   initialSearchParams: NoteListSearchParams;
   initialNotes: Note[];
+  showAuthor?: boolean;
 };
 
 export default function NotesPreview({
   initialSearchParams,
   initialNotes,
+  showAuthor = true,
 }: Props) {
   const [notesData, setNotesData] = useState<Note[]>(initialNotes);
   const [notesError, setNotesError] = useState<string>(
@@ -101,6 +103,7 @@ export default function NotesPreview({
             key={note.id}
             noteData={note}
             reloadNotes={() => fetchNotesData(searchParams)}
+            showAuthor={showAuthor}
           />
         ))}
       </div>

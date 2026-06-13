@@ -56,6 +56,7 @@ export default async function ModulePage({ params }: Props) {
       <NotesPreview
         initialSearchParams={searchParams}
         initialNotes={noteData}
+        showAuthor={false}
       />
     </div>
   );

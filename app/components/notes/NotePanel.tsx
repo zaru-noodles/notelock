@@ -7,9 +7,14 @@ import { toast } from "react-hot-toast";
 type Props = {
   noteData: Note;
   reloadNotes: () => void;
+  showAuthor: boolean;
 };
 
-export default function NotePanel({ noteData, reloadNotes }: Props) {
+export default function NotePanel({
+  noteData,
+  reloadNotes,
+  showAuthor,
+}: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -80,7 +85,11 @@ export default function NotePanel({ noteData, reloadNotes }: Props) {
 
       <div className="flex justify-between text-sm text-gray-600">
         <div className="flex items-center">
-          <p className="mr-2.5">{noteData?.username ?? "Deleted user"}</p>
+          {showAuthor && (
+            <p className="mr-2.5">{noteData?.username ?? "Deleted user"}</p>
+          )}
+
+          {!showAuthor && <p className="mr-2.5">{noteData.moduleCode}</p>}
 
           <p>{noteData.downloadCount}</p>
           <DownloadIcon className="h-4 w-4 text-gray-500 ml-0.5 mr-2.5" />
