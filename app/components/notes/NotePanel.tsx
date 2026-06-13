@@ -2,6 +2,7 @@ import { Note } from "@/types";
 import { DownloadIcon, EllipsisVerticalIcon } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 
 type Props = {
   noteData: Note;
@@ -46,10 +47,10 @@ export default function NotePanel({
     });
 
     if (!response.ok) {
-      alert(`Unable to delete note: Status ${response.status}`);
+      toast.error(`Unable to delete note: Status ${response.status}`);
       return;
     } else {
-      alert("Note deleted successfully");
+      toast.success("Note deleted successfully");
       reloadNotes();
     }
   }
