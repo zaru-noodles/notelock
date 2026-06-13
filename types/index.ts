@@ -10,10 +10,20 @@ export type Note = {
   id: string;
   title: string;
   semester: string;
-  download_count: number;
-  thumbnail_url?: string;
+  moduleCode: string;
+  downloadCount: number;
+  thumbnailUrl?: string;
   username?: string;
-  delete_permission: boolean;
+  deletePermission: boolean;
+};
+
+export type NoteListSearchParams = {
+  searchText: string;
+  start: number;
+  count: number;
+  selectedModuleCode: string;
+  selectedSemester: string;
+  selectedAuthorID: string;
 };
 
 export type Comments = {
