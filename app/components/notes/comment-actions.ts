@@ -31,3 +31,22 @@ export async function postComment(_prev: unknown, formData: FormData) {
   revalidatePath(`/notes/${moduleCode}/${noteId}`);
   return { ok: true };
 }
+
+export async function deleteComment(formData: FormData) {
+  const noteId = String(formData.get("noteId"));
+  const commentId = String(formData.get("commentId"));
+  const moduleCode = String(formData.get("moduleCode"));
+
+  if (!commentId) return;
+
+  const db = createClient(await cookies());
+  const { error } = await db.from("comments").delete().eq("id", commentId);
+
+  if (error) {
+    console.error("deleteComment failed: ", error.message, error.code);
+    return { error: "Could not delete comment" };
+  }
+
+  revalidatePath(`notes/${moduleCode}/${noteId}`);
+  return { ok: true };
+}
