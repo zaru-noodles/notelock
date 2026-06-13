@@ -6,15 +6,10 @@ import { toast } from "react-hot-toast";
 
 type Props = {
   noteData: Note;
-  moduleCode: string;
   reloadNotes: () => void;
 };
 
-export default function NotePanel({
-  moduleCode,
-  noteData,
-  reloadNotes,
-}: Props) {
+export default function NotePanel({ noteData, reloadNotes }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -43,7 +38,10 @@ export default function NotePanel({
     const response = await fetch(`/api/notes/delete`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: noteData.id, moduleCode }),
+      body: JSON.stringify({
+        id: noteData.id,
+        moduleCode: noteData.moduleCode,
+      }),
     });
 
     if (!response.ok) {
@@ -63,15 +61,15 @@ export default function NotePanel({
     >
       {/* thumbnail */}
       <div className="flex justify-center items-center rounded-xl mb-3 h-44 overflow-hidden">
-        {noteData.thumbnail_url && (
+        {noteData.thumbnailUrl && (
           <img
             className="h-40 w-auto object-contain rounded-lg shadow-sm"
             alt="Missing thumbnail"
-            src={noteData.thumbnail_url}
+            src={noteData.thumbnailUrl}
           />
         )}
 
-        {!noteData.thumbnail_url && <p>Missing thumbnail</p>}
+        {!noteData.thumbnailUrl && <p>Missing thumbnail</p>}
       </div>
 
       <div className="flex justify-between items-start mb-0">
@@ -84,7 +82,7 @@ export default function NotePanel({
         <div className="flex items-center">
           <p className="mr-2.5">{noteData?.username ?? "Deleted user"}</p>
 
-          <p>{noteData.download_count}</p>
+          <p>{noteData.downloadCount}</p>
           <DownloadIcon className="h-4 w-4 text-gray-500 ml-0.5 mr-2.5" />
         </div>
 
@@ -103,7 +101,7 @@ export default function NotePanel({
 
           {menuOpen && (
             <div className="absolute top-full w-40 overflow-hidden rounded border border-terra-100 bg-paper-1 shadow-sh-4 z-10">
-              {noteData.delete_permission && (
+              {noteData.deletePermission && (
                 <button
                   type="button"
                   onClick={(event) => {
@@ -117,7 +115,7 @@ export default function NotePanel({
                 </button>
               )}
 
-              {!noteData.delete_permission && (
+              {!noteData.deletePermission && (
                 <p className="w-full px-4 py-2 text-left text-sm text-gray-500">
                   No actions available
                 </p>

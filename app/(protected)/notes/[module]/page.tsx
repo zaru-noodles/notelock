@@ -47,7 +47,7 @@ const fetchNoteData = async (moduleCode: string) => {
 
   const notesWithUrl = data.map((note: Note, index: number) => ({
     ...note,
-    thumbnail_url: signedUrls?.[index]?.signedUrl ?? null,
+    thumbnailUrl: signedUrls?.[index]?.signedUrl ?? null,
   }));
 
   return notesWithUrl;

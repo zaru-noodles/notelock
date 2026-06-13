@@ -99,7 +99,6 @@ export default function NotesPreview({ moduleCode, initialNotes }: Props) {
           <NotePanel
             key={note.id}
             noteData={note}
-            moduleCode={moduleCode}
             reloadNotes={() => fetchNotesData(searchParams)}
           />
         ))}
