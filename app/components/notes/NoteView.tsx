@@ -22,6 +22,7 @@ type NoteViewProps = {
   noteId: string;
   comments: Comments[];
   currentUserId: string;
+  currentUsername: string;
 };
 
 export default function NoteView({
@@ -33,6 +34,7 @@ export default function NoteView({
   noteId,
   comments,
   currentUserId,
+  currentUsername,
 }: NoteViewProps) {
   return (
     <div>
@@ -82,6 +84,7 @@ export default function NoteView({
         moduleCode={moduleCode}
         comments={comments}
         currentUserId={currentUserId}
+        currentUsername={currentUsername}
       />
       <CommentBody
         noteId={noteId}

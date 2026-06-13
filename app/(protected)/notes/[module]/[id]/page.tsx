@@ -21,6 +21,15 @@ export default async function Page({ params }: Props) {
     return redirect("/");
   }
 
+  const currentUserId = data.claims.sub;
+
+  const { data: username } = await db
+    .from("users")
+    .select("username")
+    .eq("id", currentUserId)
+    .single();
+  const currentUsername = username?.username;
+
   const noteResult = await getNoteWithSignedUrl(id);
   if (!noteResult || moduleCode !== noteResult.moduleCode) {
     notFound();
@@ -40,6 +49,7 @@ export default async function Page({ params }: Props) {
         noteId={id}
         comments={commentResult}
         currentUserId={data.claims.sub}
+        currentUsername={currentUsername}
       />
     </>
   );

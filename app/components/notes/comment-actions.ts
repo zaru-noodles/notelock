@@ -44,9 +44,8 @@ export async function deleteComment(formData: FormData) {
 
   if (error) {
     console.error("deleteComment failed: ", error.message, error.code);
-    return { error: "Could not delete comment" };
+    return;
   }
-
   revalidatePath(`notes/${moduleCode}/${noteId}`);
-  return { ok: true };
+  return;
 }
