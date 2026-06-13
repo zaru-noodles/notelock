@@ -11,6 +11,20 @@ type Props = {
   }>;
 };
 
+const fetchUsername = async (userID: string) => {
+  const db = createClient(await cookies());
+
+  const { data, error } = await db
+    .from("users")
+    .select("username")
+    .eq("id", userID)
+    .single();
+
+  if (error) return null;
+
+  return data.username;
+};
+
 const fetchNoteData = async (searchParams: NoteListSearchParams) => {
   return ((await getNotesList(searchParams)) ?? []) as Note[];
 };
@@ -26,9 +40,9 @@ export default async function ModulePage({ params }: Props) {
     selectedAuthorID: userID,
   };
   const noteData = await fetchNoteData(searchParams);
+  const username = await fetchUsername(userID);
 
-  // TODO validate userID
-  if (userID === null) {
+  if (username === null) {
     return (
       <>
         <p>Unable to fetch user data</p>
@@ -46,11 +60,7 @@ export default async function ModulePage({ params }: Props) {
     <div className="px-8 py-10 max-w-screen mx-4">
       {/* header */}
       <div className="mb-6 ml-6">
-        <p className="text-sm text-gray-500 uppercase tracking-widest mb-2">
-          placeholder | placeholder
-        </p>
-        <h1 className="text-5xl font-bold mb-0.5">placeholder</h1>
-        <p className="text-3xl text-ink-1">placeholder</p>
+        <h1 className="text-5xl font-bold mb-0.5">{`${username}'s Notes`}</h1>
       </div>
 
       <NotesPreview
