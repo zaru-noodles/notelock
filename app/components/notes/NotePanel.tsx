@@ -5,9 +5,10 @@ import { useEffect, useRef, useState } from "react";
 
 type Props = {
   noteData: Note;
+  moduleCode: string;
 };
 
-export default function NotePanel({ noteData }: Props) {
+export default function NotePanel({ moduleCode, noteData }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
