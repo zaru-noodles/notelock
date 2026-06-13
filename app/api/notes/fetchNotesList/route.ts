@@ -1,17 +1,14 @@
-import { Note } from "@/types";
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
+import { getNotesListData } from "@/utils/notes/queries";
 
 export async function GET(req: Request) {
-  const db = createClient(await cookies());
   const { searchParams } = new URL(req.url);
-  const moduleCode = searchParams.get("moduleCode");
+  const moduleCode = searchParams.get("moduleCode") ?? "";
   const searchText = searchParams.get("search") ?? "";
   const selectedSemester = searchParams.get("semester") ?? "";
   const count = Number(searchParams.get("count"));
   const start = Number(searchParams.get("start") ?? "0");
 
-  if (moduleCode === null || count === null) {
+  if (count === null) {
     return Response.json({ error: "All fields are required" }, { status: 400 });
   }
 
@@ -23,30 +20,20 @@ export async function GET(req: Request) {
     return Response.json({ error: "start is not a number" }, { status: 400 });
   }
 
-  const { data, error } = await db.rpc("search_notes", {
-    search_query: searchText,
-    start_index: start,
-    result_count: count,
-    module_code: moduleCode,
-    selected_semester: selectedSemester,
-  });
+  const data = await getNotesListData(
+    searchText,
+    start,
+    count,
+    moduleCode,
+    selectedSemester,
+  );
 
-  if (error) {
-    return Response.json({ error: "Unable to retrieve data" }, { status: 500 });
+  if (data === null) {
+    return Response.json(
+      { error: "Unable to retrieve notes" },
+      { status: 500 },
+    );
   }
 
-  // generate signed URLs for thumbnails
-  const { data: signedUrls } = await db.storage
-    .from("thumbnail")
-    .createSignedUrls(
-      data.map((note: Note) => `${moduleCode}/${note.id}.png`),
-      3600,
-    );
-
-  const notesWithUrl = data.map((note: Note, index: number) => ({
-    ...note,
-    thumbnailUrl: signedUrls?.[index]?.signedUrl ?? null,
-  }));
-
-  return Response.json({ notes: notesWithUrl }, { status: 200 });
+  return Response.json({ notes: data }, { status: 200 });
 }

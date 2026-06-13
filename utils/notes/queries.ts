@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
+import { Note } from "@/types/index";
 import { NOTES_BUCKET, notePath } from "./storage";
 import { Comments } from "@/types/index";
 
@@ -51,6 +52,50 @@ export async function getNoteWithSignedUrl(noteId: string) {
     signedUrl: urlData.signedUrl,
     downloadUrl,
   };
+}
+
+export async function getNotesListData(
+  searchText: string,
+  start: number,
+  count: number,
+  selectedModuleCode: string,
+  selectedSemester: string,
+) {
+  const db = createClient(await cookies());
+
+  const {
+    data: { user },
+  } = await db.auth.getUser();
+  if (!user) {
+    return null;
+  }
+
+  const { data, error } = await db.rpc("search_notes", {
+    search_query: searchText,
+    start_index: start,
+    result_count: count,
+    module_code: selectedModuleCode,
+    selected_semester: selectedSemester,
+  });
+
+  if (error) {
+    return null;
+  }
+
+  // generate signed URLs for thumbnails
+  const { data: signedUrls } = await db.storage
+    .from("thumbnail")
+    .createSignedUrls(
+      data.map((note: Note) => `${note.moduleCode}/${note.id}.png`),
+      3600,
+    );
+
+  const notesWithThumbnail = data.map((note: Note, index: number) => ({
+    ...note,
+    thumbnailUrl: signedUrls?.[index]?.signedUrl ?? null,
+  }));
+
+  return notesWithThumbnail;
 }
 
 export async function getComments(noteId: string) {

@@ -1,8 +1,9 @@
 import Link from "next/link";
 import NotesPreview from "@/app/components/notes/NotesPreview";
+import { Note } from "@/types";
+import { getNotesListData } from "@/utils/notes/queries";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import { Note } from "@/types";
 
 type Props = {
   params: Promise<{
@@ -25,32 +26,7 @@ const fetchModuleData = async (moduleCode: string) => {
 };
 
 const fetchNoteData = async (moduleCode: string) => {
-  const db = createClient(await cookies());
-
-  const { data, error } = await db.rpc("search_notes", {
-    search_query: "",
-    start_index: 0,
-    result_count: 20,
-    module_code: moduleCode,
-    selected_semester: "",
-  });
-
-  if (error) return [];
-
-  // fetch thumbnail urls
-  const { data: signedUrls } = await db.storage
-    .from("thumbnail")
-    .createSignedUrls(
-      data.map((note: Note) => `${moduleCode}/${note.id}.png`),
-      3600,
-    );
-
-  const notesWithUrl = data.map((note: Note, index: number) => ({
-    ...note,
-    thumbnailUrl: signedUrls?.[index]?.signedUrl ?? null,
-  }));
-
-  return notesWithUrl;
+  return ((await getNotesListData("", 0, 10, moduleCode, "")) ?? []) as Note[];
 };
 
 export default async function ModulePage({ params }: Props) {
