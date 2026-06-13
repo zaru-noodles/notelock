@@ -1,4 +1,5 @@
 import Navbar from "../components/notes/Navbar";
+import { Toaster } from "react-hot-toast";
 
 export default function ProtectedLayout({
   children,
@@ -8,6 +9,7 @@ export default function ProtectedLayout({
   return (
     <>
       <Navbar />
+      <Toaster position="top-center" />
       {children}
     </>
   );

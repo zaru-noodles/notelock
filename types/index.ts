@@ -11,8 +11,9 @@ export type Note = {
   title: string;
   semester: string;
   download_count: number;
-  thumbnailUrl?: string;
+  thumbnail_url?: string;
   username?: string;
+  delete_permission: boolean;
 };
 
 export type Comments = {
