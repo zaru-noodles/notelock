@@ -63,7 +63,7 @@ export default function InsertComment({
           maxLength={2000}
           required
           placeholder="Add a comment..."
-          className="w-full resize-none border-b border-ink-4/40 bg-transparent pb-1 font-sans text-ink-1 placeholder:text-ink-3 transition-colors focus:border-ink-2 focus:outline-none"
+          className="w-full resize-none border-b border-ink-4/40 bg-transparent pb-1 font-sans text-ink-1 placeholder:text-ink-3 transition focus:border-honey-1 focus:outline-none"
         />
         {focused && (
           <div className="flex items-center gap-3 mt-2">
@@ -74,14 +74,14 @@ export default function InsertComment({
                 setContent("");
                 setFocused(false);
               }}
-              className="ml-auto rounded-full px-4 py-1.5 font-sans text-sm text-ink-2 hover:bg-ink-4/20"
+              className="ml-auto rounded-full px-4 py-1.5 font-sans text-sm text-ink-2 hover:bg-ink-4/20 hover:cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={!canPost}
-              className="rounded-full bg-ink-1 px-4 py-1.5 font-sans text-sm font-medium text-paper-1 transition hover:bg-ink-2 disabled:cursor-not-allowed disabled:bg-ink-4/40 disabled:text-ink-3"
+              className="rounded-full bg-ink-1 px-4 py-1.5 font-sans text-sm font-medium text-paper-1 transition hover:bg-ink-2 disabled:cursor-not-allowed disabled:bg-ink-4/40 disabled:text-ink-3 hover:cursor-pointer"
             >
               {pending ? "Posting..." : "Comment"}
             </button>
