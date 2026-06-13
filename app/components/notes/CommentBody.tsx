@@ -25,7 +25,10 @@ export default function CommentBody({
               <input type="hidden" name="noteId" value={noteId} />
               <input type="hidden" name="moduleCode" value={moduleCode} />
               <input type="hidden" name="commentId" value={c.id} />
-              <button type="submit" className="text-ink-3 hover:text-ink-2">
+              <button
+                type="submit"
+                className="text-ink-3 hover:text-ink-2 hover:cursor-pointer"
+              >
                 <Trash2 className="size-5" />
               </button>
             </form>

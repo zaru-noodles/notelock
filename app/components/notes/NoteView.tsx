@@ -74,7 +74,7 @@ export default function NoteView({
         </div>
       </div>
 
-      <div className="mt-5 h-[80vh] overflow-hidden rounded-xl border border-ink-4 shadow-sh-2">
+      <div className="mt-5 overflow-hidden rounded-xl border border-ink-4 shadow-sh-2">
         <PdfViewer url={signedUrl} />
       </div>
       <InsertComment
