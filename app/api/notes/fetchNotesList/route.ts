@@ -45,7 +45,7 @@ export async function GET(req: Request) {
 
   const notesWithUrl = data.map((note: Note, index: number) => ({
     ...note,
-    thumbnailUrl: signedUrls?.[index]?.signedUrl ?? null,
+    thumbnail_url: signedUrls?.[index]?.signedUrl ?? null,
   }));
 
   return Response.json({ notes: notesWithUrl }, { status: 200 });

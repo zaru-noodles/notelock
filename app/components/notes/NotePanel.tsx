@@ -6,9 +6,14 @@ import { useEffect, useRef, useState } from "react";
 type Props = {
   noteData: Note;
   moduleCode: string;
+  reloadNotes: () => void;
 };
 
-export default function NotePanel({ moduleCode, noteData }: Props) {
+export default function NotePanel({
+  moduleCode,
+  noteData,
+  reloadNotes,
+}: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -32,6 +37,22 @@ export default function NotePanel({ moduleCode, noteData }: Props) {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [menuOpen]);
+
+  async function deleteNote() {
+    const response = await fetch(`/api/notes/delete`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: noteData.id, moduleCode }),
+    });
+
+    if (!response.ok) {
+      alert(`Unable to delete note: Status ${response.status}`);
+      return;
+    } else {
+      alert("Note deleted successfully");
+      reloadNotes();
+    }
+  }
 
   return (
     <div
@@ -87,6 +108,7 @@ export default function NotePanel({ moduleCode, noteData }: Props) {
                   onClick={(event) => {
                     event.stopPropagation();
                     setMenuOpen(false);
+                    deleteNote();
                   }}
                   className="w-full px-4 py-2 text-left text-sm text-gray-900 transition-colors duration-150 hover:bg-paper-2"
                 >
