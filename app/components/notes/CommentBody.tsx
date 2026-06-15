@@ -43,7 +43,7 @@ export default function CommentBody({
               </form>
             )}
           </div>
-          <p className="mt-1 whitespace-pre-wrap leading-relaxed text-ink-2">
+          <p className="mt-1 whitespace-pre-wrap leading-relaxed wrap-break-word text-ink-2">
             {c.content}
           </p>
         </li>
