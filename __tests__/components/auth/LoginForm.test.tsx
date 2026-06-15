@@ -36,13 +36,10 @@ describe("LoginForm", () => {
     const user = userEvent.setup();
     render(<LoginForm />);
 
-    await user.type(
-      screen.getByLabelText("NUS EMAIL"),
-      process.env.VITE_TEST_USER! as string,
-    );
+    await user.type(screen.getByLabelText("NUS EMAIL"), process.env.TEST_USER!);
     await user.type(
       screen.getByLabelText("PASSWORD"),
-      process.env.VITE_TEST_PASSWORD! as string,
+      process.env.TEST_PASSWORD!,
     );
     await user.click(screen.getByRole("button", { name: "Login" }));
 
