@@ -1,5 +1,3 @@
-import { expect, test } from "vitest";
-import { render, screen } from "@testing-library/react";
 import { notePath } from "@/utils/notes/storage";
 
 test("notePath correctly forms URL to storage bucket", () => {

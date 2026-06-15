@@ -13,7 +13,10 @@ export default function PasswordInput({
 }: PasswordInputProps) {
   return (
     <div>
-      <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2 my-1 ml-2">
+      <label
+        htmlFor="password"
+        className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2 my-1 ml-2"
+      >
         {label}
       </label>
       <div className="flex items-center pl-3.5 py-1 bg-paper-1 border border-paper-4 rounded-2xl mb-3 focus-within:border-terra-300 transition-colors">
