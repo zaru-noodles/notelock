@@ -1,6 +1,6 @@
 import { Note } from "@/types";
 import { DownloadIcon, EllipsisVerticalIcon } from "lucide-react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
@@ -17,7 +17,6 @@ export default function NotePanel({
   showAuthor,
 }: Props) {
   const router = useRouter();
-  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
 
@@ -63,7 +62,11 @@ export default function NotePanel({
     <div
       ref={panelRef}
       className="w-[21%] h-fit mx-4.5 my-3 p-4 bg-paper-2 hover:bg-paper-3 rounded-1x1 border border-terra-100 rounded-2xl transition-transform duration-200 hover:shadow-sh-4"
-      onClick={() => router.push(`${pathname}/${noteData.id}`)}
+      onClick={() =>
+        router.push(
+          `${window.location.origin}/notes/${noteData.moduleCode}/${noteData.id}`,
+        )
+      }
     >
       {/* thumbnail */}
       <div className="flex justify-center items-center rounded-xl mb-3 h-44 overflow-hidden">
