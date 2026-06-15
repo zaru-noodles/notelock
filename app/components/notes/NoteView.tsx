@@ -37,7 +37,7 @@ export default function NoteView({
   currentUsername,
 }: NoteViewProps) {
   return (
-    <div className="xl:w-[90%] mx-auto mt-5">
+    <div className="xl:w-[90%] mx-auto mt-5 w-full">
       <Link
         href={`/notes/${moduleCode}`}
         className="inline-flex items-center font-mono text-sm text-ink-3 hover:text-ink-1"
