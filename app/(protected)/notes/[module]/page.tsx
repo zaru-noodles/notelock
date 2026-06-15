@@ -1,6 +1,6 @@
 import Link from "next/link";
 import NotesPreview from "@/app/components/notes/NotesPreview";
-import { Note, NoteListSearchParams } from "@/types";
+import { Note, NoteListSearchParams, SortOrder } from "@/types";
 import { getNotesList } from "@/utils/notes/queries";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
@@ -38,6 +38,7 @@ export default async function ModulePage({ params }: Props) {
     selectedModuleCode: moduleCode,
     selectedSemester: "",
     selectedAuthorID: "",
+    sortBy: SortOrder.DownloadCount,
   };
   const moduleData = await fetchModuleData(moduleCode);
   const noteData = await fetchNoteData(searchParams);

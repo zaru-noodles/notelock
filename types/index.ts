@@ -24,7 +24,13 @@ export type NoteListSearchParams = {
   selectedModuleCode: string;
   selectedSemester: string;
   selectedAuthorID: string;
+  sortBy: SortOrder;
 };
+
+export enum SortOrder {
+  DownloadCount = "downloadCount",
+  Semester = "semester",
+}
 
 export type Comments = {
   id: string;
