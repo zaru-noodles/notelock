@@ -3,6 +3,7 @@ import { DownloadIcon, EllipsisVerticalIcon } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 type Props = {
   noteData: Note;
@@ -67,8 +68,10 @@ export default function NotePanel({
       {/* thumbnail */}
       <div className="flex justify-center items-center rounded-xl mb-3 h-44 overflow-hidden">
         {noteData.thumbnailUrl && (
-          <img
-            className="h-40 w-auto object-contain rounded-lg shadow-sm"
+          <Image
+            className="h-42 w-auto object-contain rounded-lg shadow-sm"
+            width={240}
+            height={240}
             alt="Missing thumbnail"
             src={noteData.thumbnailUrl}
           />
