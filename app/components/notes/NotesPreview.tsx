@@ -1,9 +1,10 @@
 "use client";
 
-import { Clock, Search } from "lucide-react";
+import { ArrowDownWideNarrow, Clock, Search } from "lucide-react";
 import NotePanel from "@/app/components/notes/NotePanel";
 import { useState } from "react";
 import type { Note, NoteListSearchParams } from "@/types";
+import { SortOrder } from "@/types";
 import { SEMESTERS } from "@/utils/constants";
 
 type Props = {
@@ -19,7 +20,7 @@ export default function NotesPreview({
 }: Props) {
   const [notesData, setNotesData] = useState<Note[]>(initialNotes);
   const [notesError, setNotesError] = useState<string>(
-    initialNotes.length == 0 ? "No notes found" : "",
+    initialNotes.length === 0 ? "No notes found" : "",
   );
   const [searchParams, setSearchParams] =
     useState<NoteListSearchParams>(initialSearchParams);
@@ -35,6 +36,7 @@ export default function NotesPreview({
       selectedModuleCode: params.selectedModuleCode,
       selectedSemester: params.selectedSemester,
       selectedAuthorID: params.selectedAuthorID,
+      sortBy: params.sortBy,
     });
     const response = await fetch(`/api/notes/fetchNotesList?${query}`);
 
@@ -68,6 +70,26 @@ export default function NotesPreview({
             placeholder="Search notes..."
             className="rounded focus:outline-none w-full pl-2"
           />
+        </div>
+
+        {/* sortBy input */}
+        <div className="flex w-[70%] h-10 mb-3 px-4 py-2 rounded-2xl bg-paper-3 text-sm border border-transparent focus-within:border-terra-200 focus-within:bg-paper-2 transition-all duration-200">
+          <ArrowDownWideNarrow className="h-5 w-5 text-ink-1 stroke-2 shrink-0" />
+          <select
+            value={searchParams.sortBy}
+            onChange={(e) => {
+              const updated = {
+                ...searchParams,
+                sortBy: e.target.value as SortOrder,
+              };
+              setSearchParams(updated);
+              fetchNotesData(updated);
+            }}
+            className="rounded focus:outline-none w-full pl-2 bg-transparent"
+          >
+            <option value={SortOrder.DownloadCount}>Most downloaded</option>
+            <option value={SortOrder.Semester}>Semester</option>
+          </select>
         </div>
 
         {/* semester input */}

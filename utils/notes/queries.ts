@@ -71,6 +71,7 @@ export async function getNotesList(params: NoteListSearchParams) {
     module_code: params.selectedModuleCode,
     selected_semester: params.selectedSemester,
     selected_author_id: params.selectedAuthorID,
+    sort_by: params.sortBy,
   });
 
   if (error) {
