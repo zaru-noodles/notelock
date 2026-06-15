@@ -22,6 +22,7 @@ type NoteViewProps = {
   noteId: string;
   comments: Comments[];
   currentUserId: string;
+  currentUsername: string;
 };
 
 export default function NoteView({
@@ -33,9 +34,10 @@ export default function NoteView({
   noteId,
   comments,
   currentUserId,
+  currentUsername,
 }: NoteViewProps) {
   return (
-    <div>
+    <div className="xl:w-[90%] mx-auto mt-5">
       <Link
         href={`/notes/${moduleCode}`}
         className="inline-flex items-center font-mono text-sm text-ink-3 hover:text-ink-1"
@@ -74,7 +76,7 @@ export default function NoteView({
         </div>
       </div>
 
-      <div className="mt-5 h-[80vh] overflow-hidden rounded-xl border border-ink-4 shadow-sh-2">
+      <div className="mt-5 overflow-hidden rounded-xl border border-ink-4 shadow-sh-2">
         <PdfViewer url={signedUrl} />
       </div>
       <InsertComment
@@ -82,6 +84,7 @@ export default function NoteView({
         moduleCode={moduleCode}
         comments={comments}
         currentUserId={currentUserId}
+        currentUsername={currentUsername}
       />
       <CommentBody
         noteId={noteId}
