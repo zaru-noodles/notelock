@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import LoginForm from "@/app/components/auth/LoginForm";
 
@@ -43,8 +43,6 @@ describe("LoginForm", () => {
     );
     await user.click(screen.getByRole("button", { name: "Login" }));
 
-    await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith("/dashboard");
-    });
+    expect(mockPush).toHaveBeenCalledWith("/dashboard");
   });
 });
