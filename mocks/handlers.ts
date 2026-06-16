@@ -49,7 +49,8 @@ export const handlers = [
     }
     return HttpResponse.json(
       {
-        message: "Login successful",
+        message:
+          "Registration successful, please check your email to verify your account",
       },
       { status: 200 },
     );
