@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "prepare": "husky",
-    "load-modules": "tsx scripts/loadModules.ts"
+    "load-modules": "tsx scripts/loadModules.ts",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "lucide-react": "^1.16.0",
@@ -17,6 +18,7 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.0",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.106.1",
     "@tailwindcss/postcss": "^4",
