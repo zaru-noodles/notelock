@@ -39,6 +39,9 @@ export default function ModuleFavouriteButton({
       return;
     }
 
+    toast.success(
+      `Module ${favourite ? "removed from" : "added to"} favourites`,
+    );
     setFavourite(!favourite);
   }
 
@@ -48,7 +51,8 @@ export default function ModuleFavouriteButton({
       onClick={toggleFavourite}
       className="inline-flex items-center gap-2 rounded-pill border border-ink-4 bg-paper-0 px-6 py-3 text font-medium text-ink-1 shadow-sh-1 hover:bg-paper-1"
     >
-      <Star className="size-5" /> Favourite
+      <Star className={favourite ? "size-5 fill-ink-1" : "size-5"} />{" "}
+      {favourite ? "Unfavourite" : "Favourite"}
     </button>
   );
 }
