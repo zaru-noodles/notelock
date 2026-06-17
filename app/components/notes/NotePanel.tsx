@@ -76,6 +76,7 @@ export default function NotePanel({
             width={240}
             height={240}
             alt="Missing thumbnail"
+            loading="eager"
             src={noteData.thumbnailUrl}
           />
         )}
