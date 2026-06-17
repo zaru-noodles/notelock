@@ -46,9 +46,9 @@ export default function ModuleFavouriteButton({
     <button
       type="button"
       onClick={toggleFavourite}
-      className="inline-flex items-center gap-2 rounded-pill border border-ink-4 bg-paper-0 px-4 py-2 text-sm font-medium text-ink-1 shadow-sh-1 hover:bg-paper-1"
+      className="inline-flex items-center gap-2 rounded-pill border border-ink-4 bg-paper-0 px-6 py-3 text font-medium text-ink-1 shadow-sh-1 hover:bg-paper-1"
     >
-      <Star className="size-4" /> Favourite
+      <Star className="size-5" /> Favourite
     </button>
   );
 }
