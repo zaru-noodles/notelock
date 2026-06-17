@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import ModuleInputNavbar from "./ModuleInputNavbar";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
-import LogoutButton from "../auth/LogoutButton";
+import LogoutButton from "../../auth/LogoutButton";
 import Link from "next/link";
 
 export default function Navbar() {

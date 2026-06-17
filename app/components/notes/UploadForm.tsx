@@ -2,8 +2,8 @@
 import type { UploadRequest } from "@/types/api";
 import Link from "next/link";
 import { useState } from "react";
-import ModuleInput from "./ModuleInput";
-import SemesterInput from "./SemesterInput";
+import ModuleInput from "./inputs/ModuleInput";
+import SemesterInput from "./inputs/SemesterInput";
 
 export default function UploadForm() {
   const [message, setMessage] = useState<string>("");
