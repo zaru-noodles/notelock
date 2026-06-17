@@ -9,8 +9,8 @@ import {
 } from "lucide-react";
 import PdfViewer from "./PdfViewer/PdfViewer";
 import DownloadButton from "./DownloadButton";
-import InsertComment from "./InsertComment";
-import CommentBody from "./CommentBody";
+import InsertComment from "./comments/InsertComment";
+import CommentBody from "./comments/CommentBody";
 import { Comments } from "@/types/index";
 
 type NoteViewProps = {

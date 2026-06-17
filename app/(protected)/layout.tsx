@@ -1,4 +1,4 @@
-import Navbar from "../components/notes/Navbar";
+import Navbar from "../components/notes/navbar/Navbar";
 import { Toaster } from "react-hot-toast";
 
 export default function ProtectedLayout({
