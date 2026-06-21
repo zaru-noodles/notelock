@@ -32,4 +32,16 @@ test("upload a note and find it", async ({ page }) => {
   await page.getByText("CS2040S Data Structures and").click();
 
   await page.waitForURL("**/notes/CS2040S");
+
+  const thumbnail = page
+    .getByRole("img", { name: "Missing thumbnail" })
+    .first();
+  await expect(thumbnail).toBeVisible();
+  await expect
+    .poll(() =>
+      thumbnail.evaluate(
+        (el: HTMLImageElement) => el.complete && el.naturalWidth > 0,
+      ),
+    )
+    .toBe(true);
 });

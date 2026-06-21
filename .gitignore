@@ -45,5 +45,6 @@ node_modules/
 /test-results/
 /playwright-report/
 /blob-report/
+/e2e/.cache/
+/e2e/.auth/
 /playwright/.cache/
-/playwright/.auth/
