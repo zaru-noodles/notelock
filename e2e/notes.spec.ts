@@ -1,7 +1,9 @@
 import { test, expect } from "@playwright/test";
 import path from "path";
 
-test("upload a note and find it", async ({ page }) => {
+test("upload a note, find note, add a comment and delete it", async ({
+  page,
+}) => {
   const title = `Lecture Test Notes ${Date.now()}`;
 
   await page.goto("/dashboard");
@@ -44,4 +46,31 @@ test("upload a note and find it", async ({ page }) => {
       ),
     )
     .toBe(true);
+  await page
+    .getByRole("heading", { name: "Lecture Test Notes" })
+    .first()
+    .click();
+
+  const comment = page.getByRole("textbox", { name: "Add a comment..." });
+  await comment.click();
+  const commentTime = Date.now();
+  await comment.fill(`This is a test comment run by playwright ${commentTime}`);
+
+  await page.getByRole("button", { name: "Comment" }).click();
+
+  await expect(
+    page.getByText(`This is a test comment run by playwright ${commentTime}`),
+  ).toBeVisible();
+
+  await page
+    .getByRole("listitem")
+    .filter({
+      hasText: `This is a test comment run by playwright ${commentTime}`,
+    })
+    .getByRole("button")
+    .click();
+
+  await expect(
+    page.getByText(`This is a test comment run by playwright ${commentTime}`),
+  ).toHaveCount(0);
 });
