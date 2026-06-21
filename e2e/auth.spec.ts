@@ -80,7 +80,8 @@ test.describe("logout", () => {
     await page.waitForURL("**/dashboard");
 
     await page.getByRole("button", { name: "log out" }).click();
-    await page.goto("/dashboard");
     await page.waitForURL("**/");
+    await page.goto("/dashboard");
+    await expect(page).not.toHaveURL(/dashboard/);
   });
 });

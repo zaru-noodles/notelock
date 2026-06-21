@@ -36,11 +36,8 @@ describe("LoginForm", () => {
     const user = userEvent.setup();
     render(<LoginForm />);
 
-    await user.type(screen.getByLabelText("NUS EMAIL"), process.env.TEST_USER!);
-    await user.type(
-      screen.getByLabelText("PASSWORD"),
-      process.env.TEST_PASSWORD!,
-    );
+    await user.type(screen.getByLabelText("NUS EMAIL"), "zarufox@u.nus.edu");
+    await user.type(screen.getByLabelText("PASSWORD"), "password1234");
     await user.click(screen.getByRole("button", { name: "Login" }));
 
     expect(mockPush).toHaveBeenCalledWith("/dashboard");

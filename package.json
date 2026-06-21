@@ -9,7 +9,7 @@
     "lint": "eslint",
     "prepare": "husky",
     "load-modules": "tsx scripts/loadModules.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
     "test": "vitest"
   },
   "dependencies": {
