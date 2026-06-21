@@ -10,7 +10,8 @@
     "prepare": "husky",
     "load-modules": "tsx scripts/loadModules.ts",
     "test:e2e": "playwright test",
-    "test": "vitest"
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "lucide-react": "^1.16.0",

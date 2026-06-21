@@ -16,6 +16,12 @@ jobs:
         node-version: lts/*
         cache: 'npm'
 
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run unit tests
+      run: npm run test:run
+
     - name: Setup Supabase
       uses: supabase/setup-cli@v2
       with:
@@ -23,9 +29,6 @@ jobs:
 
     - name: Start Local Supabase Database
       run: supabase start
-
-    - name: Install dependencies
-      run: npm ci
 
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
