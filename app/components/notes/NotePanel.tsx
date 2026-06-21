@@ -76,6 +76,7 @@ export default function NotePanel({
             width={240}
             height={240}
             alt="Missing thumbnail"
+            loading="eager"
             src={noteData.thumbnailUrl}
           />
         )}
@@ -84,9 +85,11 @@ export default function NotePanel({
       </div>
 
       <div className="flex justify-between items-start mb-0">
-        <h2 className="font-semibold text-lg">{noteData.title}</h2>
+        <h2 className="font-semibold text truncate">{noteData.title}</h2>
 
-        <p className="text-sm text-gray-700">{noteData.semester}</p>
+        <p className="text-sm text-gray-700 whitespace-nowrap shrink-0 translate-y-0.5">
+          {noteData.semester}
+        </p>
       </div>
 
       <div className="flex justify-between text-sm text-gray-600">
