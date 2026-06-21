@@ -30,6 +30,11 @@ export async function POST(req: Request) {
     return Response.json({ error: "All fields are required" }, { status: 400 });
   }
 
+  // validate title
+  if (uploadReq.title.length > 40) {
+    return Response.json({ error: "Title is too long" }, { status: 400 });
+  }
+
   // validate semester
   if (!SEMESTERS.includes(uploadReq.semester)) {
     return Response.json({ error: "Semester is invalid" }, { status: 400 });
