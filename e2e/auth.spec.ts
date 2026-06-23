@@ -81,6 +81,7 @@ test.describe("password reset", () => {
     await page.getByRole("link", { name: "Reset it here!" }).click();
 
     await page.getByPlaceholder("e0123456@u.nus.edu").fill(email);
+
     await page
       .getByRole("button", { name: "Send Password Reset Link" })
       .click();
@@ -89,9 +90,19 @@ test.describe("password reset", () => {
         "A link to reset password has been successfully sent to your email!",
       ),
     ).toBeVisible();
+
     await page.goto(await getResetLink(request, email));
-    await page.getByRole("button", { name: "Reset password" }).click();
+    await page.getByRole("link", { name: "Reset Password" }).click();
+    await page.getByPlaceholder("••••••••").nth(0).fill("chickenNugget123!");
+    await page.getByPlaceholder("••••••••").nth(1).fill("chickenNugget123!");
+    await page.getByRole("button", { name: "Update Password" }).click();
+    await page.getByRole("link", { name: "Return to login page" }).click();
+    await page.waitForURL("**/");
+
+    await page.getByPlaceholder("e0123456@u.nus.edu").fill(email);
     await page.getByPlaceholder("••••••••").fill("chickenNugget123!");
+    await page.getByRole("button", { name: "login" }).click();
+    await page.waitForURL("**/dashboard");
   });
 });
 
