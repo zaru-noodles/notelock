@@ -19,6 +19,18 @@ export default function LoginForm() {
   const handleLogin = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setError("");
+
+    // client-side validation
+    if (!loginRequest.email || !loginRequest.password) {
+      setError("All fields are required");
+      return;
+    }
+
+    if (!loginRequest.email.endsWith("@u.nus.edu")) {
+      setError("Must use an NUS email");
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await fetch("/api/auth/login", {

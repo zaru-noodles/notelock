@@ -1,6 +1,17 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import RegisterForm from "@/app/components/auth/RegisterForm";
+import { http, HttpResponse } from "msw";
+import { setupServer } from "msw/node";
+
+const server = setupServer(
+  http.post("/api/auth/register", () =>
+    HttpResponse.json({ message: "Registration successful" }, { status: 200 }),
+  ),
+);
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 describe("RegisterForm", () => {
   (it("shows an error when fields are left blank", async () => {
