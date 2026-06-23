@@ -1,4 +1,6 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, APIRequestContext } from "@playwright/test";
+
+const MAILPIT = "http://localhost:54324";
 
 test("landing page loads", async ({ page }) => {
   await page.context().clearCookies();
@@ -60,6 +62,37 @@ test("authenticated user cannot access landing page", async ({ page }) => {
   await page.waitForURL("**/dashboard");
 });
 
+test.describe("password reset", () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
+  test("reset password changes password", async ({ page, request }) => {
+    const email = `${Date.now()}@u.nus.edu`;
+    const username = `${Date.now()}u`;
+    const password = "password123!";
+    await request.post("/api/auth/register", {
+      data: {
+        email,
+        password: password,
+        confirmPassword: password,
+        username: username,
+      },
+    });
+
+    await page.goto("/");
+    await page.getByRole("link", { name: "Reset it here!" }).click();
+
+    await page.getByPlaceholder("e0123456@u.nus.edu").fill(email);
+    await page
+      .getByRole("button", { name: "Send Password Reset Link" })
+      .click();
+    await expect(
+      page.getByText(
+        "A link to reset password has been successfully sent to your email!",
+      ),
+    ).toBeVisible();
+    await page.goto(await getResetLink(request, email));
+  });
+});
+
 test.describe("logout", () => {
   test.use({ storageState: { cookies: [], origins: [] } });
   test("log out button successfully removes session", async ({ page }) => {
@@ -85,3 +118,32 @@ test.describe("logout", () => {
     await expect(page).not.toHaveURL(/dashboard/);
   });
 });
+
+async function getResetLink(request: APIRequestContext, email: string) {
+  let html = "";
+  await expect
+    .poll(
+      async () => {
+        const res = await request.get(`${MAILPIT}/api/v1/messages`);
+        const { messages } = await res.json();
+        const msg = messages.find(
+          (m: { ID: string; To: { Address: string }[] }) =>
+            m.To.some((t: { Address: string }) => t.Address === email),
+        );
+        if (!msg) return false;
+        html = (
+          await (
+            await request.get(`${MAILPIT}/api/v1/message/${msg.ID}`)
+          ).json()
+        ).HTML;
+        return true;
+      },
+      { timeout: 10000 },
+    )
+    .toBe(true);
+
+  const match = html.match(/href="([^"]*token_hash[^"]*)"/);
+  if (!match) throw new Error("no link");
+  console.log(match[1]);
+  return match[1].replace(/&amp;/g, "&");
+}
