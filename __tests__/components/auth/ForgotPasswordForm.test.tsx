@@ -1,9 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import LoginForm from "@/app/components/auth/LoginForm";
-import AuthCard from "@/app/components/landing-page/AuthCard";
 import ForgotPasswordForm from "@/app/components/auth/ForgotPasswordForm";
-import { createClient } from "@supabase/supabase-js";
 
 const mockPush = vi.fn();
 vi.mock("next/navigation", () => ({
