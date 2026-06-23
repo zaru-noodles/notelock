@@ -90,6 +90,8 @@ test.describe("password reset", () => {
       ),
     ).toBeVisible();
     await page.goto(await getResetLink(request, email));
+    await page.getByRole("button", { name: "Reset password" }).click();
+    await page.getByPlaceholder("••••••••").fill("chickenNugget123!");
   });
 });
 
