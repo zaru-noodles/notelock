@@ -157,6 +157,5 @@ async function getResetLink(request: APIRequestContext, email: string) {
 
   const match = html.match(/href="([^"]*token_hash[^"]*)"/);
   if (!match) throw new Error("no link");
-  console.log(match[1]);
   return match[1].replace(/&amp;/g, "&");
 }
