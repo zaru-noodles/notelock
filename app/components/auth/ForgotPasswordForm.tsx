@@ -9,10 +9,23 @@ export default function ForgotPasswordForm() {
   const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   // if account with email exists and is verified, send reset password email
   async function sendEmail(e: React.SyntheticEvent) {
     e.preventDefault();
+    setError("");
+
+    // client-side validation
+    if (!email) {
+      setError("All fields are required");
+      return;
+    }
+
+    if (!email.endsWith("@u.nus.edu")) {
+      setError("Must use an NUS email");
+      return;
+    }
 
     setLoading(true);
     const { data, error } = await db.auth.resetPasswordForEmail(email, {
@@ -21,7 +34,7 @@ export default function ForgotPasswordForm() {
     setLoading(false);
 
     if (error !== null) {
-      setMessage(error.message);
+      setError(error.message);
     } else {
       setMessage(
         "A link to reset password has been successfully sent to your email!",
@@ -58,6 +71,7 @@ export default function ForgotPasswordForm() {
       >
         {loading ? "Sending link..." : "Send Password Reset Link"}
       </button>
+      {error && <p className="text-red-500 font-bold">{error}</p>}
     </form>
   );
 }

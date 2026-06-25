@@ -70,8 +70,7 @@ export default function PendingVerificationTextbox({ loginRequest }: Props) {
         type="button"
         onClick={resendLink}
       >
-        {" "}
-        Resend verification link{" "}
+        Resend verification link
       </button>
       {message && <p className="mb-1.5">{message}</p>}
     </div>
