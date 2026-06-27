@@ -10,6 +10,7 @@ export default async function Home() {
   const db = createClient(await cookies());
   const { data: user } = await db.auth.getClaims();
   if (user) {
+    console.log("PAGE.tsx");
     redirect("/dashboard");
   }
 

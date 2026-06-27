@@ -1,4 +1,5 @@
 import { test, expect, APIRequestContext } from "@playwright/test";
+import { randomUUID } from "crypto";
 
 const MAILPIT = "http://localhost:54324";
 
@@ -10,8 +11,9 @@ test("landing page loads", async ({ page }) => {
 
 test("new user can register and reach dashboard", async ({ page }) => {
   await page.context().clearCookies();
-  const email = `${Date.now()}@u.nus.edu`;
-  const username = `${Date.now()}u`;
+  const random = randomUUID();
+  const email = `${random}@u.nus.edu`;
+  const username = `${random}u`;
   const password = "password123!";
 
   await page.goto("/");
@@ -32,14 +34,15 @@ test("an existing user can log in and reach dashboard", async ({
   request,
 }) => {
   await page.context().clearCookies();
-  const email = `${Date.now()}@u.nus.edu`;
+  const random = randomUUID();
+  const email = `${random}@u.nus.edu`;
   const password = "password123!";
   await request.post("/api/auth/register", {
     data: {
       email,
       password,
       confirmPassword: password,
-      username: `${Date.now()}u`,
+      username: `${random}u`,
     },
   });
 
@@ -65,8 +68,9 @@ test("authenticated user cannot access landing page", async ({ page }) => {
 test.describe("password reset", () => {
   test.use({ storageState: { cookies: [], origins: [] } });
   test("reset password changes password", async ({ page, request }) => {
-    const email = `${Date.now()}@u.nus.edu`;
-    const username = `${Date.now()}u`;
+    const random = randomUUID();
+    const email = `${random}@u.nus.edu`;
+    const username = `${random}u`;
     const password = "password123!";
     const res = await request.post("/api/auth/register", {
       data: {
@@ -98,6 +102,7 @@ test.describe("password reset", () => {
     await page.getByRole("link", { name: "Return to login page" }).click();
     await page.waitForURL("**/");
 
+    console.log("after return-to-login:", page.url());
     await page.getByPlaceholder("e0123456@u.nus.edu").fill(email);
     await page.getByPlaceholder("••••••••").fill("chickenNugget123!");
     await page.getByRole("button", { name: "login" }).click();
@@ -108,8 +113,9 @@ test.describe("password reset", () => {
 test.describe("logout", () => {
   test.use({ storageState: { cookies: [], origins: [] } });
   test("log out button successfully removes session", async ({ page }) => {
-    const email = `${Date.now()}@u.nus.edu`;
-    const username = `${Date.now()}u`;
+    const random = randomUUID();
+    const email = `${random}@u.nus.edu`;
+    const username = `${random}u`;
     const password = "password123!";
 
     await page.goto("/");

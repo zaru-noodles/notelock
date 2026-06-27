@@ -11,6 +11,7 @@ export default async function PublicLayout({
   const { data } = await supabase.auth.getClaims();
 
   if (data?.claims) {
+    console.log("layout.tsx");
     redirect("/dashboard");
   }
 

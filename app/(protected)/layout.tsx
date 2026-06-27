@@ -1,7 +1,7 @@
 import Navbar from "../components/notes/navbar/Navbar";
 import { Toaster } from "react-hot-toast";
 
-export default function ProtectedLayout({
+export default async function ProtectedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
