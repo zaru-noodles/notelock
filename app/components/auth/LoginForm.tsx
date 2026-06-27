@@ -30,7 +30,6 @@ export default function LoginForm() {
       });
       const data = await response.json();
       if (response.ok) {
-        console.error(">>> LoginForm router.push dashboard");
         router.push("/dashboard");
       } else {
         setError(data.error);

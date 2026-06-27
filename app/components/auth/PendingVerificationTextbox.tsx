@@ -30,7 +30,6 @@ export default function PendingVerificationTextbox({ loginRequest }: Props) {
       }
 
       clearInterval(interval);
-      console.error(">>> Pending router.push dashboard");
       router.push("/dashboard");
     }, QUERY_COOLDOWN);
 
