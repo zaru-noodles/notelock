@@ -60,10 +60,6 @@ export async function updateSession(request: NextRequest) {
           { status: 401 },
         );
       }
-    } else if (!isPublicPage) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
     }
   }
 
