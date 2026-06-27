@@ -102,7 +102,6 @@ test.describe("password reset", () => {
     await page.getByRole("link", { name: "Return to login page" }).click();
     await page.waitForURL("**/");
 
-    console.log("after return-to-login:", page.url());
     await page.getByPlaceholder("e0123456@u.nus.edu").fill(email);
     await page.getByPlaceholder("••••••••").fill("chickenNugget123!");
     await page.getByRole("button", { name: "login" }).click();
