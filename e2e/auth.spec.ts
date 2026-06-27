@@ -68,7 +68,7 @@ test.describe("password reset", () => {
     const email = `${Date.now()}@u.nus.edu`;
     const username = `${Date.now()}u`;
     const password = "password123!";
-    await request.post("/api/auth/register", {
+    const res = await request.post("/api/auth/register", {
       data: {
         email,
         password: password,
@@ -76,10 +76,9 @@ test.describe("password reset", () => {
         username: username,
       },
     });
-
     await page.goto("/");
     await page.getByRole("link", { name: "Reset it here!" }).click();
-
+    await page.waitForURL("**/reset-password");
     await page.getByPlaceholder("e0123456@u.nus.edu").fill(email);
 
     await page
