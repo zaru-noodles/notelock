@@ -1,10 +1,11 @@
 import { test } from "@playwright/test";
+import { randomUUID } from "crypto";
 
 const authFile = "e2e/.auth/user.json";
 
 test("authenticate", async ({ page }) => {
-  const email = `${Date.now()}@u.nus.edu`;
-  const username = `${Date.now()}u`;
+  const email = `${randomUUID()}@u.nus.edu`;
+  const username = `${randomUUID()}u`;
   const password = "password123!";
 
   await page.goto("/");

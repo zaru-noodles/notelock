@@ -5,7 +5,7 @@ export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   });
-
+  // ...rest...
   // With Fluid compute, don't put this client in a global environment
   // variable. Always create a new one on each request.
   const supabase = createServerClient(
@@ -60,10 +60,6 @@ export async function updateSession(request: NextRequest) {
           { status: 401 },
         );
       }
-    } else if (!isPublicPage) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
     }
   }
 

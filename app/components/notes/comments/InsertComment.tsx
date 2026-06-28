@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useState, useRef } from "react";
 import { postComment } from "./comment-actions";
 import { Comments } from "@/types/index";
+import { toast } from "react-hot-toast";
 
 export default function InsertComment({
   noteId,
@@ -26,6 +27,7 @@ export default function InsertComment({
     ) => {
       const result = await postComment(prevState, formData);
       if (result?.ok) {
+        toast.success("Comment posted successfully!");
         setContent("");
         setFocused(false);
       }
