@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
+import { pdf } from "pdf-to-img";
 import type { UploadRequest } from "@/types/api";
 import { SEMESTERS } from "@/utils/constants";
 
@@ -27,6 +28,11 @@ export async function POST(req: Request) {
     !uploadReq.semester
   ) {
     return Response.json({ error: "All fields are required" }, { status: 400 });
+  }
+
+  // validate title
+  if (uploadReq.title.length > 40) {
+    return Response.json({ error: "Title is too long" }, { status: 400 });
   }
 
   // validate semester
@@ -67,7 +73,7 @@ export async function POST(req: Request) {
       semester: uploadReq.semester,
       author_id: user!.id,
     })
-    .select()
+    .select("id::text")
     .single();
 
   if (noteError) {
@@ -86,6 +92,21 @@ export async function POST(req: Request) {
   if (uploadError) {
     await db.from("notes").delete().eq("id", note.id);
     return Response.json({ error: "Unable to upload note" }, { status: 500 });
+  }
+
+  const arrayBuffer = await uploadReq.file.arrayBuffer();
+  const pdfBuffer = Buffer.from(arrayBuffer);
+  const document = await pdf(pdfBuffer, { scale: 0.5 });
+  const thumbnail = await document.getPage(1);
+
+  // upload thumbnail
+  if (thumbnail) {
+    await db.storage
+      .from("thumbnail")
+      .upload(`${module.moduleCode}/${note.id}.png`, thumbnail, {
+        contentType: "image/png",
+        upsert: false,
+      });
   }
 
   return Response.json(

@@ -33,7 +33,7 @@ export async function POST(request: Request) {
   }
 
   // attempt to sign up
-  const { data, error } = await db.auth.signUp({
+  const { error } = await db.auth.signUp({
     email: req.email,
     password: req.password,
     options: {

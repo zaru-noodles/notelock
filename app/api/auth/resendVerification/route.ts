@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       emailRedirectTo: `${await getOriginURL()}/verify`,
     },
   });
-  if (error) return Response.json({ error: error.message }, { status: 401 });
+  if (error) return Response.json({ error: error.message }, { status: 500 });
 
   return Response.json(
     {

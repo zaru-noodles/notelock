@@ -15,13 +15,19 @@ export default function UpdatePasswordForm() {
   async function updatePassword(e: React.SyntheticEvent) {
     e.preventDefault();
 
+    // client side validation
+    if (!password || !confirmPassword) {
+      setErrorMessage("All fields are required");
+      return;
+    }
+
     if (confirmPassword !== password) {
       setErrorMessage("Passwords do not match");
       return;
     }
 
     setLoading(true);
-    const { data, error } = await db.auth.updateUser({ password: password });
+    const { error } = await db.auth.updateUser({ password: password });
 
     if (error !== null) {
       setErrorMessage(error.message);

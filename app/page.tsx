@@ -2,14 +2,21 @@ import Navbar from "@/app/components/landing-page/Navbar";
 import Hero from "@/app/components/landing-page/Hero";
 import About from "./components/landing-page/AboutSection";
 import Modules from "./components/landing-page/ModuleSection";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
-export default function Home() {
+export default async function Home() {
+  const db = createClient(await cookies());
+  const { data: user } = await db.auth.getClaims();
+  if (user) {
+    redirect("/dashboard");
+  }
+
   return (
     <>
       <Navbar />
-      <div className="flex justify-center items-center">
-        <Hero />
-      </div>
+      <Hero />
       <About />
       <Modules />
     </>

@@ -2,8 +2,8 @@
 import type { UploadRequest } from "@/types/api";
 import Link from "next/link";
 import { useState } from "react";
-import ModuleInput from "./ModuleInput";
-import SemesterInput from "./SemesterInput";
+import ModuleInput from "./inputs/ModuleInput";
+import SemesterInput from "./inputs/SemesterInput";
 
 export default function UploadForm() {
   const [message, setMessage] = useState<string>("");
@@ -63,40 +63,84 @@ export default function UploadForm() {
 
   if (message !== "") {
     return (
-      <>
-        <p> {message} </p>
-        <Link className="text-blue-500 hover:underline" href="/dashboard">
-          {" "}
-          Back to dashboard{" "}
+      <div className="max-w-xl w-full rounded-3xl border border-paper-4 bg-paper-2 p-8 shadow-sh-2 text-center">
+        <p className="mb-4 text-lg font-semibold text-ink-1">{message}</p>
+        <Link
+          className="inline-flex items-center justify-center rounded-full border border-honey-500 bg-honey-300 px-4 py-2 text-sm font-semibold text-paper-1 transition-colors duration-200 hover:bg-honey-500"
+          href="/dashboard"
+        >
+          Back to dashboard
         </Link>
-      </>
+      </div>
     );
   }
 
   return (
-    <form onSubmit={handleUpload}>
-      <input
-        type="text"
-        name="title"
-        onChange={handleChange}
-        placeholder="Title"
-      />
+    <form
+      onSubmit={handleUpload}
+      className="w-full max-w-xl rounded-3xl border border-paper-4 bg-paper-2 p-8 shadow-sh-2"
+    >
+      <div className="flex flex-col gap-5">
+        <div className="flex flex-col">
+          <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2 my-1 ml-2">
+            title
+          </label>
+          <input
+            id="title"
+            type="text"
+            name="title"
+            value={uploadReq.title}
+            onChange={handleChange}
+            placeholder="Enter note title"
+            className="w-120 px-4 py-2 text-2x1 rounded-2xl bg-paper-3 text-sm placeholder-gray-600 border border-transparent focus:outline-none focus:border-terra-200 focus:bg-paper-2 transition-all duration-200"
+          />
+        </div>
 
-      <SemesterInput
-        onChange={(sem) => setUploadReq({ ...uploadReq, semester: sem })}
-      />
+        <div className="flex flex-col">
+          <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2 my-1 ml-2">
+            semester
+          </label>
+          <SemesterInput
+            onChange={(sem) => setUploadReq({ ...uploadReq, semester: sem })}
+          />
+        </div>
 
-      <ModuleInput
-        onChange={(id) => setUploadReq({ ...uploadReq, moduleId: id })}
-      />
+        <div className="flex flex-col">
+          <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2 my-1 ml-2">
+            module
+          </label>
+          <ModuleInput
+            onChange={(id) => setUploadReq({ ...uploadReq, moduleId: id })}
+          />
+        </div>
 
-      <input type="file" name="file" accept=".pdf" onChange={handleChange} />
+        <div className="flex flex-col">
+          <label
+            htmlFor="file"
+            className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2 my-1 ml-2"
+          >
+            Note File
+          </label>
+          <input
+            id="file"
+            type="file"
+            name="file"
+            accept=".pdf"
+            onChange={handleChange}
+            className="h-14 w-120 cursor-pointer rounded-2xl border border-paper-4 bg-paper-3 px-4 py-2 text-sm text-ink-1 file:rounded-full file:border-none file:bg-honey-300 file:px-4 file:py-2 file:text-paper-1 file:font-semibold hover:file:bg-honey-400 focus:outline-none focus:border-terra-200 transition-all duration-200"
+          />
+        </div>
 
-      {error && <p className="text-red-500 font-bold">{error}</p>}
+        {error && <p className="text-red-500 font-bold">{error}</p>}
 
-      <button type="submit" disabled={loading}>
-        {loading ? "Uploading..." : "Upload"}
-      </button>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-2xl border border-honey-500 bg-honey-300 px-4 py-3 text-sm font-semibold text-paper-1 transition duration-200 hover:-translate-y-px hover:bg-honey-500 hover:shadow-sh-4 disabled:bg-honey-400 disabled:cursor-not-allowed"
+        >
+          {loading ? "Uploading..." : "Upload"}
+        </button>
+      </div>
     </form>
   );
 }

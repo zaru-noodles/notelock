@@ -23,8 +23,29 @@ export default function RegisterForm({ setLoginInfomation }: Props) {
   const handleRegister = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setError("");
-    setLoading(true);
 
+    // client-side validation
+    if (
+      !registerRequest.email ||
+      !registerRequest.password ||
+      !registerRequest.confirmPassword ||
+      !registerRequest.username
+    ) {
+      setError("All fields are required");
+      return;
+    }
+
+    if (!registerRequest.email.endsWith("@u.nus.edu")) {
+      setError("Must use an NUS email");
+      return;
+    }
+
+    if (registerRequest.password !== registerRequest.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    setLoading(true);
     try {
       const response = await fetch("/api/auth/register", {
         method: "POST",
