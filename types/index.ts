@@ -39,3 +39,8 @@ export type Comments = {
   author_id: string;
   author: { username: string };
 };
+
+export type Tag = {
+  id: number;
+  label: string;
+};
