@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import { Note, NoteListSearchParams } from "@/types/index";
+import { Note, NoteListSearchParams, Tag } from "@/types/index";
 import { NOTES_BUCKET, notePath } from "./storage";
 import { Comments } from "@/types/index";
 
@@ -23,7 +23,7 @@ export async function getNoteWithSignedUrl(noteId: string) {
   if (noteError || !note) {
     return null;
   }
-  console.log(note.id);
+
   const { data: moduleRow, error: moduleError } = await db
     .from("modules")
     .select("moduleCode")
@@ -64,7 +64,7 @@ export async function getNotesList(params: NoteListSearchParams) {
     return null;
   }
 
-  const { data, error } = await db.rpc("search_notes", {
+  const { data, error } = await db.rpc("search_notes_with_tags", {
     search_query: params.searchText,
     start_index: params.start,
     result_count: params.count,
@@ -72,6 +72,7 @@ export async function getNotesList(params: NoteListSearchParams) {
     selected_semester: params.selectedSemester,
     selected_author_id: params.selectedAuthorID,
     sort_by: params.sortBy,
+    tag_ids: params.tagIds,
   });
 
   if (error) {
@@ -111,4 +112,13 @@ export async function getComments(noteId: string) {
   }
 
   return data;
+}
+
+export async function getTags(): Promise<Tag[] | null> {
+  const client = createClient(await cookies());
+  const { data, error } = await client.from("tags").select("id, label");
+
+  if (error) return null;
+
+  return data as Tag[];
 }

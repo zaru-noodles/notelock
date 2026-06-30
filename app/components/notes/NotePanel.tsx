@@ -1,4 +1,4 @@
-import { Note } from "@/types";
+import { Note, Tag } from "@/types";
 import { DownloadIcon, EllipsisVerticalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -84,12 +84,29 @@ export default function NotePanel({
         {!noteData.thumbnailUrl && <p>Missing thumbnail</p>}
       </div>
 
-      <div className="flex justify-between items-start mb-0">
+      <div className="flex justify-between items-start">
         <h2 className="font-semibold text truncate">{noteData.title}</h2>
 
         <p className="text-sm text-gray-700 whitespace-nowrap shrink-0 translate-y-0.5">
           {noteData.semester}
         </p>
+      </div>
+
+      <div className="flex flex-wrap gap-1.5 -translate-x-1.5">
+        {noteData.tags && noteData.tags.length > 0 ? (
+          noteData.tags.map((tagData: Tag) => (
+            <span
+              key={tagData.id}
+              className="rounded-full border border-paper-4 bg-paper-3 px-2.5 py-1 text-[11px] tracking-[0.06em] text-ink-2"
+            >
+              {tagData.label}
+            </span>
+          ))
+        ) : (
+          <span className="rounded-full border border-paper-4 bg-paper-3 px-2.5 py-1 text-[11px] tracking-[0.06em] text-ink-2">
+            Untagged
+          </span>
+        )}
       </div>
 
       <div className="flex justify-between text-sm text-gray-600">

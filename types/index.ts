@@ -15,6 +15,7 @@ export type Note = {
   thumbnailUrl?: string;
   username?: string;
   deletePermission: boolean;
+  tags?: Tag[];
 };
 
 export type NoteListSearchParams = {
@@ -25,6 +26,7 @@ export type NoteListSearchParams = {
   selectedSemester: string;
   selectedAuthorID: string;
   sortBy: SortOrder;
+  tagIds: number[];
 };
 
 export enum SortOrder {
@@ -38,4 +40,9 @@ export type Comments = {
   created_at: Date;
   author_id: string;
   author: { username: string };
+};
+
+export type Tag = {
+  id: number;
+  label: string;
 };

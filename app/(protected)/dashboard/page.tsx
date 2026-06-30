@@ -13,6 +13,7 @@ const searchParams: NoteListSearchParams = {
   selectedSemester: "",
   selectedAuthorID: "",
   sortBy: SortOrder.DownloadCount,
+  tagIds: [],
 };
 
 async function getFavouriteModules(userID: string) {
