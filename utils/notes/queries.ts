@@ -64,7 +64,7 @@ export async function getNotesList(params: NoteListSearchParams) {
     return null;
   }
 
-  const { data, error } = await db.rpc("search_notes", {
+  const { data, error } = await db.rpc("search_notes_with_tags", {
     search_query: params.searchText,
     start_index: params.start,
     result_count: params.count,
