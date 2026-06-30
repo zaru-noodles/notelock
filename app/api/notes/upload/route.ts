@@ -15,17 +15,9 @@ export async function POST(req: Request) {
     tags: [],
   };
 
-  // parse tags
-  try {
-    uploadReq.tags = JSON.parse(formData.get("tags") as string);
-  } catch {
-    return Response.json({ error: "Unable to parse tags" }, { status: 400 });
-  }
-
   // get user
   const {
     data: { user },
-    error: userError,
   } = await db.auth.getUser();
 
   // check if all fields exist
@@ -60,6 +52,18 @@ export async function POST(req: Request) {
   const num = Number(uploadReq.moduleId);
   if (!Number.isInteger(num) || uploadReq.moduleId.trim() === "") {
     return Response.json({ error: "Invalid module ID" }, { status: 401 });
+  }
+
+  // parse tags
+  try {
+    uploadReq.tags = JSON.parse(formData.get("tags") as string);
+  } catch {
+    return Response.json({ error: "Unable to parse tags" }, { status: 400 });
+  }
+
+  // validate tags
+  if (uploadReq.tags.length > 3) {
+    return Response.json({ error: "Too many tags" }, { status: 400 });
   }
 
   const { data: module, error: moduleError } = await db

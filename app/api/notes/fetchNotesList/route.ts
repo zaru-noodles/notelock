@@ -20,6 +20,10 @@ export async function GET(req: Request) {
   }
 
   const tagIds = (searchParams.getAll("tagIds") ?? []).map(Number);
+  if (tagIds.length > 3) {
+    return Response.json({ error: "Too many tagIds" }, { status: 400 });
+  }
+
   for (const id of tagIds) {
     if (!Number.isInteger(id)) {
       return Response.json({ error: "tagId is not a number" }, { status: 400 });

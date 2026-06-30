@@ -38,6 +38,7 @@ export default function UploadForm({ tags }: Props) {
         tags: uploadReq.tags.filter((x: number) => x !== id),
       });
     } else {
+      if (uploadReq.tags.length === 3) return;
       setUploadReq({ ...uploadReq, tags: [...uploadReq.tags, id] });
     }
   }
@@ -152,7 +153,7 @@ export default function UploadForm({ tags }: Props) {
         {/* note tags */}
         <div className="flex flex-col">
           <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2 my-1 ml-2">
-            TAGS
+            TAGS (max 3)
           </label>
           {tags && (
             <div className="flex flex-wrap gap-2">

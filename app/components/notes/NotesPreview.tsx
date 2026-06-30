@@ -28,11 +28,17 @@ export default function NotesPreview({
     useState<NoteListSearchParams>(initialSearchParams);
 
   const toggleTag = (tagId: number) => {
-    const updatedTagIds = searchParams.tagIds.includes(tagId)
-      ? searchParams.tagIds.filter((id) => id !== tagId)
-      : [...searchParams.tagIds, tagId];
+    let updated;
+    if (searchParams.tagIds.includes(tagId)) {
+      updated = {
+        ...searchParams,
+        tagIds: searchParams.tagIds.filter((id) => id !== tagId),
+      };
+    } else {
+      if (searchParams.tagIds.length === 3) return;
+      updated = { ...searchParams, tagIds: [...searchParams.tagIds, tagId] };
+    }
 
-    const updated = { ...searchParams, tagIds: updatedTagIds };
     setSearchParams(updated);
     fetchNotesData(updated);
   };
@@ -70,6 +76,9 @@ export default function NotesPreview({
     <div className="flex grow h-screen">
       <div className="mr-4 py-3 w-[17%]">
         {/* search bar */}
+        <p className="mt-2 ml-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
+          Search
+        </p>
         <div className="flex w-full h-10 mb-3 px-4 py-2 rounded-2xl bg-paper-3 text-sm border border-transparent focus-within:border-terra-200 focus-within:bg-paper-2 transition-all duration-200">
           <Search className="h-5 w-5 text-ink-1 stroke-2" />
           <input
@@ -86,6 +95,9 @@ export default function NotesPreview({
         </div>
 
         {/* sortBy input */}
+        <p className="mt-2 ml-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
+          Sort by
+        </p>
         <div className="flex w-[70%] h-10 mb-3 px-4 py-2 rounded-2xl bg-paper-3 text-sm border border-transparent focus-within:border-terra-200 focus-within:bg-paper-2 transition-all duration-200">
           <ArrowDownWideNarrow className="h-5 w-5 text-ink-1 stroke-2 shrink-0" />
           <select
@@ -106,6 +118,9 @@ export default function NotesPreview({
         </div>
 
         {/* semester input */}
+        <p className="mt-2 ml-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
+          Semester
+        </p>
         <div className="flex w-[56%] h-10 mb-3 px-4 py-2 rounded-2xl bg-paper-3 text-sm border border-transparent focus-within:border-terra-200 focus-within:bg-paper-2 transition-all duration-200">
           <Clock className="h-5 w-5 text-ink-1 stroke-2 shrink-0" />
           <select
@@ -130,35 +145,31 @@ export default function NotesPreview({
         </div>
 
         {/* tags input */}
-        <div className="mb-4">
-          <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
-            Tags
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {allTags.map((tag) => {
-              const isSelected = searchParams.tagIds.includes(tag.id);
+        <p className="mt-2 ml-2 mb-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
+          Tags (max 3)
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {allTags.map((tag) => {
+            const isSelected = searchParams.tagIds.includes(tag.id);
 
-              return (
-                <button
-                  key={tag.id}
-                  type="button"
-                  aria-pressed={isSelected}
-                  onClick={() => toggleTag(tag.id)}
-                  className={`rounded-full border px-2.5 py-1.5 text-sm font-semibold transition-all duration-200 ${
-                    isSelected
-                      ? "border-honey-500 bg-honey-300 text-paper-1 shadow-sh-1"
-                      : "border-paper-4 bg-paper-3 text-ink-2 hover:border-honey-400 hover:bg-paper-2"
-                  }`}
-                >
-                  {tag.label}
-                </button>
-              );
-            })}
-          </div>
+            return (
+              <button
+                key={tag.id}
+                type="button"
+                aria-pressed={isSelected}
+                onClick={() => toggleTag(tag.id)}
+                className={`rounded-full border px-2.5 py-1.5 text-sm transition-all duration-200 ${
+                  isSelected
+                    ? "border-honey-500 bg-honey-300 text-paper-1 shadow-sh-1"
+                    : "border-paper-4 bg-paper-3 text-ink-2 hover:border-honey-400 hover:bg-paper-2"
+                }`}
+              >
+                {tag.label}
+              </button>
+            );
+          })}
         </div>
       </div>
-
-      {/* tag selection */}
 
       {/* notes display */}
       <div className="flex flex-wrap content-start grow px-6 py-5 gap-4 mr-4 w-[80%] border-paper-4 border-l border-t border-r paper-bg">
