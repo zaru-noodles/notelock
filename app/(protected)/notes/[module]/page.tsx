@@ -56,6 +56,7 @@ export default async function ModulePage({ params }: Props) {
     selectedSemester: "",
     selectedAuthorID: "",
     sortBy: SortOrder.DownloadCount,
+    tagIds: [],
   };
 
   const [moduleData, noteData, tagsData, isFavourite] = await Promise.all([

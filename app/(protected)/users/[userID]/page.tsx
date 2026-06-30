@@ -1,7 +1,7 @@
 import Link from "next/link";
 import NotesPreview from "@/app/components/notes/NotesPreview";
 import { Note, NoteListSearchParams, SortOrder } from "@/types";
-import { getNotesList } from "@/utils/notes/queries";
+import { getNotesList, getTags } from "@/utils/notes/queries";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
@@ -29,7 +29,7 @@ const fetchNoteData = async (searchParams: NoteListSearchParams) => {
   return ((await getNotesList(searchParams)) ?? []) as Note[];
 };
 
-export default async function ModulePage({ params }: Props) {
+export default async function UserPage({ params }: Props) {
   const userID = (await params).userID;
   const searchParams: NoteListSearchParams = {
     searchText: "",
@@ -39,11 +39,16 @@ export default async function ModulePage({ params }: Props) {
     selectedSemester: "",
     selectedAuthorID: userID,
     sortBy: SortOrder.DownloadCount,
+    tagIds: [],
   };
-  const noteData = await fetchNoteData(searchParams);
-  const username = await fetchUsername(userID);
 
-  if (username === null) {
+  const [noteData, username, tagsData] = await Promise.all([
+    fetchNoteData(searchParams),
+    fetchUsername(userID),
+    getTags(),
+  ]);
+
+  if (username === null || tagsData === null) {
     return (
       <>
         <p>Unable to fetch user data</p>
@@ -68,6 +73,7 @@ export default async function ModulePage({ params }: Props) {
         initialSearchParams={searchParams}
         initialNotes={noteData}
         showAuthor={false}
+        allTags={tagsData}
       />
     </div>
   );

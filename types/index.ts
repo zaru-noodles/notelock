@@ -26,6 +26,7 @@ export type NoteListSearchParams = {
   selectedSemester: string;
   selectedAuthorID: string;
   sortBy: SortOrder;
+  tagIds: number[];
 };
 
 export enum SortOrder {

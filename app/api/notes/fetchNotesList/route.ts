@@ -27,6 +27,7 @@ export async function GET(req: Request) {
     selectedSemester: searchParams.get("selectedSemester") ?? "",
     selectedAuthorID: searchParams.get("selectedAuthorID") ?? "",
     sortBy: sortBy as SortOrder,
+    tagIds: [],
   };
   const data = await getNotesList(tmp);
 
