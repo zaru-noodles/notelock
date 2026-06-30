@@ -62,6 +62,7 @@ export default function UploadForm({ tags }: Props) {
     formData.append("title", uploadReq.title);
     formData.append("moduleId", uploadReq.moduleId);
     formData.append("semester", uploadReq.semester);
+    formData.append("tags", JSON.stringify(uploadReq.tags));
 
     const response = await fetch("/api/notes/upload", {
       method: "POST",

@@ -12,7 +12,15 @@ export async function POST(req: Request) {
     moduleId: formData.get("moduleId") as string,
     semester: formData.get("semester") as string,
     file: formData.get("file") as File,
+    tags: [],
   };
+
+  // parse tags
+  try {
+    uploadReq.tags = JSON.parse(formData.get("tags") as string);
+  } catch {
+    return Response.json({ error: "Unable to parse tags" }, { status: 400 });
+  }
 
   // get user
   const {
@@ -108,6 +116,14 @@ export async function POST(req: Request) {
         upsert: false,
       });
   }
+
+  // update tags table
+  await db.from("note_tag").insert(
+    uploadReq.tags.map((id: number) => ({
+      note_id: note.id,
+      tag_id: id,
+    })),
+  );
 
   return Response.json(
     { message: "Note uploaded successfully", noteId: note.id },

@@ -15,6 +15,7 @@ export type Note = {
   thumbnailUrl?: string;
   username?: string;
   deletePermission: boolean;
+  tags?: string[];
 };
 
 export type NoteListSearchParams = {
