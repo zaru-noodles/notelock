@@ -19,6 +19,13 @@ export async function GET(req: Request) {
     return Response.json({ error: "sortBy is invalid" }, { status: 400 });
   }
 
+  const tagIds = (searchParams.getAll("tagIds") ?? []).map(Number);
+  for (const id of tagIds) {
+    if (!Number.isInteger(id)) {
+      return Response.json({ error: "tagId is not a number" }, { status: 400 });
+    }
+  }
+
   const tmp: NoteListSearchParams = {
     searchText: searchParams.get("searchText") ?? "",
     start: start,
@@ -27,7 +34,7 @@ export async function GET(req: Request) {
     selectedSemester: searchParams.get("selectedSemester") ?? "",
     selectedAuthorID: searchParams.get("selectedAuthorID") ?? "",
     sortBy: sortBy as SortOrder,
-    tagIds: [],
+    tagIds: tagIds,
   };
   const data = await getNotesList(tmp);
 

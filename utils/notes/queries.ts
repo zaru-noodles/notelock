@@ -23,7 +23,7 @@ export async function getNoteWithSignedUrl(noteId: string) {
   if (noteError || !note) {
     return null;
   }
-  console.log(note.id);
+
   const { data: moduleRow, error: moduleError } = await db
     .from("modules")
     .select("moduleCode")
@@ -64,6 +64,7 @@ export async function getNotesList(params: NoteListSearchParams) {
     return null;
   }
 
+  console.log(params.tagIds);
   const { data, error } = await db.rpc("search_notes_with_tags", {
     search_query: params.searchText,
     start_index: params.start,
@@ -72,6 +73,7 @@ export async function getNotesList(params: NoteListSearchParams) {
     selected_semester: params.selectedSemester,
     selected_author_id: params.selectedAuthorID,
     sort_by: params.sortBy,
+    tag_ids: params.tagIds,
   });
 
   if (error) {

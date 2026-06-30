@@ -17,6 +17,7 @@ type Props = {
 export default function NotesPreview({
   initialSearchParams,
   initialNotes,
+  allTags,
   showAuthor = true,
 }: Props) {
   const [notesData, setNotesData] = useState<Note[]>(initialNotes);
@@ -25,6 +26,16 @@ export default function NotesPreview({
   );
   const [searchParams, setSearchParams] =
     useState<NoteListSearchParams>(initialSearchParams);
+
+  const toggleTag = (tagId: number) => {
+    const updatedTagIds = searchParams.tagIds.includes(tagId)
+      ? searchParams.tagIds.filter((id) => id !== tagId)
+      : [...searchParams.tagIds, tagId];
+
+    const updated = { ...searchParams, tagIds: updatedTagIds };
+    setSearchParams(updated);
+    fetchNotesData(updated);
+  };
 
   // update notes with new search params
   const fetchNotesData = async (params: NoteListSearchParams) => {
@@ -39,6 +50,7 @@ export default function NotesPreview({
       selectedAuthorID: params.selectedAuthorID,
       sortBy: params.sortBy,
     });
+    params.tagIds.forEach((id) => query.append("tagIds", id.toString()));
     const response = await fetch(`/api/notes/fetchNotesList?${query}`);
 
     if (!response.ok) {
@@ -116,7 +128,37 @@ export default function NotesPreview({
             ))}
           </select>
         </div>
+
+        {/* tags input */}
+        <div className="mb-4">
+          <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
+            Tags
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {allTags.map((tag) => {
+              const isSelected = searchParams.tagIds.includes(tag.id);
+
+              return (
+                <button
+                  key={tag.id}
+                  type="button"
+                  aria-pressed={isSelected}
+                  onClick={() => toggleTag(tag.id)}
+                  className={`rounded-full border px-2.5 py-1.5 text-sm font-semibold transition-all duration-200 ${
+                    isSelected
+                      ? "border-honey-500 bg-honey-300 text-paper-1 shadow-sh-1"
+                      : "border-paper-4 bg-paper-3 text-ink-2 hover:border-honey-400 hover:bg-paper-2"
+                  }`}
+                >
+                  {tag.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
+
+      {/* tag selection */}
 
       {/* notes display */}
       <div className="flex flex-wrap content-start grow px-6 py-5 gap-4 mr-4 w-[80%] border-paper-4 border-l border-t border-r paper-bg">
