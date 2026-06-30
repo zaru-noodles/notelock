@@ -3,13 +3,14 @@
 import { ArrowDownWideNarrow, Clock, Search } from "lucide-react";
 import NotePanel from "@/app/components/notes/NotePanel";
 import { useState } from "react";
-import type { Note, NoteListSearchParams } from "@/types";
+import type { Note, NoteListSearchParams, Tag } from "@/types";
 import { SortOrder } from "@/types";
 import { SEMESTERS } from "@/utils/constants";
 
 type Props = {
   initialSearchParams: NoteListSearchParams;
   initialNotes: Note[];
+  allTags: Tag[];
   showAuthor?: boolean;
 };
 

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import NotesPreview from "@/app/components/notes/NotesPreview";
 import { Note, NoteListSearchParams, SortOrder } from "@/types";
-import { getNotesList } from "@/utils/notes/queries";
+import { getNotesList, getTags } from "@/utils/notes/queries";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import Module from "module";
@@ -31,15 +31,15 @@ const fetchNoteData = async (searchParams: NoteListSearchParams) => {
   return ((await getNotesList(searchParams)) ?? []) as Note[];
 };
 
-const fetchFavouriteData = async (moduleID: number) => {
+const fetchFavouriteData = async (moduleCode: string) => {
   const db = createClient(await cookies());
   const userID = (await db.auth.getUser()).data.user?.id;
 
   if (!userID) return null;
   const { data, error } = await db
     .from("user_module")
-    .select("*")
-    .eq("module_id", moduleID)
+    .select("*, modules!inner(moduleCode)")
+    .eq("modules.moduleCode", moduleCode)
     .eq("user_id", userID);
 
   if (error) return null;
@@ -57,28 +57,23 @@ export default async function ModulePage({ params }: Props) {
     selectedAuthorID: "",
     sortBy: SortOrder.DownloadCount,
   };
-  const moduleData = await fetchModuleData(moduleCode);
-  const noteData = await fetchNoteData(searchParams);
 
-  if (moduleData === null) {
+  const [moduleData, noteData, tagsData, isFavourite] = await Promise.all([
+    fetchModuleData(moduleCode),
+    fetchNoteData(searchParams),
+    getTags(),
+    fetchFavouriteData(moduleCode),
+  ]);
+
+  if (
+    moduleData === null ||
+    noteData === null ||
+    tagsData === null ||
+    isFavourite === null
+  ) {
     return (
       <>
         <p>Unable to fetch module data</p>
-        <Link
-          href="/dashboard"
-          className="cursor-pointer border border-honey-500 rounded-md w-10 px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:-translate-y-px hover:shadow-sh-4 mb-4.5"
-        >
-          Back to dashboard
-        </Link>
-      </>
-    );
-  }
-
-  const isFavourite = await fetchFavouriteData(moduleData.id);
-  if (isFavourite === null) {
-    return (
-      <>
-        <p>Unable to fetch favourite modules data</p>
         <Link
           href="/dashboard"
           className="cursor-pointer border border-honey-500 rounded-md w-10 px-3 py-2 bg-honey-300 text-paper-1 hover:bg-honey-500 disabled:bg-honey-400 transition-transform duration-200 hover:-translate-y-px hover:shadow-sh-4 mb-4.5"
@@ -112,6 +107,7 @@ export default async function ModulePage({ params }: Props) {
       <NotesPreview
         initialSearchParams={searchParams}
         initialNotes={noteData}
+        allTags={tagsData}
       />
     </div>
   );

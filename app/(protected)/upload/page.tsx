@@ -1,16 +1,5 @@
 import UploadForm from "@/app/components/notes/UploadForm";
-import { Tag } from "@/types";
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
-
-async function getTags(): Promise<Tag[] | null> {
-  const client = createClient(await cookies());
-  const { data, error } = await client.from("tags").select("id, label");
-
-  if (error) return null;
-
-  return data as Tag[];
-}
+import { getTags } from "@/utils/notes/queries";
 
 export default async function Upload() {
   const tags = await getTags();

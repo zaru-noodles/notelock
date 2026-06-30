@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import { Note, NoteListSearchParams } from "@/types/index";
+import { Note, NoteListSearchParams, Tag } from "@/types/index";
 import { NOTES_BUCKET, notePath } from "./storage";
 import { Comments } from "@/types/index";
 
@@ -111,4 +111,13 @@ export async function getComments(noteId: string) {
   }
 
   return data;
+}
+
+export async function getTags(): Promise<Tag[] | null> {
+  const client = createClient(await cookies());
+  const { data, error } = await client.from("tags").select("id, label");
+
+  if (error) return null;
+
+  return data as Tag[];
 }
