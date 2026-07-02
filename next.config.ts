@@ -21,7 +21,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  serverExternalPackages: ["pdf-to-img", "@napi-rs/canvas"],
+  serverExternalPackages: ["pdf-to-img", "@napi-rs/canvas", "pdfjs-dist"],
 };
 
 export default nextConfig;

@@ -5,6 +5,11 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import type { UploadRequest } from "@/types/api";
 import { SEMESTERS } from "@/utils/constants";
+import { DOMMatrix, ImageData, Path2D } from "@napi-rs/canvas";
+
+globalThis.DOMMatrix ??= DOMMatrix as unknown as typeof globalThis.DOMMatrix;
+globalThis.ImageData ??= ImageData as unknown as typeof globalThis.ImageData;
+globalThis.Path2D ??= Path2D as unknown as typeof globalThis.Path2D;
 
 export async function POST(req: Request) {
   const db = createClient(await cookies());
