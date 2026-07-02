@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import { Note, NoteListSearchParams, Tag } from "@/types/index";
+import { Module, Note, NoteListSearchParams, Tag } from "@/types/index";
 import { NOTES_BUCKET, notePath } from "./storage";
 import { Comments } from "@/types/index";
 
@@ -121,4 +121,16 @@ export async function getTags(): Promise<Tag[] | null> {
   if (error) return null;
 
   return data as Tag[];
+}
+
+export async function getFavouriteModules(userID: string) {
+  const db = createClient(await cookies());
+  const { data, error } = await db
+    .from("user_module")
+    .select("modules!id(*)")
+    .eq("user_id", userID)
+    .overrideTypes<{ modules: Module }[]>();
+
+  if (error) return [];
+  return data.map((entry) => entry.modules);
 }
