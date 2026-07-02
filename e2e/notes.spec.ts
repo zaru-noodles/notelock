@@ -7,7 +7,10 @@ test("upload a note, find note, add a comment and delete it", async ({
   const title = `Lecture Test Notes ${Date.now()}`;
 
   await page.goto("/dashboard");
-  await page.getByRole("link", { name: "Upload notes" }).click();
+  await page
+    .getByRole("navigation")
+    .getByRole("link", { name: "Upload notes" })
+    .click();
   await page.getByRole("textbox", { name: "Enter note title" }).fill(title);
 
   const semester = page.getByRole("textbox", { name: "Semester" });

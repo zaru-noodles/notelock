@@ -4,8 +4,13 @@ import Link from "next/link";
 import { useState } from "react";
 import ModuleInput from "./inputs/ModuleInput";
 import SemesterInput from "./inputs/SemesterInput";
+import { Tag } from "@/types";
 
-export default function UploadForm() {
+type Props = {
+  tags: Tag[] | null;
+};
+
+export default function UploadForm({ tags }: Props) {
   const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -14,6 +19,7 @@ export default function UploadForm() {
     moduleId: "",
     semester: "",
     file: null,
+    tags: [],
   });
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -22,6 +28,18 @@ export default function UploadForm() {
       if (files) setUploadReq({ ...uploadReq, [e.target.name]: files[0] });
     } else {
       setUploadReq({ ...uploadReq, [e.target.name]: e.target.value });
+    }
+  }
+
+  function toggleTag(id: number) {
+    if (uploadReq.tags.includes(id)) {
+      setUploadReq({
+        ...uploadReq,
+        tags: uploadReq.tags.filter((x: number) => x !== id),
+      });
+    } else {
+      if (uploadReq.tags.length === 3) return;
+      setUploadReq({ ...uploadReq, tags: [...uploadReq.tags, id] });
     }
   }
 
@@ -45,6 +63,7 @@ export default function UploadForm() {
     formData.append("title", uploadReq.title);
     formData.append("moduleId", uploadReq.moduleId);
     formData.append("semester", uploadReq.semester);
+    formData.append("tags", JSON.stringify(uploadReq.tags));
 
     const response = await fetch("/api/notes/upload", {
       method: "POST",
@@ -131,7 +150,35 @@ export default function UploadForm() {
           />
         </div>
 
-        {error && <p className="text-red-500 font-bold">{error}</p>}
+        {/* note tags */}
+        <div className="flex flex-col">
+          <label className="block font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2 my-1 ml-2">
+            TAGS (max 3)
+          </label>
+          {tags && (
+            <div className="flex flex-wrap gap-2">
+              {tags.map((tagData: Tag) => {
+                const isSelected = uploadReq.tags.includes(tagData.id);
+
+                return (
+                  <button
+                    key={tagData.id}
+                    type="button"
+                    aria-pressed={isSelected}
+                    onClick={() => toggleTag(tagData.id)}
+                    className={`rounded-full border px-3 py-2 text-sm font-semibold transition-all duration-200 ${
+                      isSelected
+                        ? "border-honey-500 bg-honey-300 text-paper-1 shadow-sh-1"
+                        : "border-paper-4 bg-paper-3 text-ink-2 hover:border-honey-400 hover:bg-paper-2"
+                    }`}
+                  >
+                    {tagData.label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
 
         <button
           type="submit"
@@ -140,6 +187,8 @@ export default function UploadForm() {
         >
           {loading ? "Uploading..." : "Upload"}
         </button>
+
+        {error && <p className="text-red-500 font-bold">{error}</p>}
       </div>
     </form>
   );

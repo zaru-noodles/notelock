@@ -1,8 +1,15 @@
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import { pdf } from "pdf-to-img";
 import type { UploadRequest } from "@/types/api";
 import { SEMESTERS } from "@/utils/constants";
+import { DOMMatrix, ImageData, Path2D } from "@napi-rs/canvas";
+
+globalThis.DOMMatrix ??= DOMMatrix as unknown as typeof globalThis.DOMMatrix;
+globalThis.ImageData ??= ImageData as unknown as typeof globalThis.ImageData;
+globalThis.Path2D ??= Path2D as unknown as typeof globalThis.Path2D;
 
 export async function POST(req: Request) {
   const db = createClient(await cookies());
@@ -12,12 +19,12 @@ export async function POST(req: Request) {
     moduleId: formData.get("moduleId") as string,
     semester: formData.get("semester") as string,
     file: formData.get("file") as File,
+    tags: [],
   };
 
   // get user
   const {
     data: { user },
-    error: userError,
   } = await db.auth.getUser();
 
   // check if all fields exist
@@ -52,6 +59,18 @@ export async function POST(req: Request) {
   const num = Number(uploadReq.moduleId);
   if (!Number.isInteger(num) || uploadReq.moduleId.trim() === "") {
     return Response.json({ error: "Invalid module ID" }, { status: 401 });
+  }
+
+  // parse tags
+  try {
+    uploadReq.tags = JSON.parse(formData.get("tags") as string);
+  } catch {
+    return Response.json({ error: "Unable to parse tags" }, { status: 400 });
+  }
+
+  // validate tags
+  if (uploadReq.tags.length > 3) {
+    return Response.json({ error: "Too many tags" }, { status: 400 });
   }
 
   const { data: module, error: moduleError } = await db
@@ -96,6 +115,7 @@ export async function POST(req: Request) {
 
   const arrayBuffer = await uploadReq.file.arrayBuffer();
   const pdfBuffer = Buffer.from(arrayBuffer);
+  const { pdf } = await import("pdf-to-img");
   const document = await pdf(pdfBuffer, { scale: 0.5 });
   const thumbnail = await document.getPage(1);
 
@@ -108,6 +128,14 @@ export async function POST(req: Request) {
         upsert: false,
       });
   }
+
+  // update tags table
+  await db.from("note_tag").insert(
+    uploadReq.tags.map((id: number) => ({
+      note_id: note.id,
+      tag_id: id,
+    })),
+  );
 
   return Response.json(
     { message: "Note uploaded successfully", noteId: note.id },
