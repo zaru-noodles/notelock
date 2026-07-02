@@ -1,6 +1,8 @@
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import { pdf } from "pdf-to-img";
 import type { UploadRequest } from "@/types/api";
 import { SEMESTERS } from "@/utils/constants";
 
@@ -108,6 +110,7 @@ export async function POST(req: Request) {
 
   const arrayBuffer = await uploadReq.file.arrayBuffer();
   const pdfBuffer = Buffer.from(arrayBuffer);
+  const { pdf } = await import("pdf-to-img");
   const document = await pdf(pdfBuffer, { scale: 0.5 });
   const thumbnail = await document.getPage(1);
 
