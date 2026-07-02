@@ -23,7 +23,7 @@ const nextConfig: NextConfig = {
   },
   serverExternalPackages: ["pdf-to-img", "@napi-rs/canvas", "pdfjs-dist"],
   outputFileTracingIncludes: {
-    "/api/convert": ["./node_modules/pdfjs-dist/legacy/build/**"],
+    "/api/notes/upload": ["./node_modules/pdfjs-dist/legacy/build/**"],
   },
 };
 
