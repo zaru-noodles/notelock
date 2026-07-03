@@ -5,11 +5,6 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import type { UploadRequest } from "@/types/api";
 import { SEMESTERS } from "@/utils/constants";
-import { DOMMatrix, ImageData, Path2D } from "@napi-rs/canvas";
-
-globalThis.DOMMatrix ??= DOMMatrix as unknown as typeof globalThis.DOMMatrix;
-globalThis.ImageData ??= ImageData as unknown as typeof globalThis.ImageData;
-globalThis.Path2D ??= Path2D as unknown as typeof globalThis.Path2D;
 
 export async function POST(req: Request) {
   const db = createClient(await cookies());
@@ -19,6 +14,7 @@ export async function POST(req: Request) {
     moduleId: formData.get("moduleId") as string,
     semester: formData.get("semester") as string,
     file: formData.get("file") as File,
+    thumbnail: formData.get("thumbnail") as File,
     tags: [],
   };
 
@@ -113,17 +109,11 @@ export async function POST(req: Request) {
     return Response.json({ error: "Unable to upload note" }, { status: 500 });
   }
 
-  const arrayBuffer = await uploadReq.file.arrayBuffer();
-  const pdfBuffer = Buffer.from(arrayBuffer);
-  const { pdf } = await import("pdf-to-img");
-  const document = await pdf(pdfBuffer, { scale: 0.5 });
-  const thumbnail = await document.getPage(1);
-
   // upload thumbnail
-  if (thumbnail) {
+  if (uploadReq.thumbnail) {
     await db.storage
       .from("thumbnail")
-      .upload(`${module.moduleCode}/${note.id}.png`, thumbnail, {
+      .upload(`${module.moduleCode}/${note.id}.png`, uploadReq.thumbnail, {
         contentType: "image/png",
         upsert: false,
       });

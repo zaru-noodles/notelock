@@ -147,7 +147,10 @@ export default function ModuleInput({ onChange }: Props) {
                 key={module.id}
                 onMouseEnter={() => setActiveIndex(index)}
                 onMouseDown={(e) => e.preventDefault()}
-                onClick={() => setModule(module)}
+                onClick={() => {
+                  setActiveIndex(index);
+                  setModule(module);
+                }}
               >
                 <b>{module.moduleCode}</b> {module.title}
               </li>

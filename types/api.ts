@@ -15,5 +15,6 @@ export type UploadRequest = {
   moduleId: string;
   semester: string;
   file: File | null;
+  thumbnail: File | null;
   tags: number[];
 };
