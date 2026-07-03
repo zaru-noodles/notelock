@@ -10,7 +10,7 @@ type Props = {
   initialUserVote: 0 | 1 | -1;
 };
 
-export function UserVote({
+export default function UserVote({
   noteId,
   initialUps,
   initialDowns,
@@ -30,7 +30,7 @@ export function UserVote({
       p_note_id: noteId,
       p_value: value,
     });
-
+    console.log("rpc Data:", data, "rpc Error:", error);
     if (!error && data?.[0]) {
       setUps(Number(data[0].ups));
       setDowns(Number(data[0].downs));
@@ -44,16 +44,24 @@ export function UserVote({
       <button
         disabled={busy}
         onClick={() => vote(1)}
-        className={userVote === 1 ? "text-green-600" : "text-gray-400"}
+        className={
+          userVote === 1
+            ? "text-green-600 hover:cursor-pointer"
+            : "text-gray-400 hover:cursor-pointer"
+        }
       >
-        <ThumbsUp size={18} /> {ups}
+        <ThumbsUp size={22} /> {ups}
       </button>
       <button
         disabled={busy}
         onClick={() => vote(-1)}
-        className={userVote === 1 ? "text-red-500" : "text-gray-400"}
+        className={
+          userVote === -1
+            ? "text-red-500 hover:cursor-pointer"
+            : "text-gray-400 hover:cursor-pointer"
+        }
       >
-        <ThumbsDown size={18} /> {downs}
+        <ThumbsDown size={22} /> {downs}
       </button>
     </div>
   );

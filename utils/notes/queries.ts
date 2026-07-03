@@ -16,7 +16,7 @@ export async function getNoteWithSignedUrl(noteId: string) {
 
   const { data: note, error: noteError } = await db
     .from("notes")
-    .select("id::text, title, semester, module_id")
+    .select("id::text, title, semester, module_id, created_at, author_id")
     .eq("id", noteId)
     .single();
 
@@ -28,6 +28,12 @@ export async function getNoteWithSignedUrl(noteId: string) {
     .from("modules")
     .select("moduleCode")
     .eq("id", note.module_id)
+    .single();
+
+  const { data: author_user } = await db
+    .from("users")
+    .select("username")
+    .eq("id", note.author_id)
     .single();
 
   if (moduleError || !moduleRow) {
@@ -48,6 +54,7 @@ export async function getNoteWithSignedUrl(noteId: string) {
 
   return {
     ...note,
+    ...author_user,
     moduleCode,
     signedUrl: urlData.signedUrl,
     downloadUrl,

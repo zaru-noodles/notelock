@@ -23,18 +23,26 @@ export default async function Page({ params }: Props) {
 
   const currentUserId = data.claims.sub;
 
-  const { data: username } = await db
+  const { data: curUser } = await db
     .from("users")
     .select("username")
     .eq("id", currentUserId)
     .single();
-  const currentUsername = username?.username;
+  const currentUsername = curUser?.username;
 
   const noteResult = await getNoteWithSignedUrl(id);
   if (!noteResult || moduleCode !== noteResult.moduleCode) {
     notFound();
   }
-  const { signedUrl, title, semester, downloadUrl } = noteResult;
+  const {
+    signedUrl,
+    title,
+    semester,
+    downloadUrl,
+    created_at,
+    author_id,
+    username,
+  } = noteResult;
 
   const commentResult = await getComments(id);
 
@@ -50,6 +58,9 @@ export default async function Page({ params }: Props) {
         comments={commentResult}
         currentUserId={data.claims.sub}
         currentUsername={currentUsername}
+        created_at={created_at}
+        author_id={author_id}
+        author_username={username}
       />
     </>
   );
