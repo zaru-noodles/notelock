@@ -23,17 +23,16 @@ export default async function Page({ params }: Props) {
 
   const currentUserId = data.claims.sub;
 
-  const { data: curUser } = await db
-    .from("users")
-    .select("username")
-    .eq("id", currentUserId)
-    .single();
-  const currentUsername = curUser?.username;
+  const [{ data: curUser }, noteResult, commentResult] = await Promise.all([
+    db.from("users").select("username").eq("id", currentUserId).single(),
+    getNoteWithSignedUrl(id),
+    getComments(id),
+  ]);
 
-  const noteResult = await getNoteWithSignedUrl(id);
   if (!noteResult || moduleCode !== noteResult.moduleCode) {
     notFound();
   }
+
   const {
     signedUrl,
     title,
@@ -43,8 +42,7 @@ export default async function Page({ params }: Props) {
     author_id,
     username,
   } = noteResult;
-
-  const commentResult = await getComments(id);
+  const currentUsername = curUser?.username;
 
   return (
     <>
