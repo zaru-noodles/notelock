@@ -51,7 +51,7 @@ export default function SemesterInput({ onChange }: Props) {
           semesters.length != 0 ? setSemester(semesters[0]) : resetSemester();
         }}
         onChange={(e) => setTextInput(e.target.value)}
-        placeholder="Semester"
+        placeholder="Semester (e.g. 24/25 S2)"
       />
 
       <ul className="absolute bg-paper-2 shadow-lg z-50 mt-1">
