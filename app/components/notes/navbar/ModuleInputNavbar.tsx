@@ -77,7 +77,12 @@ export default function ModuleInputNavbar({ onChange }: Props) {
               setModules([]);
             }}
           >
-            {module.moduleCode} {module.title}
+            <div className="font-medium">
+              <b>{module.moduleCode}</b> {module.title}
+            </div>
+            <div className="text-xs text-gray-500">
+              {module.department} | {module.faculty}
+            </div>
           </li>
         ))}
       </ul>
