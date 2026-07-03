@@ -40,7 +40,6 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"],
         storageState: "e2e/.auth/user.json",
-        launchOptions: { executablePath: "/usr/bin/chromium" },
       },
       dependencies: ["setup"],
     },

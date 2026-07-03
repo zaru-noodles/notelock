@@ -31,7 +31,7 @@ test("upload a note, find note, add a comment and delete it", async ({
 
   await expect(page.getByText("Note uploaded. Thank you!")).toBeVisible();
 
-  const search = page.getByRole("textbox", { name: "Search modules..." });
+  const search = page.getByRole("textbox", { name: "Search for modules..." });
   await search.click();
   await search.fill("CS2040S");
   await page.getByText("CS2040S Data Structures and").click();

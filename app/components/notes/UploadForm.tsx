@@ -4,11 +4,50 @@ import Link from "next/link";
 import { useState } from "react";
 import ModuleInput from "./inputs/ModuleInput";
 import SemesterInput from "./inputs/SemesterInput";
+import { getDocument, GlobalWorkerOptions } from "pdfjs-dist";
 import { Tag } from "@/types";
+
+GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.mjs",
+  import.meta.url,
+).toString();
 
 type Props = {
   tags: Tag[] | null;
 };
+
+export async function pdfToThumbnail(file: File): Promise<Blob | null> {
+  const data = await file.arrayBuffer();
+
+  const pdf = await getDocument({
+    data,
+  }).promise;
+
+  const page = await pdf.getPage(1);
+
+  const viewport = page.getViewport({ scale: 1.5 });
+
+  const canvas = document.createElement("canvas");
+  canvas.width = viewport.width;
+  canvas.height = viewport.height;
+
+  const context = canvas.getContext("2d");
+  if (!context) {
+    return null;
+  }
+
+  await page.render({
+    canvasContext: context,
+    viewport,
+  }).promise;
+
+  return await new Promise((resolve) => {
+    canvas.toBlob((blob) => {
+      if (!blob) return resolve(null);
+      resolve(blob);
+    }, "image/png");
+  });
+}
 
 export default function UploadForm({ tags }: Props) {
   const [message, setMessage] = useState<string>("");
@@ -19,6 +58,7 @@ export default function UploadForm({ tags }: Props) {
     moduleId: "",
     semester: "",
     file: null,
+    thumbnail: null,
     tags: [],
   });
 
@@ -64,6 +104,10 @@ export default function UploadForm({ tags }: Props) {
     formData.append("moduleId", uploadReq.moduleId);
     formData.append("semester", uploadReq.semester);
     formData.append("tags", JSON.stringify(uploadReq.tags));
+    formData.append(
+      "thumbnail",
+      (await pdfToThumbnail(uploadReq.file!)) ?? new Blob(),
+    );
 
     const response = await fetch("/api/notes/upload", {
       method: "POST",
