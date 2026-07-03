@@ -17,7 +17,6 @@ export async function GET(request: Request) {
   });
 
   if (error) {
-    console.log(error);
     return Response.json(
       { error: "Unable to connect to database" },
       { status: 500 },

@@ -113,7 +113,7 @@ export default function ModuleInput({ onChange }: Props) {
         onFocus={() => textInput.trim() && setIsOpen(true)}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        placeholder="Module"
+        placeholder="Search for modules..."
       />
 
       {isOpen && (
