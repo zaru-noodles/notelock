@@ -73,7 +73,9 @@ export default function ModuleInput({ onChange }: Props) {
               setModules([]);
             }}
           >
-            {module.moduleCode} {module.title}
+            <div className="font-medium">
+              <b>{module.moduleCode}</b> {module.title}
+            </div>
           </li>
         ))}
       </ul>

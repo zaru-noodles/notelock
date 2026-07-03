@@ -11,24 +11,18 @@ export async function GET(request: Request) {
     return Response.json({ error: "Invalid count" }, { status: 400 });
   }
 
-  const { data: modsByCode, error: error1 } = await db
-    .from("modules")
-    .select("*")
-    .ilike("moduleCode", `${search}%`)
-    .limit(10);
+  const { data, error } = await db.rpc("search_module", {
+    search_query: search,
+    result_count: count,
+  });
 
-  if (error1) return Response.json({ error: error1.message }, { status: 500 });
+  if (error) {
+    console.log(error);
+    return Response.json(
+      { error: "Unable to connect to database" },
+      { status: 500 },
+    );
+  }
 
-  const { data: modsByName, error: error2 } = await db
-    .from("modules")
-    .select("*")
-    .ilike("title", `%${search}%`)
-    .limit(10);
-
-  if (error2) return Response.json({ error: error2.message }, { status: 500 });
-
-  return Response.json(
-    { modules: [...modsByCode, ...modsByName].slice(0, count) },
-    { status: 200 },
-  );
+  return Response.json({ modules: data }, { status: 200 });
 }
