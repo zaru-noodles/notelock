@@ -31,7 +31,7 @@ export async function getNoteWithSignedUrl(noteId: string) {
     .single();
 
   const { data: author_user } = await db
-    .from("users")
+    .from("user_profiles")
     .select("username")
     .eq("id", note.author_id)
     .single();

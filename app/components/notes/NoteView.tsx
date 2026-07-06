@@ -70,13 +70,25 @@ export default function NoteView({
         </div>
       </div>
 
-      <div className="flex items-center justify-between ">
-        <h1 className="font-display text-4xl leading-tight text-ink-0">
-          {title}
-          <p>
-            {timeAgo(created_at)} by {author_username}
+      <div className="mt-1 flex items-center justify-between">
+        <div className="min-w-0">
+          <h1 className="font-display text-4xl leading-tight text-ink-0">
+            {title}
+          </h1>
+          <p className="font-mono text-sm text-ink-3">
+            <time dateTime={new Date(created_at).toISOString()}>
+              {timeAgo(created_at)}
+            </time>
+            {" by "}
+            <Link
+              href={`/users/${author_id}`}
+              className="text-ink-2 transition hover:text-ink-1 hover:underline hover:cursor-pointer"
+            >
+              {author_username}
+            </Link>
           </p>
-        </h1>
+        </div>
+
         <div className="flex items-center gap-3">
           <UserVote
             noteId={noteId}
