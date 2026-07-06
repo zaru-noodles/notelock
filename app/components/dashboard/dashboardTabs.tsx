@@ -1,6 +1,5 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import NUSModsSync from "./NUSModsSync";
 
 type Tab = "Overview" | "Favourites" | "NUSMods";
 const tabs: Tab[] = ["Overview", "Favourites", "NUSMods"];
