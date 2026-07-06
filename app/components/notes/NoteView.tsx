@@ -33,7 +33,7 @@ type NoteViewProps = {
   initialUserVote: 0 | 1 | -1;
 };
 
-export default async function NoteView({
+export default function NoteView({
   moduleCode,
   title,
   semester,
