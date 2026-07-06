@@ -15,7 +15,7 @@ const fetchUsername = async (userID: string) => {
   const db = createClient(await cookies());
 
   const { data, error } = await db
-    .from("users")
+    .from("user_profiles")
     .select("username")
     .eq("id", userID)
     .single();
