@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
 import {
   Bookmark,
   Star,
@@ -30,6 +28,9 @@ type NoteViewProps = {
   created_at: string | Date;
   author_id: string;
   author_username: string;
+  initialUps: number;
+  initialDowns: number;
+  initialUserVote: 0 | 1 | -1;
 };
 
 export default async function NoteView({
@@ -45,29 +46,10 @@ export default async function NoteView({
   created_at,
   author_id,
   author_username,
+  initialUps,
+  initialDowns,
+  initialUserVote,
 }: NoteViewProps) {
-  const db = createClient(await cookies());
-  const [
-    { data: votes },
-    {
-      data: { user },
-    },
-  ] = await Promise.all([
-    db.from("notes_with_votes").select("*").eq("id", noteId).single(),
-    db.auth.getUser(),
-  ]);
-
-  let myVote: 0 | 1 | -1 = 0;
-  if (user) {
-    const { data } = await db
-      .from("votes")
-      .select("value")
-      .eq("note_id", noteId)
-      .eq("user_id", user.id)
-      .maybeSingle();
-    myVote = (data?.value ?? 0) as 0 | 1 | -1;
-  }
-
   return (
     <div className="xl:w-[90%] mx-auto mt-5 w-full">
       <Link
@@ -98,9 +80,9 @@ export default async function NoteView({
         <div className="flex items-center gap-3">
           <UserVote
             noteId={noteId}
-            initialUps={Number(votes.ups)}
-            initialDowns={Number(votes.downs)}
-            initialUserVote={myVote}
+            initialUps={initialUps}
+            initialDowns={initialDowns}
+            initialUserVote={initialUserVote}
           />
           <DownloadButton downloadUrl={downloadUrl} noteId={noteId} />
           {/*TODO: Report button for updating during permission */}

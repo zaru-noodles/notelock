@@ -14,8 +14,8 @@ type Props = {
 
 export default async function Page({ params }: Props) {
   const { module: moduleCode, id } = await params;
-
   const db = createClient(await cookies());
+
   const { data, error: authError } = await db.auth.getClaims();
   if (!data?.claims || authError) {
     return redirect("/");
@@ -23,11 +23,13 @@ export default async function Page({ params }: Props) {
 
   const currentUserId = data.claims.sub;
 
-  const [{ data: curUser }, noteResult, commentResult] = await Promise.all([
-    db.from("users").select("username").eq("id", currentUserId).single(),
-    getNoteWithSignedUrl(id),
-    getComments(id),
-  ]);
+  const [{ data: curUser }, noteResult, commentResult, { data: voteState }] =
+    await Promise.all([
+      db.from("users").select("username").eq("id", currentUserId).single(),
+      getNoteWithSignedUrl(id),
+      getComments(id),
+      db.rpc("get_vote_state", { p_note_id: id }),
+    ]);
 
   if (!noteResult || moduleCode !== noteResult.moduleCode) {
     notFound();
@@ -42,7 +44,9 @@ export default async function Page({ params }: Props) {
     author_id,
     username,
   } = noteResult;
+
   const currentUsername = curUser?.username;
+  const votes = voteState?.[0];
 
   return (
     <>
@@ -59,6 +63,9 @@ export default async function Page({ params }: Props) {
         created_at={created_at}
         author_id={author_id}
         author_username={username}
+        initialUps={Number(votes?.ups ?? 0)}
+        initialDowns={Number(votes?.downs ?? 0)}
+        initialUserVote={(votes?.user_vote ?? 0) as 0 | 1 | -1}
       />
     </>
   );
