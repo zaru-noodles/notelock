@@ -182,6 +182,7 @@ export default function NotesPreview({
               noteData={note}
               reloadNotes={() => fetchNotesData(searchParams)}
               showAuthor={showAuthor}
+              isDraggable={true}
             />
           ))}
         </div>

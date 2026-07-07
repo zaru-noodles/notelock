@@ -10,17 +10,19 @@ type Props = {
   noteData: Note;
   reloadNotes: () => void;
   showAuthor: boolean;
+  isDraggable?: boolean;
 };
 
 export default function NotePanel({
   noteData,
   reloadNotes,
   showAuthor,
+  isDraggable = false,
 }: Props) {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
-  const { ref: dragRef } = useDraggable({
+  const { ref: dragRef, isDragging } = useDraggable({
     id: noteData.id,
   });
 
@@ -66,9 +68,11 @@ export default function NotePanel({
     <div
       ref={(node) => {
         panelRef.current = node;
-        dragRef(node);
+        if (isDraggable) dragRef(node);
       }}
-      className="w-[21%] h-fit mx-4.5 my-3 p-4 bg-paper-2 hover:bg-paper-3 rounded-1x1 border border-terra-100 rounded-2xl transition-transform duration-200 hover:shadow-sh-4"
+      className={`w-[21%] h-fit mx-4.5 my-3 p-4 bg-paper-2 hover:bg-paper-3 rounded-1x1 border border-terra-100 rounded-2xl transition-all duration-200 hover:shadow-sh-4 ${
+        isDragging ? "scale-70 opacity-75" : "scale-100 opacity-100"
+      }`}
       onClick={() =>
         router.push(
           `${window.location.origin}/notes/${noteData.moduleCode}/${noteData.id}`,
