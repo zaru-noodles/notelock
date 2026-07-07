@@ -3,6 +3,7 @@ import { DownloadIcon, EllipsisVerticalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+import { useDraggable } from "@dnd-kit/react";
 import Image from "next/image";
 
 type Props = {
@@ -19,6 +20,9 @@ export default function NotePanel({
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
+  const { ref: dragRef } = useDraggable({
+    id: noteData.id,
+  });
 
   /** close the dropdown menu when clicking outside of it */
   useEffect(() => {
@@ -60,7 +64,10 @@ export default function NotePanel({
 
   return (
     <div
-      ref={panelRef}
+      ref={(node) => {
+        panelRef.current = node;
+        dragRef(node);
+      }}
       className="w-[21%] h-fit mx-4.5 my-3 p-4 bg-paper-2 hover:bg-paper-3 rounded-1x1 border border-terra-100 rounded-2xl transition-transform duration-200 hover:shadow-sh-4"
       onClick={() =>
         router.push(
