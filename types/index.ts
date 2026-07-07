@@ -46,3 +46,8 @@ export type Tag = {
   id: number;
   label: string;
 };
+
+export type Binder = {
+  id: string;
+  title: string;
+};

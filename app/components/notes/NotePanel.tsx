@@ -70,8 +70,8 @@ export default function NotePanel({
         panelRef.current = node;
         if (isDraggable) dragRef(node);
       }}
-      className={`w-[21%] h-fit mx-4.5 my-3 p-4 bg-paper-2 hover:bg-paper-3 rounded-1x1 border border-terra-100 rounded-2xl transition-all duration-200 hover:shadow-sh-4 ${
-        isDragging ? "scale-70 opacity-75" : "scale-100 opacity-100"
+      className={`w-[22.5%] h-fit mx-3 my-3 p-4 bg-paper-2 hover:bg-paper-3 rounded-1x1 border border-terra-100 rounded-2xl transition-all duration-200 hover:shadow-sh-4 ${
+        isDragging ? "scale-70 opacity-50" : "scale-100 opacity-100"
       }  ${menuOpen ? "z-50 relative" : ""}`}
       onClick={() =>
         router.push(
@@ -80,7 +80,7 @@ export default function NotePanel({
       }
     >
       {/* thumbnail */}
-      <div className="flex justify-center items-center rounded-xl mb-3 h-44 overflow-hidden">
+      <div className="flex justify-center items-center rounded-xl mb-1 h-44 overflow-hidden">
         {noteData.thumbnailUrl && (
           <Image
             className="h-42 w-auto object-contain rounded-lg shadow-sm"

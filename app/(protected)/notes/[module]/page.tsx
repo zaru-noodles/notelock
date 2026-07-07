@@ -1,6 +1,6 @@
 import Link from "next/link";
 import NotesPreview from "@/app/components/notes/NotesPreview";
-import { Note, NoteListSearchParams, SortOrder } from "@/types";
+import { Binder, Note, NoteListSearchParams, SortOrder } from "@/types";
 import { getNotesList, getTags } from "@/utils/notes/queries";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
@@ -46,6 +46,21 @@ const fetchFavouriteData = async (moduleCode: string) => {
   return data.length > 0;
 };
 
+const fetchBinderData = async (moduleCode: string) => {
+  const db = createClient(await cookies());
+  const userID = (await db.auth.getUser()).data.user?.id;
+
+  if (!userID) return null;
+  const { data, error } = await db
+    .from("binders")
+    .select("id::text, title, modules!inner(moduleCode)")
+    .eq("modules.moduleCode", moduleCode)
+    .eq("author_id", userID);
+
+  if (error) return null;
+  return data as Binder[];
+};
+
 export default async function ModulePage({ params }: Props) {
   const moduleCode = (await params).module;
   const searchParams: NoteListSearchParams = {
@@ -59,18 +74,21 @@ export default async function ModulePage({ params }: Props) {
     tagIds: [],
   };
 
-  const [moduleData, noteData, tagsData, isFavourite] = await Promise.all([
-    fetchModuleData(moduleCode),
-    fetchNoteData(searchParams),
-    getTags(),
-    fetchFavouriteData(moduleCode),
-  ]);
+  const [moduleData, noteData, tagsData, isFavourite, binderData] =
+    await Promise.all([
+      fetchModuleData(moduleCode),
+      fetchNoteData(searchParams),
+      getTags(),
+      fetchFavouriteData(moduleCode),
+      fetchBinderData(moduleCode),
+    ]);
 
   if (
     moduleData === null ||
     noteData === null ||
     tagsData === null ||
-    isFavourite === null
+    isFavourite === null ||
+    binderData === null
   ) {
     return (
       <>
@@ -109,6 +127,8 @@ export default async function ModulePage({ params }: Props) {
         initialSearchParams={searchParams}
         initialNotes={noteData}
         allTags={tagsData}
+        initialBinder={binderData}
+        showBinders={true}
       />
     </div>
   );

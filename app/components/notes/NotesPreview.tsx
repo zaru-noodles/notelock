@@ -2,8 +2,9 @@
 
 import { ArrowDownWideNarrow, Clock, Search } from "lucide-react";
 import NotePanel from "@/app/components/notes/NotePanel";
+import BinderPreview from "@/app/components/notes/binders/BinderPreview";
 import { useState } from "react";
-import type { Note, NoteListSearchParams, Tag } from "@/types";
+import type { Binder, Note, NoteListSearchParams, Tag } from "@/types";
 import { SortOrder } from "@/types";
 import { SEMESTERS } from "@/utils/constants";
 import { DragDropProvider } from "@dnd-kit/react";
@@ -11,15 +12,19 @@ import { DragDropProvider } from "@dnd-kit/react";
 type Props = {
   initialSearchParams: NoteListSearchParams;
   initialNotes: Note[];
+  initialBinder?: Binder[];
   allTags: Tag[];
   showAuthor?: boolean;
+  showBinders?: boolean;
 };
 
 export default function NotesPreview({
   initialSearchParams,
   initialNotes,
+  initialBinder = [],
   allTags,
   showAuthor = true,
+  showBinders = false,
 }: Props) {
   const [notesData, setNotesData] = useState<Note[]>(initialNotes);
   const [notesError, setNotesError] = useState<string>(
@@ -75,8 +80,8 @@ export default function NotesPreview({
 
   return (
     <DragDropProvider>
-      <div className="flex grow h-screen">
-        <div className="mr-4 py-3 w-[17%]">
+      <div className="flex grow">
+        <div className="mr-4 py-3 w-[17%] sticky self-start top-18 mt-3">
           {/* search bar */}
           <p className="mt-2 ml-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
             Search
@@ -174,7 +179,7 @@ export default function NotesPreview({
         </div>
 
         {/* notes display */}
-        <div className="flex flex-wrap content-start grow px-6 py-5 gap-4 mr-4 w-[80%] border-paper-4 border-l border-t border-r paper-bg">
+        <div className="flex flex-wrap content-start grow px-6 py-5 gap-1 mr-4 w-[60%] border-paper-4 border-l border-t border-r paper-bg">
           {notesError && !notesData && <p>{notesError}</p>}
           {notesData.map((note: Note) => (
             <NotePanel
@@ -186,6 +191,13 @@ export default function NotesPreview({
             />
           ))}
         </div>
+
+        {showBinders && (
+          <BinderPreview
+            initialBinder={initialBinder}
+            selectedModuleCode={searchParams.selectedModuleCode}
+          />
+        )}
       </div>
     </DragDropProvider>
   );
