@@ -72,7 +72,7 @@ export default function NotePanel({
       }}
       className={`w-[21%] h-fit mx-4.5 my-3 p-4 bg-paper-2 hover:bg-paper-3 rounded-1x1 border border-terra-100 rounded-2xl transition-all duration-200 hover:shadow-sh-4 ${
         isDragging ? "scale-70 opacity-75" : "scale-100 opacity-100"
-      }`}
+      }  ${menuOpen ? "z-50 relative" : ""}`}
       onClick={() =>
         router.push(
           `${window.location.origin}/notes/${noteData.moduleCode}/${noteData.id}`,
@@ -146,7 +146,7 @@ export default function NotePanel({
           </button>
 
           {menuOpen && (
-            <div className="absolute top-full w-40 overflow-hidden rounded border border-terra-100 bg-paper-1 shadow-sh-4 z-10">
+            <div className="absolute top-full w-40 overflow-hidden rounded border border-terra-100 bg-paper-1 shadow-sh-4 z-50">
               {noteData.deletePermission && (
                 <button
                   type="button"
