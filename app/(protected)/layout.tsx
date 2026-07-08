@@ -1,20 +1,18 @@
 import Navbar from "../components/notes/navbar/Navbar";
 import { Toaster } from "react-hot-toast";
-import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+import { getCurrentUser } from "../api/auth/current-user";
 
 export default async function ProtectedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const db = createClient(await cookies());
-  const { data } = await db.auth.getClaims();
-  if (!data?.claims) redirect("/");
+  const user = await getCurrentUser();
+  if (!user) redirect("/");
   return (
     <>
-      <Navbar />
+      <Navbar authLevel={user.authLevel ?? 0} />
       <Toaster position="top-center" />
       {children}
     </>

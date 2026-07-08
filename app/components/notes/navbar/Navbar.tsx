@@ -7,9 +7,19 @@ import { useEffect, useState } from "react";
 import LogoutButton from "../../auth/LogoutButton";
 import Link from "next/link";
 
-export default function Navbar() {
+type props = {
+  authLevel: 0 | 1 | 2;
+};
+
+export default function Navbar({ authLevel }: props) {
   const router = useRouter();
   const [username, setUsername] = useState("");
+
+  const AUTH_LEVEL_LABELS: Record<number, string> = {
+    0: "Student",
+    1: "Professor",
+    2: "Admin",
+  };
 
   useEffect(() => {
     async function getUser() {
@@ -44,7 +54,7 @@ export default function Navbar() {
         <div className="border-r-2 border-paper-4 pr-1.5">
           <p className="text-right leading-none pb-0.5">{username}</p>
           <p className="text-sm text-gray-600 text-right leading-none">
-            Student
+            {AUTH_LEVEL_LABELS[authLevel] ?? "Student"}
           </p>
         </div>
         <LogoutButton />
