@@ -82,8 +82,11 @@ export default function BinderPreview({
           </p>
         ) : (
           binderData.map((binder) => (
-            <div key={binder.id} className="border border-paper-4 p-2 mb-2">
-              <p>Binder: {binder.id}</p>
+            <div
+              key={binder.id}
+              className="w-full py-2 px-3 mb-2 rounded bg-paper-3 text-ink-2 border border-paper-4 hover:bg-paper-4 transition-colors duration-200 cursor-pointer flex"
+            >
+              <p>{binder.title}</p>
             </div>
           ))
         )}
