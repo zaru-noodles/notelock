@@ -2,8 +2,9 @@ import { Comments } from "@/types/index";
 import { deleteComment } from "./comment-actions";
 import { Trash2 } from "lucide-react";
 import { timeAgo } from "@/utils/notes/time";
+import { getCurrentUser } from "@/app/api/auth/current-user";
 
-export default function CommentBody({
+export default async function CommentBody({
   noteId,
   moduleCode,
   comments,
@@ -14,6 +15,8 @@ export default function CommentBody({
   comments: Comments[];
   currentUserId: string;
 }) {
+  const user = await getCurrentUser();
+  const isAdmin = (user?.authLevel ?? 0) >= 2;
   return comments.length === 0 ? (
     <p className="py-8 text-center text-sm text-ink-3">
       No comments yet, be the first!
@@ -29,7 +32,7 @@ export default function CommentBody({
             <span className="shrink-0 text-xs text-ink-3">
               {timeAgo(c.created_at)}
             </span>
-            {c.author_id === currentUserId && (
+            {(c.author_id === currentUserId || isAdmin) && (
               <form action={deleteComment} className="ml-auto shrink-0">
                 <input type="hidden" name="noteId" value={noteId} />
                 <input type="hidden" name="moduleCode" value={moduleCode} />

@@ -11,6 +11,8 @@ import PdfViewer from "./PdfViewer/PdfViewer";
 import DownloadButton from "./DownloadButton";
 import InsertComment from "./comments/InsertComment";
 import CommentBody from "./comments/CommentBody";
+import UserVote from "./UserVote";
+import { timeAgo } from "@/utils/notes/time";
 import { Comments } from "@/types/index";
 
 type NoteViewProps = {
@@ -23,6 +25,12 @@ type NoteViewProps = {
   comments: Comments[];
   currentUserId: string;
   currentUsername: string;
+  created_at: string | Date;
+  author_id: string;
+  author_username: string;
+  initialUps: number;
+  initialDowns: number;
+  initialUserVote: 0 | 1 | -1;
 };
 
 export default function NoteView({
@@ -35,6 +43,12 @@ export default function NoteView({
   comments,
   currentUserId,
   currentUsername,
+  created_at,
+  author_id,
+  author_username,
+  initialUps,
+  initialDowns,
+  initialUserVote,
 }: NoteViewProps) {
   return (
     <div className="xl:w-[90%] mx-auto mt-5 w-full">
@@ -54,20 +68,34 @@ export default function NoteView({
             {semester}
           </span>
         </div>
-        <button
-          type="button"
-          className="inline-flex items-center gap-2 rounded-pill border border-ink-4 bg-paper-0 px-4 py-2 text-sm font-medium text-ink-1 shadow-sh-1 hover:bg-paper-1"
-        >
-          <Star className="size-4" /> Favourite
-        </button>
       </div>
 
-      <div className="flex items-center justify-between ">
-        <h1 className="font-display text-4xl leading-tight text-ink-0">
-          {title}
-        </h1>
+      <div className="mt-1 flex items-center justify-between">
+        <div className="min-w-0">
+          <h1 className="font-display text-4xl leading-tight text-ink-0">
+            {title}
+          </h1>
+          <p className="font-mono text-sm text-ink-3">
+            <time dateTime={new Date(created_at).toISOString()}>
+              {timeAgo(created_at)}
+            </time>
+            {" by "}
+            <Link
+              href={`/users/${author_id}`}
+              className="text-ink-2 transition hover:text-ink-1 hover:underline hover:cursor-pointer"
+            >
+              {author_username}
+            </Link>
+          </p>
+        </div>
 
         <div className="flex items-center gap-3">
+          <UserVote
+            noteId={noteId}
+            initialUps={initialUps}
+            initialDowns={initialDowns}
+            initialUserVote={initialUserVote}
+          />
           <DownloadButton downloadUrl={downloadUrl} noteId={noteId} />
           {/*TODO: Report button for updating during permission */}
           <button className="hover:text-ink-1">
