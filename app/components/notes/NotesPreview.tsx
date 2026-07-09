@@ -81,7 +81,7 @@ export default function NotesPreview({
   return (
     <DragDropProvider>
       <div className="flex grow">
-        <div className="mr-4 py-3 w-[17%] sticky self-start top-18 mt-3">
+        <div className="mr-4 py-3 w-[14%] sticky self-start top-18 mt-3">
           {/* search bar */}
           <p className="mt-2 ml-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
             Search
@@ -105,7 +105,7 @@ export default function NotesPreview({
           <p className="mt-2 ml-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
             Sort by
           </p>
-          <div className="flex w-[70%] h-10 mb-3 px-4 py-2 rounded-2xl bg-paper-3 text-sm border border-transparent focus-within:border-terra-200 focus-within:bg-paper-2 transition-all duration-200">
+          <div className="flex w-[80%] h-10 mb-3 px-4 py-2 rounded-2xl bg-paper-3 text-sm border border-transparent focus-within:border-terra-200 focus-within:bg-paper-2 transition-all duration-200">
             <ArrowDownWideNarrow className="h-5 w-5 text-ink-1 stroke-2 shrink-0" />
             <select
               value={searchParams.sortBy}
@@ -129,7 +129,7 @@ export default function NotesPreview({
           <p className="mt-2 ml-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
             Semester
           </p>
-          <div className="flex w-[56%] h-10 mb-3 px-4 py-2 rounded-2xl bg-paper-3 text-sm border border-transparent focus-within:border-terra-200 focus-within:bg-paper-2 transition-all duration-200">
+          <div className="flex w-[80%] h-10 mb-3 px-4 py-2 rounded-2xl bg-paper-3 text-sm border border-transparent focus-within:border-terra-200 focus-within:bg-paper-2 transition-all duration-200">
             <Clock className="h-5 w-5 text-ink-1 stroke-2 shrink-0" />
             <select
               value={searchParams.selectedSemester}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import { useState } from "react";
 import type { Binder } from "@/types";
 import { createClient } from "@/utils/supabase/client";
@@ -16,60 +16,91 @@ export default function BinderPreview({
   selectedModuleCode,
 }: Props) {
   const [binderData, setBinderData] = useState<Binder[]>(initialBinder);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingTitle, setEditingTitle] = useState<string>("");
 
   async function addBinder() {
-    const db = createClient();
-    const { data: user } = await db.auth.getUser();
+    const toastLoading = toast.loading("Creating binder...");
+    try {
+      const db = createClient();
+      const { data: user } = await db.auth.getUser();
 
-    if (!user.user) {
-      toast.error("You must be logged in to create a binder.");
-      return;
+      if (!user.user) {
+        toast.error("You must be logged in to create a binder.");
+        return;
+      }
+
+      const { data: moduleData, error: moduleError } = await db
+        .from("modules")
+        .select("id")
+        .eq("moduleCode", selectedModuleCode)
+        .single();
+
+      if (moduleError || !moduleData) {
+        toast.error("Failed to create binder.");
+        return;
+      }
+
+      const { data, error } = await db
+        .from("binders")
+        .insert({
+          title: "New Binder",
+          author_id: user.user.id,
+          module_id: moduleData.id,
+        })
+        .select()
+        .single();
+
+      if (error || !data) {
+        toast.error("Failed to create binder.");
+        return;
+      }
+
+      setBinderData((prev) => [...prev, data]);
+      toast.success("Binder created successfully.");
+    } finally {
+      toast.dismiss(toastLoading);
     }
+  }
 
-    const { data: moduleData, error: moduleError } = await db
-      .from("modules")
-      .select("id")
-      .eq("moduleCode", selectedModuleCode)
-      .single();
+  async function updateBinderTitle(binderId: string, title: string) {
+    const toastLoading = toast.loading("Editting binder...");
+    try {
+      const db = createClient();
 
-    if (moduleError || !moduleData) {
-      toast.error("Failed to create binder.");
-      return;
+      const { error } = await db
+        .from("binders")
+        .update({ title: title })
+        .eq("id", binderId);
+
+      if (error) {
+        toast.error("Failed to edit binder.");
+        return;
+      }
+
+      setBinderData((prev) =>
+        prev.map((binder) =>
+          binder.id === binderId ? { ...binder, title: title } : binder,
+        ),
+      );
+      toast.success("Binder editted successfully.");
+    } finally {
+      toast.dismiss(toastLoading);
+      setEditingId(null);
+      setEditingTitle("");
     }
-
-    const { data, error } = await db
-      .from("binders")
-      .insert({
-        title: "New Binder",
-        author_id: user.user.id,
-        module_id: moduleData.id,
-      })
-      .select()
-      .single();
-
-    if (error || !data) {
-      toast.error("Failed to create binder.");
-      return;
-    }
-
-    setBinderData((prev) => [...prev, data]);
-    toast.success("Binder created successfully.");
   }
 
   return (
     <div className="w-[15%] py-3 -translate-y-3 sticky self-start top-20">
       <div className="flex justify-between align-bottom mb-2">
-        <h2 className="ml-2 text-2xl font-semibold tracking-[0.08em] text-ink-2">
+        <h2 className="ml-2 text-3xl font-semibold tracking-[0.08em] text-ink-1">
           Binders
         </h2>
         <button
           type="button"
           className="mr-2 rounded-full p-1 transition-colors duration-200 hover:bg-paper-4"
-          onClick={async () => {
-            const tmp = toast.loading("Creating binder...");
-            await addBinder();
-            toast.dismiss(tmp);
-          }}
+          onClick={addBinder}
         >
           <Plus className="h-6 w-6 mb-0.5 text-ink-2 stroke-2" />
         </button>
@@ -84,9 +115,36 @@ export default function BinderPreview({
           binderData.map((binder) => (
             <div
               key={binder.id}
-              className="w-full py-2 px-3 mb-2 rounded bg-paper-3 text-ink-2 border border-paper-4 hover:bg-paper-4 transition-colors duration-200 cursor-pointer flex"
+              className="w-full py-2 px-3 mb-2 rounded bg-paper-3 text-ink-2 border border-paper-4 hover:bg-paper-4 transition-colors duration-200 cursor-pointer flex justify-between"
             >
-              <p>{binder.title}</p>
+              {editingId === binder.id ? (
+                <input
+                  autoFocus
+                  value={editingTitle}
+                  onChange={(e) => setEditingTitle(e.target.value)}
+                  onBlur={() => updateBinderTitle(binder.id, editingTitle)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter")
+                      updateBinderTitle(binder.id, editingTitle);
+                    if (e.key === "Escape") setEditingId(null);
+                  }}
+                  className="bg-transparent border-b border-terra-400 outline-none text-sm"
+                />
+              ) : (
+                <p className="truncate">{binder.title}</p>
+              )}
+
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setEditingId(binder.id);
+                  setEditingTitle(binder.title);
+                }}
+                className="shrink-0 rounded-4xl p-0.5 hover:bg-paper-3 transition-colors"
+              >
+                <Pencil className="h-3.5 w-3.5 text-ink-2 stroke-2" />
+              </button>
             </div>
           ))
         )}
