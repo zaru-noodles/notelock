@@ -1,10 +1,11 @@
 "use client";
 
-import { Pencil, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import type { Binder } from "@/types";
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "react-hot-toast";
+import BinderListItem from "./BinderListItem";
 
 type Props = {
   initialBinder?: Binder[];
@@ -113,39 +114,15 @@ export default function BinderPreview({
           </p>
         ) : (
           binderData.map((binder) => (
-            <div
+            <BinderListItem
               key={binder.id}
-              className="w-full py-2 px-3 mb-2 rounded bg-paper-3 text-ink-2 border border-paper-4 hover:bg-paper-4 transition-colors duration-200 cursor-pointer flex justify-between"
-            >
-              {editingId === binder.id ? (
-                <input
-                  autoFocus
-                  value={editingTitle}
-                  onChange={(e) => setEditingTitle(e.target.value)}
-                  onBlur={() => updateBinderTitle(binder.id, editingTitle)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter")
-                      updateBinderTitle(binder.id, editingTitle);
-                    if (e.key === "Escape") setEditingId(null);
-                  }}
-                  className="bg-transparent border-b border-terra-400 outline-none text-sm"
-                />
-              ) : (
-                <p className="truncate">{binder.title}</p>
-              )}
-
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setEditingId(binder.id);
-                  setEditingTitle(binder.title);
-                }}
-                className="shrink-0 rounded-4xl p-0.5 hover:bg-paper-3 transition-colors"
-              >
-                <Pencil className="h-3.5 w-3.5 text-ink-2 stroke-2" />
-              </button>
-            </div>
+              binder={binder}
+              editingId={editingId}
+              editingTitle={editingTitle}
+              setEditingId={setEditingId}
+              setEditingTitle={setEditingTitle}
+              updateBinderTitle={updateBinderTitle}
+            />
           ))
         )}
       </div>
