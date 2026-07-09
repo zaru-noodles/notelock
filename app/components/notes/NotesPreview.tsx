@@ -120,6 +120,7 @@ export default function NotesPreview({
               className="rounded focus:outline-none w-full pl-2 bg-transparent"
             >
               <option value={SortOrder.DownloadCount}>Most downloaded</option>
+              <option value={SortOrder.Rating}>Highest Rated</option>
               <option value={SortOrder.Semester}>Semester</option>
             </select>
           </div>

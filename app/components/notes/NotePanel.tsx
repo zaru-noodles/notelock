@@ -1,5 +1,10 @@
 import { Note, Tag } from "@/types";
-import { DownloadIcon, EllipsisVerticalIcon } from "lucide-react";
+import {
+  DownloadIcon,
+  EllipsisVerticalIcon,
+  ThumbsDown,
+  ThumbsUp,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -130,6 +135,12 @@ export default function NotePanel({
 
           <p>{noteData.downloadCount}</p>
           <DownloadIcon className="h-4 w-4 text-gray-500 ml-0.5 mr-2.5" />
+
+          <p>{noteData.upvoteCount}</p>
+          <ThumbsUp className="h-3.5 w-3.5 text-gray-500 ml-0.5 mr-2.5" />
+
+          <p>{noteData.downvoteCount}</p>
+          <ThumbsDown className="h-3.5 w-3.5 text-gray-500 ml-0.5 mr-2.5" />
         </div>
 
         {/* dropdown menu */}

@@ -12,6 +12,8 @@ export type Note = {
   semester: string;
   moduleCode: string;
   downloadCount: number;
+  upvoteCount: number;
+  downvoteCount: number;
   thumbnailUrl?: string;
   username?: string;
   deletePermission: boolean;
@@ -32,6 +34,7 @@ export type NoteListSearchParams = {
 export enum SortOrder {
   DownloadCount = "downloadCount",
   Semester = "semester",
+  Rating = "rating",
 }
 
 export type Comments = {
