@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import ModuleInputNavbar from "./ModuleInputNavbar";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";

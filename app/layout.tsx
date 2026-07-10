@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Newsreader, Geist, Caveat, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
   title: "NoteLock",
@@ -40,6 +41,12 @@ export default function RootLayout({
       className={`h-full antialiased ${newsreader.variable} ${geist.variable} ${caveat.variable} ${jetbrainsMono.variable} scroll-smooth`}
     >
       <body className="min-h-full flex flex-col bg-paper-1 text-ink-1">
+        <NextTopLoader
+          color="#c75a2e"
+          height={3}
+          showSpinner={false}
+          shadow={false}
+        />
         {children}
       </body>
     </html>

@@ -1,12 +1,5 @@
 import Link from "next/link";
-import {
-  Bookmark,
-  Star,
-  ThumbsUp,
-  ThumbsDown,
-  ChevronLeft,
-  Flag,
-} from "lucide-react";
+import { ChevronLeft, Flag } from "lucide-react";
 import PdfViewer from "./PdfViewer/PdfViewer";
 import DownloadButton from "./DownloadButton";
 import InsertComment from "./comments/InsertComment";

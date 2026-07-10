@@ -5,7 +5,7 @@ import {
   ThumbsDown,
   ThumbsUp,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useDraggable } from "@dnd-kit/react";
@@ -78,11 +78,11 @@ export default function NotePanel({
       className={`w-[22.5%] h-fit mx-3 my-3 p-4 bg-paper-2 hover:bg-paper-3 rounded-1x1 border border-terra-100 rounded-2xl transition-all duration-200 hover:shadow-sh-4 ${
         isDragging ? "scale-70 opacity-50" : "scale-100 opacity-100"
       }  ${menuOpen ? "z-50 relative" : ""}`}
-      onClick={() =>
+      onClick={() => {
         router.push(
           `${window.location.origin}/notes/${noteData.moduleCode}/${noteData.id}`,
-        )
-      }
+        );
+      }}
     >
       {/* thumbnail */}
       <div className="flex justify-center items-center rounded-xl mb-1 h-44 overflow-hidden">
