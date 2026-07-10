@@ -1,6 +1,7 @@
 import { Folder, Pencil, Plus } from "lucide-react";
 import type { Binder } from "@/types";
 import { useDroppable } from "@dnd-kit/react";
+import { useRouter } from "nextjs-toploader/app";
 
 type Props = {
   binder: Binder;
@@ -20,6 +21,7 @@ export default function BinderListItem({
   updateBinderTitle,
 }: Props) {
   const { ref, isDropTarget } = useDroppable({ id: binder.id });
+  const router = useRouter();
 
   return (
     <div
@@ -29,6 +31,7 @@ export default function BinderListItem({
           : "border-honey-300 bg-honey-100 pb-2"
       }`}
       ref={ref}
+      onClick={() => router.push(`/binders/${binder.id}`)}
     >
       <div className="flex justify-between items-center">
         <div className="flex">
