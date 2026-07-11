@@ -61,7 +61,10 @@ export default function BinderListItem({
             setEditingId(binder.id);
             setEditingTitle(binder.title);
           }}
-          className="shrink-0 rounded-4xl p-0.5 hover:bg-paper-3 transition-colors"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          className="shrink-0 rounded-4xl p-1 hover:bg-terra-200 transition-colors"
         >
           <Pencil className="h-3.5 w-3.5 text-ink-2 stroke-2" />
         </button>
