@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import BinderClient from "@/app/components/notes/binders/BinderClient";
 import Link from "next/link";
-import { Note } from "@/types";
+import { Note, Module } from "@/types";
 
 type Props = {
   params: Promise<{
@@ -22,6 +22,7 @@ async function getBinderData(binderId: string) {
       id::text,
       title,
       author_id,
+      modules ( moduleCode ),
       binder_notes (
         position,
         notes (
@@ -67,6 +68,10 @@ export default async function BinderPage({ params }: Props) {
     .map((bn) => bn.notes);
 
   return (
-    <BinderClient binder={binder} initialNotes={notes as Partial<Note>[]} />
+    <BinderClient
+      binder={binder}
+      initialNotes={notes as Partial<Note>[]}
+      moduleCode={(binder.modules as Partial<Module>).moduleCode!}
+    />
   );
 }

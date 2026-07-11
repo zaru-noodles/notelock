@@ -1,4 +1,5 @@
 // app/api/binders/download/route.ts
+import { Note } from "@/types";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { PDFDocument } from "pdf-lib";
@@ -7,9 +8,6 @@ export async function POST(request: Request) {
   const db = createClient(await cookies());
   const { binderId } = await request.json();
 
-  const userID = (await db.auth.getUser()).data.user?.id;
-  if (!userID) return Response.json({ error: "Unauthorized" }, { status: 401 });
-
   // get notes in order
   const { data, error } = await db
     .from("binder_notes")
@@ -17,13 +15,19 @@ export async function POST(request: Request) {
       `
       position,
       notes (
-        id,
+        id::text,
         modules ( moduleCode )
       )
     `,
     )
     .eq("binder_id", binderId)
-    .order("position", { ascending: true });
+    .order("position", { ascending: true })
+    .overrideTypes<
+      {
+        position: number;
+        notes: { id: string; modules: { moduleCode: string } };
+      }[]
+    >();
 
   if (error || !data)
     return Response.json({ error: "Failed to fetch notes" }, { status: 500 });
@@ -32,8 +36,8 @@ export async function POST(request: Request) {
   const merged = await PDFDocument.create();
 
   for (const bn of data) {
-    const note = bn.notes[0];
-    const moduleCode = note.modules[0].moduleCode;
+    const note = bn.notes;
+    const moduleCode = note.modules.moduleCode;
 
     const { data: fileData, error: fileError } = await db.storage
       .from("notes")

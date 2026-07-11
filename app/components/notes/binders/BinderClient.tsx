@@ -1,26 +1,30 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { toast } from "react-hot-toast";
 import { createClient } from "@/utils/supabase/client";
 import { Trash2, Download, GripVertical, ArrowLeft } from "lucide-react";
 import { DragDropProvider } from "@dnd-kit/react";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { Note } from "@/types";
+import Link from "next/link";
 
 type Props = {
   binder: { id: string; title: string; author_id: string };
   initialNotes: Partial<Note>[];
+  moduleCode: string;
 };
 
 function SortableNote({
   note,
   index,
   onRemove,
+  moduleCode,
 }: {
   note: Partial<Note>;
   index: number;
   onRemove: () => void;
+  moduleCode: string;
 }) {
   const { ref, isDragging } = useSortable({ id: note.id!, index });
 
@@ -32,11 +36,13 @@ function SortableNote({
       }`}
     >
       <GripVertical className="h-5 w-5 text-ink-3 cursor-grab shrink-0" />
-      <span className="text-ink-3 text-sm w-5 text-center shrink-0">
-        {index + 1}
-      </span>
       <div className="flex-1 min-w-0">
-        <p className="font-medium truncate">{note.title}</p>
+        <Link
+          href={`/notes/${moduleCode}/${note.id}`}
+          className="font-medium truncate"
+        >
+          {note.title}
+        </Link>
         <p className="text-sm text-ink-3">{note.semester}</p>
       </div>
       <button
@@ -50,7 +56,11 @@ function SortableNote({
   );
 }
 
-export default function BinderClient({ binder, initialNotes }: Props) {
+export default function BinderClient({
+  binder,
+  initialNotes,
+  moduleCode,
+}: Props) {
   const router = useRouter();
   const [notes, setNotes] = useState<Partial<Note>[]>(initialNotes);
   const [downloading, setDownloading] = useState(false);
@@ -64,7 +74,7 @@ export default function BinderClient({ binder, initialNotes }: Props) {
       return;
     }
     toast.success("Binder deleted.");
-    router.push("/dashboard");
+    router.push(`/notes/${moduleCode}`);
   }
 
   async function removeNote(noteId: string) {
@@ -125,17 +135,15 @@ export default function BinderClient({ binder, initialNotes }: Props) {
   }
 
   return (
-    <div className="px-8 py-10 max-w-3xl mx-auto">
-      {/* back button */}
+    <div className="px-8 py-10 w-[30%] mx-auto">
       <button
-        onClick={() => router.back()}
+        onClick={() => router.push(`/notes/${moduleCode}`)}
         className="flex items-center gap-2 text-ink-3 hover:text-ink-1 mb-6 transition-colors text-sm"
       >
         <ArrowLeft className="h-4 w-4" />
         Back
       </button>
 
-      {/* header */}
       <div className="flex items-start justify-between mb-8">
         <div>
           <h1 className="text-4xl font-bold cursor-pointer hover:text-ink-2 transition-colors">
@@ -151,14 +159,6 @@ export default function BinderClient({ binder, initialNotes }: Props) {
           >
             <Trash2 className="h-4 w-4" />
             Delete
-          </button>
-          <button
-            onClick={downloadPDF}
-            disabled={downloading || notes.length === 0}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-terra-500 text-white hover:bg-terra-600 text-sm transition-colors disabled:opacity-50"
-          >
-            <Download className="h-4 w-4" />
-            {downloading ? "Generating..." : "Download PDF"}
           </button>
         </div>
       </div>
@@ -196,11 +196,23 @@ export default function BinderClient({ binder, initialNotes }: Props) {
                 note={note}
                 index={index}
                 onRemove={() => removeNote(note.id!)}
+                moduleCode={moduleCode}
               />
             ))}
           </div>
         </DragDropProvider>
       )}
+
+      <div className="flex justify-end">
+        <button
+          onClick={downloadPDF}
+          disabled={downloading || notes.length === 0}
+          className="flex items-center mt-9 gap-2 px-4 py-3 rounded-xl bg-terra-300 text-white hover:bg-terra-400 text-sm transition-colors disabled:opacity-50"
+        >
+          <Download className="h-4 w-4" />
+          {downloading ? "Generating..." : "Download PDF"}
+        </button>
+      </div>
     </div>
   );
 }
