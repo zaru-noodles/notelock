@@ -108,18 +108,19 @@ export default function NotePanel({
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-1.5 -translate-x-1.5">
+      <div className="flex items-center gap-1.5 -translate-x-1.5 overflow-hidden max-w-full whitespace-nowrap">
         {noteData.tags && noteData.tags.length > 0 ? (
           noteData.tags.map((tagData: Tag) => (
             <span
               key={tagData.id}
-              className="rounded-full border border-paper-4 bg-paper-3 px-2.5 py-1 text-[11px] tracking-[0.06em] text-ink-2"
+              className={`shrink min-w-0 rounded-full border border-paper-4 bg-paper-3 ${noteData.tags!.length <= 2 ? "px-2.5 py-1 text-[11px]" : "px-1.5 py-1 text-[10.5px]"} leading-4 tracking-[0.06em] text-ink-2 overflow-hidden whitespace-nowrap truncate`}
+              title={tagData.label}
             >
               {tagData.label}
             </span>
           ))
         ) : (
-          <span className="rounded-full border border-paper-4 bg-paper-3 px-2.5 py-1 text-[11px] tracking-[0.06em] text-ink-2">
+          <span className="shrink min-w-0 rounded-full border border-paper-4 bg-paper-3 px-2.5 py-1 text-[10px] leading-4 tracking-[0.06em] text-ink-2 overflow-hidden whitespace-nowrap truncate">
             Untagged
           </span>
         )}

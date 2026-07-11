@@ -49,7 +49,7 @@ export default function BinderPreview({
           author_id: user.user.id,
           module_id: moduleData.id,
         })
-        .select()
+        .select("id::text, title, author_id, module_id")
         .single();
 
       if (error || !data) {
@@ -110,7 +110,9 @@ export default function BinderPreview({
       <div className="flex flex-col w-full px-4 py-2 border border-paper-4 grid-bg text-sm h-[60vh] text-center justify-center">
         {binderData.length === 0 ? (
           <p>
-            No binders yet. Create a binder to combine notes into one document.
+            No binders yet. <br />
+            <br /> Combine notes into one document by dragging them into
+            binders.
           </p>
         ) : (
           binderData.map((binder) => (
