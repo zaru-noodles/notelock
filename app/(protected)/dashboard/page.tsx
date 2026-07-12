@@ -4,6 +4,7 @@ import Favourites from "@/app/components/dashboard/favourites";
 import Overview from "@/app/components/dashboard/overview";
 import DashboardTabs from "@/app/components/dashboard/dashboardTabs";
 import NUSModsSync from "@/app/components/dashboard/NUSModsSync";
+import Binders from "@/app/components/dashboard/binders";
 
 export default async function Dashboard() {
   const db = createClient(await cookies());
@@ -19,6 +20,7 @@ export default async function Dashboard() {
         <DashboardTabs
           overview={<Overview userID={userID} username={username} />}
           favourites={<Favourites userID={userID} />}
+          binders={<Binders userID={userID} />}
           nusmodsSync={<NUSModsSync userID={userID} />}
         />
       </div>
