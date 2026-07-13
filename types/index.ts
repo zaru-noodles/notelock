@@ -4,6 +4,9 @@ export type Module = {
   title: string;
   faculty: string;
   department: string;
+  notes?: {
+    count: number;
+  };
 };
 
 export type Note = {

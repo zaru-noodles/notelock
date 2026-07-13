@@ -15,6 +15,7 @@ import { createClient } from "@/utils/supabase/client";
 type Props = {
   initialSearchParams: NoteListSearchParams;
   initialNotes: Note[];
+  totalNoteCount: number;
   initialBinder?: Binder[];
   allTags: Tag[];
   showAuthor?: boolean;
@@ -24,6 +25,7 @@ type Props = {
 export default function NotesPreview({
   initialSearchParams,
   initialNotes,
+  totalNoteCount,
   initialBinder = [],
   allTags,
   showAuthor = true,
@@ -50,11 +52,14 @@ export default function NotesPreview({
     }
 
     setSearchParams(updated);
-    fetchNotesData(updated);
+    fetchNotesData(updated, setNotesData);
   };
 
   // update notes with new search params
-  const fetchNotesData = async (params: NoteListSearchParams) => {
+  const fetchNotesData = async (
+    params: NoteListSearchParams,
+    action: (notesData: Note[]) => void,
+  ) => {
     setNotesError("");
 
     const query = new URLSearchParams({
@@ -79,7 +84,7 @@ export default function NotesPreview({
     if (data.notes.length === 0) {
       setNotesError(`No notes found`);
     }
-    setNotesData(data.notes);
+    action(data.notes);
   };
 
   // add note to binder
@@ -137,7 +142,8 @@ export default function NotesPreview({
               onChange={(e) => {
                 const updated = { ...searchParams, searchText: e.target.value };
                 setSearchParams(updated);
-                if (e.target.value.length !== 1) fetchNotesData(updated);
+                if (e.target.value.length !== 1)
+                  fetchNotesData(updated, setNotesData);
               }}
               placeholder="Search notes..."
               className="rounded focus:outline-none w-full pl-2"
@@ -158,7 +164,7 @@ export default function NotesPreview({
                   sortBy: e.target.value as SortOrder,
                 };
                 setSearchParams(updated);
-                fetchNotesData(updated);
+                fetchNotesData(updated, setNotesData);
               }}
               className="rounded focus:outline-none w-full pl-2 bg-transparent"
             >
@@ -182,7 +188,7 @@ export default function NotesPreview({
                   selectedSemester: e.target.value,
                 };
                 setSearchParams(updated);
-                fetchNotesData(updated);
+                fetchNotesData(updated, setNotesData);
               }}
               className="rounded focus:outline-none w-full pl-2 bg-transparent"
             >
@@ -223,17 +229,32 @@ export default function NotesPreview({
         </div>
 
         {/* notes display */}
-        <div className="flex flex-wrap content-start grow px-6 py-5 gap-1 mr-4 w-[60%] border-paper-4 border-l border-t border-r paper-bg">
+        <div className="flex flex-wrap content-start grow px-6 py-5 gap-1 mr-4 w-[60%] border-paper-4 border paper-bg justify-center">
           {notesError && !notesData && <p>{notesError}</p>}
           {notesData.map((note: Note) => (
             <NotePanel
               key={note.id}
               noteData={note}
-              reloadNotes={() => fetchNotesData(searchParams)}
+              reloadNotes={() => fetchNotesData(searchParams, setNotesData)}
               showAuthor={showAuthor}
               isDraggable={true}
             />
           ))}
+          {notesData.length < totalNoteCount && (
+            <button
+              className="inline-flex items-center rounded-full border border-honey-500 bg-honey-400 px-6 py-3 my-5 text-lg font-semibold text-paper-1 transition-colors duration-200 hover:bg-honey-500"
+              onClick={() =>
+                fetchNotesData(
+                  { ...searchParams, start: notesData.length },
+                  (x: Note[]) => {
+                    setNotesData([...notesData, ...x]);
+                  },
+                )
+              }
+            >
+              Load More
+            </button>
+          )}
         </div>
 
         {showBinders && (

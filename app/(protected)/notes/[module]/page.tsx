@@ -4,7 +4,6 @@ import { Binder, Note, NoteListSearchParams, SortOrder } from "@/types";
 import { getNotesList, getTags } from "@/utils/notes/queries";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import Module from "module";
 import ModuleFavouriteButton from "@/app/components/notes/ModuleFavouriteButton";
 
 type Props = {
@@ -18,7 +17,7 @@ const fetchModuleData = async (moduleCode: string) => {
 
   const { data, error } = await db
     .from("modules")
-    .select("*")
+    .select("*, notes(count)")
     .eq("moduleCode", moduleCode)
     .single();
 
@@ -66,7 +65,7 @@ export default async function ModulePage({ params }: Props) {
   const searchParams: NoteListSearchParams = {
     searchText: "",
     start: 0,
-    count: 50,
+    count: 40,
     selectedModuleCode: moduleCode,
     selectedSemester: "",
     selectedAuthorID: "",
@@ -108,13 +107,20 @@ export default async function ModulePage({ params }: Props) {
       {/* header */}
       <div className="mb-6 ml-6 mr-15 flex items-center justify-between gap-4">
         <div>
-          <p className="text-sm text-gray-500 uppercase tracking-widest mb-2">
+          <p className="text-sm text-ink-2 uppercase tracking-widest mb-2">
             {moduleData?.faculty} | {moduleData?.department}
           </p>
           <h1 className="text-5xl font-bold mb-0.5">
             {moduleData?.moduleCode}
           </h1>
-          <p className="text-3xl text-ink-1">{moduleData?.title}</p>
+          <div className="flex items-end">
+            <p className="text-3xl text-ink-1 mr-2">{moduleData?.title} </p>
+            <p className="text-lg text-ink-2 tracking-widest">
+              {" "}
+              {moduleData?.notes[0].count}{" "}
+              {moduleData?.notes[0].count !== 1 ? "notes" : "note"}{" "}
+            </p>
+          </div>
         </div>
 
         <ModuleFavouriteButton
@@ -126,6 +132,7 @@ export default async function ModulePage({ params }: Props) {
       <NotesPreview
         initialSearchParams={searchParams}
         initialNotes={noteData}
+        totalNoteCount={moduleData?.notes[0].count}
         allTags={tagsData}
         initialBinder={binderData}
         showBinders={true}
