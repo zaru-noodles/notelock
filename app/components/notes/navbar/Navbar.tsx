@@ -14,6 +14,7 @@ type props = {
 export default function Navbar({ authLevel }: props) {
   const router = useRouter();
   const [username, setUsername] = useState("");
+  const [userID, setUserID] = useState("");
 
   const AUTH_LEVEL_LABELS: Record<number, string> = {
     0: "Student",
@@ -27,7 +28,9 @@ export default function Navbar({ authLevel }: props) {
       const {
         data: { user },
       } = await db.auth.getUser();
+
       setUsername(user?.user_metadata?.username ?? "");
+      setUserID(user?.id ?? "");
     }
     getUser();
   }, []);
@@ -52,7 +55,12 @@ export default function Navbar({ authLevel }: props) {
           Upload notes
         </Link>
         <div className="border-r-2 border-paper-4 pr-1.5">
-          <p className="text-right leading-none pb-0.5">{username}</p>
+          <Link
+            href={`/users/${userID}`}
+            className="text-right leading-none pb-0.5"
+          >
+            {username}
+          </Link>
           <p className="text-sm text-gray-600 text-right leading-none">
             {AUTH_LEVEL_LABELS[authLevel] ?? "Student"}
           </p>
