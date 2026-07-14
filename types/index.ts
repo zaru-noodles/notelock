@@ -22,6 +22,7 @@ export type Note = {
   username?: string;
   deletePermission: boolean;
   tags?: Tag[];
+  totalCount: number;
 };
 
 export type NoteListSearchParams = {

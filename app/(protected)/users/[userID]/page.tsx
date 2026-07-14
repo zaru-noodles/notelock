@@ -16,14 +16,14 @@ const fetchUserData = async (userID: string) => {
 
   const { data, error } = await db
     .from("user_profiles")
-    .select("username, notes!notes_author_id_fkey(count)")
+    .select("username")
     .eq("id", userID)
     .single();
 
   console.log(error);
   if (error) return null;
 
-  return { username: data.username, noteCount: data.notes[0].count };
+  return data.username;
 };
 
 const fetchNoteData = async (searchParams: NoteListSearchParams) => {
@@ -43,13 +43,13 @@ export default async function UserPage({ params }: Props) {
     tagIds: [],
   };
 
-  const [noteData, userData, tagsData] = await Promise.all([
+  const [noteData, username, tagsData] = await Promise.all([
     fetchNoteData(searchParams),
     fetchUserData(userID),
     getTags(),
   ]);
 
-  if (userData === null || tagsData === null) {
+  if (username === null || tagsData === null) {
     return (
       <>
         <p>Unable to fetch user data</p>
@@ -67,13 +67,19 @@ export default async function UserPage({ params }: Props) {
     <div className="px-8 py-10 max-w-screen mx-4">
       {/* header */}
       <div className="mb-6 ml-6">
-        <h1 className="text-5xl font-bold mb-0.5">{`${userData.username}'s Notes`}</h1>
+        <h1 className="text-5xl font-bold mb-0.5">{`${username}'s Notes`}</h1>
+        <p className="text-lg text-ink-2 tracking-widest">
+          {noteData.length === 0
+            ? "0 notes"
+            : noteData.length === 1
+              ? "1 note"
+              : `${noteData[0].totalCount} notes`}
+        </p>
       </div>
 
       <NotesPreview
         initialSearchParams={searchParams}
         initialNotes={noteData}
-        totalNoteCount={userData.noteCount}
         showAuthor={false}
         allTags={tagsData}
       />

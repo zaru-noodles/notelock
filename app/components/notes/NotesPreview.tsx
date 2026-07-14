@@ -15,7 +15,6 @@ import { createClient } from "@/utils/supabase/client";
 type Props = {
   initialSearchParams: NoteListSearchParams;
   initialNotes: Note[];
-  totalNoteCount: number;
   initialBinder?: Binder[];
   allTags: Tag[];
   showAuthor?: boolean;
@@ -25,7 +24,6 @@ type Props = {
 export default function NotesPreview({
   initialSearchParams,
   initialNotes,
-  totalNoteCount,
   initialBinder = [],
   allTags,
   showAuthor = true,
@@ -240,21 +238,22 @@ export default function NotesPreview({
               isDraggable={true}
             />
           ))}
-          {notesData.length < totalNoteCount && (
-            <button
-              className="inline-flex items-center rounded-full border border-honey-500 bg-honey-400 px-6 py-3 my-5 text-lg font-semibold text-paper-1 transition-colors duration-200 hover:bg-honey-500"
-              onClick={() =>
-                fetchNotesData(
-                  { ...searchParams, start: notesData.length },
-                  (x: Note[]) => {
-                    setNotesData([...notesData, ...x]);
-                  },
-                )
-              }
-            >
-              Load More
-            </button>
-          )}
+          {notesData.length !== 0 &&
+            notesData.length < notesData[0].totalCount && (
+              <button
+                className="inline-flex items-center rounded-full border border-honey-500 bg-honey-400 px-6 py-3 my-5 text-lg font-semibold text-paper-1 transition-colors duration-200 hover:bg-honey-500"
+                onClick={() =>
+                  fetchNotesData(
+                    { ...searchParams, start: notesData.length },
+                    (x: Note[]) => {
+                      setNotesData([...notesData, ...x]);
+                    },
+                  )
+                }
+              >
+                Load More
+              </button>
+            )}
         </div>
 
         {showBinders && (

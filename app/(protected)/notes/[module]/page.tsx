@@ -17,7 +17,7 @@ const fetchModuleData = async (moduleCode: string) => {
 
   const { data, error } = await db
     .from("modules")
-    .select("*, notes(count)")
+    .select("*")
     .eq("moduleCode", moduleCode)
     .single();
 
@@ -116,9 +116,11 @@ export default async function ModulePage({ params }: Props) {
           <div className="flex items-end">
             <p className="text-3xl text-ink-1 mr-2">{moduleData?.title} </p>
             <p className="text-lg text-ink-2 tracking-widest">
-              {" "}
-              {moduleData?.notes[0].count}{" "}
-              {moduleData?.notes[0].count !== 1 ? "notes" : "note"}{" "}
+              {noteData.length === 0
+                ? "0 notes"
+                : noteData.length === 1
+                  ? "1 note"
+                  : `${noteData[0].totalCount} notes`}
             </p>
           </div>
         </div>
@@ -132,7 +134,6 @@ export default async function ModulePage({ params }: Props) {
       <NotesPreview
         initialSearchParams={searchParams}
         initialNotes={noteData}
-        totalNoteCount={moduleData?.notes[0].count}
         allTags={tagsData}
         initialBinder={binderData}
         showBinders={true}
