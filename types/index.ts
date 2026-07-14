@@ -18,6 +18,7 @@ export type Note = {
   upvoteCount: number;
   downvoteCount: number;
   thumbnailUrl?: string;
+  userId?: string;
   username?: string;
   deletePermission: boolean;
   tags?: Tag[];

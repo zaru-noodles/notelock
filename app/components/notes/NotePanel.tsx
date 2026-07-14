@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useDraggable } from "@dnd-kit/react";
 import Image from "next/image";
+import Link from "next/link";
 
 type Props = {
   noteData: Note;
@@ -129,10 +130,28 @@ export default function NotePanel({
       <div className="flex justify-between text-sm text-gray-600">
         <div className="flex items-center">
           {showAuthor && (
-            <p className="mr-2.5">{noteData?.username ?? "Deleted user"}</p>
+            <Link
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              href={`/users/${noteData.userId}`}
+              className="mr-2.5"
+            >
+              {noteData?.username ?? "Deleted user"}
+            </Link>
           )}
 
-          {!showAuthor && <p className="mr-2.5">{noteData.moduleCode}</p>}
+          {!showAuthor && (
+            <Link
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              href={`/notes/${noteData.moduleCode}`}
+              className="mr-2.5"
+            >
+              {noteData.moduleCode}
+            </Link>
+          )}
 
           <p>{noteData.downloadCount}</p>
           <DownloadIcon className="h-4 w-4 text-gray-500 ml-0.5 mr-2.5" />
