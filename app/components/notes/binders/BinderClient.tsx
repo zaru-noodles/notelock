@@ -64,6 +64,7 @@ export default function BinderClient({
   const router = useRouter();
   const [notes, setNotes] = useState<Partial<Note>[]>(initialNotes);
   const [downloading, setDownloading] = useState(false);
+  const [pagesPerSheet, setPagesPerSheet] = useState("1");
 
   async function deleteBinder() {
     if (!confirm("Are you sure you want to delete this binder?")) return;
@@ -112,7 +113,10 @@ export default function BinderClient({
       const res = await fetch("/api/binders/download", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ binderId: binder.id }),
+        body: JSON.stringify({
+          binderId: binder.id,
+          pagesPerSheet: Number(pagesPerSheet),
+        }),
       });
 
       if (!res.ok) {
@@ -203,11 +207,25 @@ export default function BinderClient({
         </DragDropProvider>
       )}
 
-      <div className="flex justify-end">
+      <div className="flex justify-end items-center gap-3 mt-9">
+        <label className="text-sm text-ink-3 flex items-center gap-2">
+          <span>Pages per sheet</span>
+          <select
+            value={pagesPerSheet}
+            onChange={(event) => setPagesPerSheet(event.target.value)}
+            className="rounded-lg border border-paper-4 bg-white px-3 py-2 text-sm text-ink-1 focus:outline-none focus:ring-2 focus:ring-terra-300"
+            aria-label="Pages per sheet"
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="4">4</option>
+          </select>
+        </label>
+
         <button
           onClick={downloadPDF}
           disabled={downloading || notes.length === 0}
-          className="flex items-center mt-9 gap-2 px-4 py-3 rounded-xl bg-terra-300 text-white hover:bg-terra-400 text-sm transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-3 rounded-xl bg-terra-300 text-white hover:bg-terra-400 text-sm transition-colors disabled:opacity-50"
         >
           <Download className="h-4 w-4" />
           {downloading ? "Generating..." : "Download PDF"}

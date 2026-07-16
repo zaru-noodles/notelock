@@ -1,21 +1,24 @@
 // app/api/binders/download/route.ts
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import { PDFDocument } from "pdf-lib";
+import { degrees, PDFDocument } from "pdf-lib";
 
 const LAYOUTS: Record<number, { cols: number; rows: number }> = {
   1: { cols: 1, rows: 1 },
-  2: { cols: 2, rows: 1 },
+  2: { cols: 1, rows: 2 },
   4: { cols: 2, rows: 2 },
-  8: { cols: 4, rows: 2 },
+  8: { cols: 2, rows: 4 },
 };
 
 export async function POST(request: Request) {
   const db = createClient(await cookies());
   const {
     binderId,
-    pagesPerSheet = 4,
+    pagesPerSheet = 1,
   }: { binderId: string; pagesPerSheet: number } = await request.json();
+
+  if (!(pagesPerSheet in LAYOUTS))
+    return Response.json({ error: "Invalid pages per sheet" }, { status: 400 });
 
   // get notes in order
   const { data, error } = await db
@@ -43,18 +46,6 @@ export async function POST(request: Request) {
 
   // merge PDFs
   const pdfBuffers: ArrayBuffer[] = [];
-  for (const bn of data) {
-    const note = bn.notes;
-    const moduleCode = note.modules.moduleCode;
-
-    const { data: fileData, error: fileError } = await db.storage
-      .from("notes")
-      .download(`${moduleCode}/${note.id}.pdf`);
-
-    if (fileError || !fileData) continue;
-    pdfBuffers.push(await fileData.arrayBuffer());
-  }
-
   for (const bn of data) {
     const note = bn.notes;
     const moduleCode = note.modules.moduleCode;
@@ -95,7 +86,7 @@ async function buildPDF(
   for (const buffer of pdfBuffers) {
     const pdf = await PDFDocument.load(buffer);
     const indices = pdf.getPageIndices();
-    const embedded = await merged.embedPages(pdf.getPages()); // embed instead of copy
+    const embedded = await merged.embedPages(pdf.getPages());
     allPages.push(
       ...embedded.map((embeddedPage, i) => ({
         embedded: embeddedPage,
@@ -119,25 +110,47 @@ async function buildPDF(
     );
 
     sheetPages.forEach(({ embedded, original }, index) => {
+      const w = original.getWidth();
+      const h = original.getHeight();
+      const isLandscape = w > h;
+
       const col = index % cols;
-      const row = Math.floor(index / cols);
+      const row =
+        isLandscape !== (cols === 2)
+          ? Math.floor(index / cols)
+          : rows - Math.floor(index / cols) - 1;
       const x = col * cellWidth;
       const y = A4.height - (row + 1) * cellHeight;
 
-      const scale = Math.min(
-        cellWidth / original.getWidth(),
-        cellHeight / original.getHeight(),
-      );
+      let drawWidth: number;
+      let drawHeight: number;
 
-      const scaledWidth = original.getWidth() * scale;
-      const scaledHeight = original.getHeight() * scale;
+      if (isLandscape !== (cols !== rows)) {
+        const scale = Math.min(cellWidth / h, cellHeight / w);
+        drawWidth = h * scale;
+        drawHeight = w * scale;
+      } else {
+        const scale = Math.min(cellWidth / w, cellHeight / h);
+        drawWidth = w * scale;
+        drawHeight = h * scale;
+      }
 
-      sheet.drawPage(embedded, {
-        x: x + (cellWidth - scaledWidth) / 2,
-        y: y + (cellHeight - scaledHeight) / 2,
-        width: scaledWidth,
-        height: scaledHeight,
-      });
+      if (isLandscape !== (cols !== rows)) {
+        sheet.drawPage(embedded, {
+          x: x + (cellWidth - drawWidth) / 2 + drawWidth,
+          y: y + (cellHeight - drawHeight) / 2,
+          width: drawHeight,
+          height: drawWidth,
+          rotate: degrees(90),
+        });
+      } else {
+        sheet.drawPage(embedded, {
+          x: x + (cellWidth - drawWidth) / 2,
+          y: y + (cellHeight - drawHeight) / 2,
+          width: drawWidth,
+          height: drawHeight,
+        });
+      }
     });
   }
 
