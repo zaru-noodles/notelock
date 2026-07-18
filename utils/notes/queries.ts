@@ -83,6 +83,7 @@ export async function getNotesList(params: NoteListSearchParams) {
   });
 
   if (error || !data) {
+    console.log(error);
     return null;
   }
 
