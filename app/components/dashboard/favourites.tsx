@@ -6,7 +6,7 @@ import { Module, NoteListSearchParams, SortOrder } from "@/types";
 const searchParams: NoteListSearchParams = {
   searchText: "",
   start: 0,
-  count: 4,
+  count: 10,
   selectedModuleCode: "",
   selectedSemester: "",
   selectedAuthorID: "",

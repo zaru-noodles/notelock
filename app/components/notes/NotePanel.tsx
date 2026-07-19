@@ -1,24 +1,36 @@
 import { Note, Tag } from "@/types";
-import { DownloadIcon, EllipsisVerticalIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import {
+  DownloadIcon,
+  EllipsisVerticalIcon,
+  ThumbsDown,
+  ThumbsUp,
+} from "lucide-react";
+import { useRouter } from "nextjs-toploader/app";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+import { useDraggable } from "@dnd-kit/react";
 import Image from "next/image";
+import Link from "next/link";
 
 type Props = {
   noteData: Note;
   reloadNotes: () => void;
   showAuthor: boolean;
+  isDraggable?: boolean;
 };
 
 export default function NotePanel({
   noteData,
   reloadNotes,
   showAuthor,
+  isDraggable = false,
 }: Props) {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
+  const { ref: dragRef, isDragging } = useDraggable({
+    id: noteData.id,
+  });
 
   /** close the dropdown menu when clicking outside of it */
   useEffect(() => {
@@ -60,16 +72,21 @@ export default function NotePanel({
 
   return (
     <div
-      ref={panelRef}
-      className="w-[21%] h-fit mx-4.5 my-3 p-4 bg-paper-2 hover:bg-paper-3 rounded-1x1 border border-terra-100 rounded-2xl transition-transform duration-200 hover:shadow-sh-4"
-      onClick={() =>
+      ref={(node) => {
+        panelRef.current = node;
+        if (isDraggable) dragRef(node);
+      }}
+      className={`w-[22.5%] h-fit mx-3 my-3 p-4 bg-paper-2 hover:bg-paper-3 rounded-1x1 border border-terra-100 rounded-2xl transition-all duration-200 hover:shadow-sh-4 ${
+        isDragging ? "scale-70 opacity-50" : "scale-100 opacity-100"
+      }  ${menuOpen ? "z-50 relative" : ""}`}
+      onClick={() => {
         router.push(
           `${window.location.origin}/notes/${noteData.moduleCode}/${noteData.id}`,
-        )
-      }
+        );
+      }}
     >
       {/* thumbnail */}
-      <div className="flex justify-center items-center rounded-xl mb-3 h-44 overflow-hidden">
+      <div className="flex justify-center items-center rounded-xl mb-1 h-44 overflow-hidden">
         {noteData.thumbnailUrl && (
           <Image
             className="h-42 w-auto object-contain rounded-lg shadow-sm"
@@ -92,18 +109,19 @@ export default function NotePanel({
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-1.5 -translate-x-1.5">
+      <div className="flex items-center gap-1.5 -translate-x-1.5 overflow-hidden max-w-full whitespace-nowrap">
         {noteData.tags && noteData.tags.length > 0 ? (
           noteData.tags.map((tagData: Tag) => (
             <span
               key={tagData.id}
-              className="rounded-full border border-paper-4 bg-paper-3 px-2.5 py-1 text-[11px] tracking-[0.06em] text-ink-2"
+              className={`shrink min-w-0 rounded-full border border-paper-4 bg-paper-3 ${noteData.tags!.length <= 2 ? "px-2.5 py-1 text-[11px]" : "px-1.5 py-1 text-[10.5px]"} leading-4 tracking-[0.06em] text-ink-2 overflow-hidden whitespace-nowrap truncate`}
+              title={tagData.label}
             >
               {tagData.label}
             </span>
           ))
         ) : (
-          <span className="rounded-full border border-paper-4 bg-paper-3 px-2.5 py-1 text-[11px] tracking-[0.06em] text-ink-2">
+          <span className="shrink min-w-0 rounded-full border border-paper-4 bg-paper-3 px-2.5 py-1 text-[10px] leading-4 tracking-[0.06em] text-ink-2 overflow-hidden whitespace-nowrap truncate">
             Untagged
           </span>
         )}
@@ -112,13 +130,37 @@ export default function NotePanel({
       <div className="flex justify-between text-sm text-gray-600">
         <div className="flex items-center">
           {showAuthor && (
-            <p className="mr-2.5">{noteData?.username ?? "Deleted user"}</p>
+            <Link
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              href={`/users/${noteData.userId}`}
+              className="mr-2.5"
+            >
+              {noteData?.username ?? "Deleted user"}
+            </Link>
           )}
 
-          {!showAuthor && <p className="mr-2.5">{noteData.moduleCode}</p>}
+          {!showAuthor && (
+            <Link
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              href={`/notes/${noteData.moduleCode}`}
+              className="mr-2.5"
+            >
+              {noteData.moduleCode}
+            </Link>
+          )}
 
           <p>{noteData.downloadCount}</p>
           <DownloadIcon className="h-4 w-4 text-gray-500 ml-0.5 mr-2.5" />
+
+          <p>{noteData.upvoteCount}</p>
+          <ThumbsUp className="h-3.5 w-3.5 text-gray-500 ml-0.5 mr-2.5" />
+
+          <p>{noteData.downvoteCount}</p>
+          <ThumbsDown className="h-3.5 w-3.5 text-gray-500 ml-0.5 mr-2.5" />
         </div>
 
         {/* dropdown menu */}
@@ -135,7 +177,7 @@ export default function NotePanel({
           </button>
 
           {menuOpen && (
-            <div className="absolute top-full w-40 overflow-hidden rounded border border-terra-100 bg-paper-1 shadow-sh-4 z-10">
+            <div className="absolute top-full w-40 overflow-hidden rounded border border-terra-100 bg-paper-1 shadow-sh-4 z-50">
               {noteData.deletePermission && (
                 <button
                   type="button"

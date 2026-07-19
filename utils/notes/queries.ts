@@ -82,24 +82,50 @@ export async function getNotesList(params: NoteListSearchParams) {
     tag_ids: params.tagIds,
   });
 
-  if (error) {
+  if (error || !data) {
+    console.log(error);
     return null;
   }
 
-  // generate signed URLs for thumbnails
-  const { data: signedUrls } = await db.storage
-    .from("thumbnail")
-    .createSignedUrls(
-      data.map((note: Note) => `${note.moduleCode}/${note.id}.png`),
-      3600,
+  const now = Date.now();
+  const expiredThumbnails = data.filter(
+    (note: { thumbnailUrl: string; thumbnailExpiry: Date }) =>
+      !note.thumbnailUrl ||
+      !note.thumbnailExpiry ||
+      new Date(note.thumbnailExpiry).getTime() < now,
+  );
+
+  if (expiredThumbnails.length > 0) {
+    // generate signed URLs for thumbnails
+    const { data: signedUrls } = await db.storage
+      .from("thumbnail")
+      .createSignedUrls(
+        expiredThumbnails.map(
+          (note: Note) => `${note.moduleCode}/${note.id}.png`,
+        ),
+        3600,
+      );
+
+    await Promise.all(
+      expiredThumbnails.map((note: Note, index: number) => {
+        const signedUrl = signedUrls?.[index]?.signedUrl;
+        if (!signedUrl) return;
+        return db
+          .from("notes")
+          .update({
+            thumbnail_url: signedUrl,
+            thumbnail_expiry: new Date(Date.now() + 3599 * 1000).toISOString(),
+          })
+          .eq("id", note.id);
+      }),
     );
 
-  const notesWithThumbnail = data.map((note: Note, index: number) => ({
-    ...note,
-    thumbnailUrl: signedUrls?.[index]?.signedUrl ?? null,
-  }));
+    expiredThumbnails.map((note: Note, index: number) => {
+      note.thumbnailUrl = signedUrls?.[index]?.signedUrl ?? undefined;
+    });
+  }
 
-  return notesWithThumbnail;
+  return data;
 }
 
 export async function getComments(noteId: string) {
