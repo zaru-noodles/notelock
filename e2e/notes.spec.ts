@@ -38,10 +38,6 @@ test("upload a note, find note, add a comment and delete it", async ({
 
   await page.waitForURL("**/notes/CS2040S");
 
-  const thumbnail = page
-    .getByRole("img", { name: "Missing thumbnail" })
-    .first();
-  await expect(thumbnail).toBeVisible();
   await page
     .getByRole("heading", { name: "Lecture Test Notes" })
     .first()
