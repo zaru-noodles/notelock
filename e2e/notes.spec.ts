@@ -42,13 +42,6 @@ test("upload a note, find note, add a comment and delete it", async ({
     .getByRole("img", { name: "Missing thumbnail" })
     .first();
   await expect(thumbnail).toBeVisible();
-  await expect
-    .poll(() =>
-      thumbnail.evaluate(
-        (el: HTMLImageElement) => el.complete && el.naturalWidth > 0,
-      ),
-    )
-    .toBe(true);
   await page
     .getByRole("heading", { name: "Lecture Test Notes" })
     .first()

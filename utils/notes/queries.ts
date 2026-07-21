@@ -1,4 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
+import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { Module, Note, NoteListSearchParams, Tag } from "@/types/index";
 import { NOTES_BUCKET, notePath } from "./storage";
@@ -63,6 +64,10 @@ export async function getNoteWithSignedUrl(noteId: string) {
 
 export async function getNotesList(params: NoteListSearchParams) {
   const db = createClient(await cookies());
+  const serviceDB = createServiceClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_PRIVATE_KEY!,
+  );
 
   const {
     data: { user },
@@ -106,11 +111,11 @@ export async function getNotesList(params: NoteListSearchParams) {
         3600,
       );
 
-    await Promise.all(
+    Promise.all(
       expiredThumbnails.map((note: Note, index: number) => {
         const signedUrl = signedUrls?.[index]?.signedUrl;
         if (!signedUrl) return;
-        return db
+        return serviceDB
           .from("notes")
           .update({
             thumbnail_url: signedUrl,
