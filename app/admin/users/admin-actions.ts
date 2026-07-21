@@ -19,6 +19,7 @@ export async function changeUserLevel(userId: string, level: number) {
     p_user_id: userId,
     p_level: level,
   });
+
   if (error) return { error: error.message };
 
   revalidatePath("/admin/users");

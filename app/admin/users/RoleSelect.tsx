@@ -23,7 +23,7 @@ export default function RoleSelect({
         setLevel(prev);
         toast.error(result.error);
       } else {
-        toast.success(`Updated to ${authLevelLabel(newLevel)}`);
+        toast.success(`Role updated to ${authLevelLabel(newLevel)}`);
       }
     });
   }
