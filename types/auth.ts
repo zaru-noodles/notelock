@@ -10,3 +10,19 @@ export function authLevelLabel(level: number) {
       return "Student";
   }
 }
+
+export const REPORT_REASONS = [
+  "wrong_module",
+  "inappropriate",
+  "spam",
+  "other",
+] as const;
+export type ReportReason = (typeof REPORT_REASONS)[number];
+
+const labels: Record<ReportReason, string> = {
+  wrong_module: "Wrong module",
+  inappropriate: "Inappropriate content",
+  spam: "Spam or advertising",
+  other: "Other",
+};
+export const reportReasonLabel = (r: ReportReason) => labels[r] ?? r;
