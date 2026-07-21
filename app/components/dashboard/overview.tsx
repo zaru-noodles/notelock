@@ -170,6 +170,22 @@ export default async function Overview({
               );
             })}
           </div>
+
+          {/* footer legend */}
+          <div className="px-7 py-3 border-t border-paper-4 flex justify-end gap-5">
+            {[
+              { g: "S", label: "top 5%", color: "text-honey-500" },
+              { g: "A", label: "top 15%", color: "text-terra-500" },
+              { g: "B", label: "top 35%", color: "text-green-700" },
+              { g: "C", label: "top 60%", color: "text-blue-600" },
+              { g: "D", label: "top 100%", color: "text-ink-3" },
+            ].map(({ g, label, color }) => (
+              <div key={g} className="flex items-center gap-1.5">
+                <p className={`text-xs font-bold ${color}`}>{g}</p>
+                <p className="text-xs text-ink-3">{label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
