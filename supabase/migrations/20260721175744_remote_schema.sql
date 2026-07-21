@@ -130,5 +130,5 @@ with check ((auth.uid() = reporter_id));
   to public
 using ((public.current_user_level() >= 2));
 
-
+GRANT SELECT ON TABLE public.notes_with_votes TO authenticated;
 
