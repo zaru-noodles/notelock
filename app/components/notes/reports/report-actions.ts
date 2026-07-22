@@ -12,16 +12,18 @@ export async function submitReport(
   const user = await getCurrentUser();
   if (!user) return { error: "No user found" };
   const db = createClient(await cookies());
-  const { error } = await db
-    .from("reports")
-    .insert({
-      note_id: noteId,
-      reporter_id: user.id,
-      reason,
-      details: details?.trim() || null,
-    });
+  const { error } = await db.from("reports").insert({
+    note_id: noteId,
+    reporter_id: user.id,
+    reason,
+    details: details?.trim() || null,
+  });
   if (error) {
-    return { error: "Could not submit report." };
+    if (error.code === "23505") {
+      return { error: "You have already reported this note." };
+    } else {
+      return { error: "Could not submit report." };
+    }
   }
   return { ok: true };
 }
