@@ -19,6 +19,9 @@ export default async function AdminLayout({
         <div className="mb-6 flex items-center gap-4 border-b border-ink-4 pb-3">
           <h1 className="font-display text-2xl text-ink-0">Admin</h1>
           <nav className="flex gap-4 font-mono text-sm text-ink-2">
+            <Link href="/dashboard" className="hover:text-ink-1">
+              Dashboard
+            </Link>
             <Link href="/admin" className="hover:text-ink-1">
               Overview
             </Link>
