@@ -1,3 +1,5 @@
+"use server";
+
 import { createClient } from "@/utils/supabase/server";
 import { getCurrentUser } from "@/app/api/auth/current-user";
 import { AuthLevel } from "@/types/auth";

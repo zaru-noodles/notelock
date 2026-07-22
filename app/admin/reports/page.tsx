@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { timeAgo } from "@/utils/notes/time";
 import { reportReasonLabel, type ReportReason } from "@/types/auth";
+import { HandleButtons } from "./HandleButtons";
 
 type ReportRow = {
   id: string;
@@ -58,19 +59,24 @@ export default async function ReportsPage() {
                         {moduleCode}
                       </span>
                     )}
-                    <span className="font-mono text-xs text-ink-3">
+                    <span className="font-extrabold font-mono text-xs text-ink-3">
                       {reportReasonLabel(r.reason)}
                     </span>
-                    <p className="font-mono text-xs text-ink-3">
-                      by {r.reporter?.username} {timeAgo(r.created_at)}
-                    </p>
-                    {r.details && (
-                      <p className="border-l-2 border-ink-4 pl-2 text-sm text-ink-2 line-clamp-3">
-                        {r.details}
-                      </p>
-                    )}
                   </div>
+                  <p className="font-mono text-xs text-ink-3">
+                    by {r.reporter?.username} {timeAgo(r.created_at)}
+                  </p>
+                  {r.details && (
+                    <p className="border-l-2 border-ink-4 pl-2 text-sm text-ink-2 line-clamp-3">
+                      {r.details}
+                    </p>
+                  )}
                 </div>
+                <HandleButtons
+                  reportId={r.id}
+                  noteId={r.note_id}
+                  hasNote={!!r.note}
+                />
               </li>
             );
           })}
