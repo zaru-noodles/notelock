@@ -79,6 +79,8 @@ export default defineConfig({
   webServer: {
     command: "npm run dev",
     url: "http://localhost:3000",
+    stdout: "pipe",
+    stderr: "pipe",
     reuseExistingServer: !process.env.CI,
     env: {
       NEXT_PUBLIC_SUPABASE_URL: "http://localhost:54321",

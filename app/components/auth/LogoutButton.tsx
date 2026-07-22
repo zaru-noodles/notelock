@@ -29,7 +29,7 @@ export default function LogoutButton() {
     <button
       onClick={handleLogout}
       disabled={pending}
-      className="inline-flex items-center gap-1.5 font-mono text-sm text-ink-2 transition hover:text-ink-1 hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+      className="inline-flex items-center gap-1.5 text-sm text-ink-2 transition hover:text-ink-1 hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
     >
       <LogOut className="size-4" />
       {pending ? "Signing out" : "Sign out"}

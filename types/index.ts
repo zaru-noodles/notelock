@@ -4,6 +4,9 @@ export type Module = {
   title: string;
   faculty: string;
   department: string;
+  notes?: {
+    count: number;
+  };
 };
 
 export type Note = {
@@ -12,10 +15,14 @@ export type Note = {
   semester: string;
   moduleCode: string;
   downloadCount: number;
+  upvoteCount: number;
+  downvoteCount: number;
   thumbnailUrl?: string;
+  userId?: string;
   username?: string;
   deletePermission: boolean;
   tags?: Tag[];
+  totalCount: number;
 };
 
 export type NoteListSearchParams = {
@@ -32,6 +39,7 @@ export type NoteListSearchParams = {
 export enum SortOrder {
   DownloadCount = "downloadCount",
   Semester = "semester",
+  Rating = "rating",
 }
 
 export type Comments = {
@@ -45,4 +53,9 @@ export type Comments = {
 export type Tag = {
   id: number;
   label: string;
+};
+
+export type Binder = {
+  id: string;
+  title: string;
 };
