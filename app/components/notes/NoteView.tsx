@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronLeft, Flag } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import PdfViewer from "./PdfViewer/PdfViewer";
 import DownloadButton from "./DownloadButton";
 import InsertComment from "./comments/InsertComment";
@@ -7,6 +7,7 @@ import CommentBody from "./comments/CommentBody";
 import UserVote from "./UserVote";
 import { timeAgo } from "@/utils/notes/time";
 import { Comments } from "@/types/index";
+import { FlagButton } from "./reports/FlagButton";
 
 type NoteViewProps = {
   moduleCode: string;
@@ -91,9 +92,7 @@ export default function NoteView({
           />
           <DownloadButton downloadUrl={downloadUrl} noteId={noteId} />
           {/*TODO: Report button for updating during permission */}
-          <button className="hover:text-ink-1">
-            <Flag className="size-6" />
-          </button>
+          <FlagButton noteId={noteId} />
         </div>
       </div>
 
