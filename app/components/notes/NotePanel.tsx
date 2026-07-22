@@ -2,6 +2,7 @@ import { Note, Tag } from "@/types";
 import {
   DownloadIcon,
   EllipsisVerticalIcon,
+  Loader2,
   ThumbsDown,
   ThumbsUp,
 } from "lucide-react";
@@ -28,6 +29,7 @@ export default function NotePanel({
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
+  const [thumbnailLoading, setThumbnailLoading] = useState(true);
   const { ref: dragRef, isDragging } = useDraggable({
     id: noteData.id,
   });
@@ -88,14 +90,23 @@ export default function NotePanel({
       {/* thumbnail */}
       <div className="flex justify-center items-center rounded-xl mb-1 h-44 overflow-hidden">
         {noteData.thumbnailUrl && (
-          <Image
-            className="h-42 w-auto object-contain rounded-lg shadow-sm"
-            width={240}
-            height={240}
-            alt="Missing thumbnail"
-            loading="eager"
-            src={noteData.thumbnailUrl}
-          />
+          <div className="relative">
+            {thumbnailLoading && (
+              <div className="flex h-42 w-60 items-center justify-center rounded-lg">
+                <Loader2 className="h-6 w-6 animate-spin text-gray-500" />
+              </div>
+            )}
+
+            <Image
+              className={`${thumbnailLoading ? "hidden" : "block"} h-42 w-auto rounded-lg object-contain shadow-sm`}
+              width={240}
+              height={240}
+              alt="Missing thumbnail"
+              loading="eager"
+              src={noteData.thumbnailUrl}
+              onLoad={() => setThumbnailLoading(false)}
+            />
+          </div>
         )}
 
         {!noteData.thumbnailUrl && <p>Missing thumbnail</p>}
