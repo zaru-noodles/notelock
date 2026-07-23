@@ -5,6 +5,8 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import type { UploadRequest } from "@/types/api";
 import { SEMESTERS } from "@/utils/constants";
+import { extractPdfText } from "@/utils/notes/extract-text";
+import { summariseNotes } from "@/utils/notes/AIsummarise";
 
 export async function POST(req: Request) {
   const db = createClient(await cookies());
@@ -93,6 +95,23 @@ export async function POST(req: Request) {
 
   if (noteError) {
     return Response.json({ error: "Unable to create note" }, { status: 500 });
+  }
+
+  // Generate AI summary and insert into summary column
+  try {
+    const bytes = new Uint8Array(await uploadReq.file.arrayBuffer());
+    const text = await extractPdfText(bytes);
+    const summary = await summariseNotes(text);
+
+    if (summary) {
+      const { error } = await db
+        .from("notes")
+        .update({ summary })
+        .eq("id", note.id);
+      if (error) console.error("Summary failed to update to db");
+    }
+  } catch (e) {
+    console.error("AI summarise failed: ", e);
   }
 
   // upload file

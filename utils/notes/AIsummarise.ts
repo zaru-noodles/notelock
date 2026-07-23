@@ -1,23 +1,17 @@
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenAI } from "@google/genai";
 
 export async function summariseNotes(text: string) {
   if (text.length < 500) return null;
 
-  const ai = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-  const msg = await ai.messages.create({
-    model: "claude-sonnet-4-6",
-    max_tokens: 300,
-    messages: [
-      {
-        role: "user",
-        content: `Identify concepts hard to grasp here and explain them... \n\n<notes>\n${text.slice(0, 40000)}\n</notes>`,
-      },
-    ],
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const msg = await ai.models.generateContent({
+    model: "gemini-2.0-flash",
+    contents: `Summarise these lecture notes in 2-3 sentences, so a student can tell at a glance what topics they cover. Reply with the summary only, no preamble.\n\n<notes>\n${text.slice(0, 40_000)}\n</notes>`,
+    config: {
+      maxOutputTokens: 300,
+      temperature: 0.3,
+    },
   });
-  const summary = msg.content
-    .filter((s) => s.type === "text")
-    .map((s) => s.text)
-    .join("")
-    .trim();
-  return summary || null;
+
+  return msg.text?.trim() || null;
 }
