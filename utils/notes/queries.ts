@@ -17,7 +17,9 @@ export async function getNoteWithSignedUrl(noteId: string) {
 
   const { data: note, error: noteError } = await db
     .from("notes")
-    .select("id::text, title, semester, module_id, created_at, author_id")
+    .select(
+      "id::text, title, semester, module_id, created_at, author_id, summary",
+    )
     .eq("id", noteId)
     .single();
 

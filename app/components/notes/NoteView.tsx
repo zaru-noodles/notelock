@@ -8,6 +8,7 @@ import UserVote from "./UserVote";
 import { timeAgo } from "@/utils/notes/time";
 import { Comments } from "@/types/index";
 import { FlagButton } from "./reports/FlagButton";
+import { AISummaryBox } from "./AISummaryBox";
 
 type NoteViewProps = {
   moduleCode: string;
@@ -25,6 +26,7 @@ type NoteViewProps = {
   initialUps: number;
   initialDowns: number;
   initialUserVote: 0 | 1 | -1;
+  summary: string | null;
 };
 
 export default function NoteView({
@@ -43,6 +45,7 @@ export default function NoteView({
   initialUps,
   initialDowns,
   initialUserVote,
+  summary,
 }: NoteViewProps) {
   return (
     <div className="xl:w-[90%] mx-auto mt-5 w-full">
@@ -95,6 +98,8 @@ export default function NoteView({
           <FlagButton noteId={noteId} />
         </div>
       </div>
+
+      <AISummaryBox summary={summary} />
 
       <div className="mt-5 overflow-hidden rounded-xl border border-ink-4 shadow-sh-2">
         <PdfViewer url={signedUrl} />

@@ -40,6 +40,7 @@ export default async function Page({ params }: Props) {
     created_at,
     author_id,
     username,
+    summary,
   } = noteResult;
 
   const votes = voteState?.[0];
@@ -62,6 +63,7 @@ export default async function Page({ params }: Props) {
         initialUps={Number(votes?.ups ?? 0)}
         initialDowns={Number(votes?.downs ?? 0)}
         initialUserVote={(votes?.user_vote ?? 0) as 0 | 1 | -1}
+        summary={summary}
       />
     </>
   );
