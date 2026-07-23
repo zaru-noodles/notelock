@@ -300,5 +300,5 @@ create or replace view "public"."user_profiles" as  SELECT id,
 using ((auth.uid() = author_id))
 with check ((auth.uid() = author_id));
 
-
+grant select on table "public"."notes_with_votes" to "authenticated";
 
