@@ -30,6 +30,7 @@ export default function NotesPreview({
       selectedModuleCode: params.selectedModuleCode,
       selectedSemester: params.selectedSemester,
       selectedAuthorID: params.selectedAuthorID,
+      selectedAuthLevel: params.selectedAuthLevel.toString(),
       sortBy: params.sortBy,
     });
     const response = await fetch(`/api/notes/fetchNotesList?${query}`);

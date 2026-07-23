@@ -39,6 +39,7 @@ export default async function UserPage({ params }: Props) {
     selectedModuleCode: "",
     selectedSemester: "",
     selectedAuthorID: userID,
+    selectedAuthLevel: -1,
     sortBy: SortOrder.DownloadCount,
     tagIds: [],
   };

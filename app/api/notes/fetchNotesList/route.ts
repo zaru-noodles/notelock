@@ -14,6 +14,14 @@ export async function GET(req: Request) {
     return Response.json({ error: "start is not a number" }, { status: 400 });
   }
 
+  const authLevel = Number(searchParams.get("selectedAuthLevel") ?? "-1");
+  if (!Number.isInteger(start) || -1 > authLevel || authLevel > 1) {
+    return Response.json(
+      { error: "selectedAuthLevel is invalid" },
+      { status: 400 },
+    );
+  }
+
   const sortBy = searchParams.get("sortBy") ?? "";
   if (!Object.values(SortOrder).includes(sortBy as SortOrder)) {
     return Response.json({ error: "sortBy is invalid" }, { status: 400 });
@@ -37,6 +45,7 @@ export async function GET(req: Request) {
     selectedModuleCode: searchParams.get("selectedModuleCode") ?? "",
     selectedSemester: searchParams.get("selectedSemester") ?? "",
     selectedAuthorID: searchParams.get("selectedAuthorID") ?? "",
+    selectedAuthLevel: authLevel,
     sortBy: sortBy as SortOrder,
     tagIds: tagIds,
   };

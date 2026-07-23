@@ -33,6 +33,7 @@ export type NoteListSearchParams = {
   selectedModuleCode: string;
   selectedSemester: string;
   selectedAuthorID: string;
+  selectedAuthLevel: number;
   sortBy: SortOrder;
   tagIds: number[];
 };
