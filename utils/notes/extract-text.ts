@@ -1,12 +1,4 @@
-import { createRequire } from "module";
-import {
-  getDocument,
-  GlobalWorkerOptions,
-} from "pdfjs-dist/legacy/build/pdf.mjs";
-
-const require = createRequire(import.meta.url);
-GlobalWorkerOptions.workerSrc =
-  require.resolve("pdfjs-dist/legacy/build/pdf.worker.mjs");
+import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 
 export async function extractPdfText(bytes: Uint8Array, maxChars = 60000) {
   await import("pdfjs-dist/legacy/build/pdf.worker.mjs");
