@@ -2,6 +2,7 @@ import { Note, Tag } from "@/types";
 import {
   DownloadIcon,
   EllipsisVerticalIcon,
+  GraduationCap,
   Loader2,
   ThumbsDown,
   ThumbsUp,
@@ -146,8 +147,11 @@ export default function NotePanel({
                 e.stopPropagation();
               }}
               href={`/users/${noteData.userId}`}
-              className="mr-2.5"
+              className={`mr-2.5 flex ${noteData.userAuthLevel === 1 && "font-bold"}`}
             >
+              {noteData.userAuthLevel === 1 && (
+                <GraduationCap className="w-5 h-5 mr-0.5" />
+              )}
               {noteData?.username ?? "Deleted user"}
             </Link>
           )}

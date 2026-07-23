@@ -20,6 +20,7 @@ export type Note = {
   thumbnailUrl?: string;
   userId?: string;
   username?: string;
+  userAuthLevel?: number;
   deletePermission: boolean;
   tags?: Tag[];
   totalCount: number;
