@@ -4,6 +4,7 @@ import {
   EllipsisVerticalIcon,
   GraduationCap,
   Loader2,
+  Star,
   ThumbsDown,
   ThumbsUp,
 } from "lucide-react";
@@ -13,6 +14,7 @@ import { toast } from "react-hot-toast";
 import { useDraggable } from "@dnd-kit/react";
 import Image from "next/image";
 import Link from "next/link";
+import { createClient } from "@/utils/supabase/client";
 
 type Props = {
   noteData: Note;
@@ -67,10 +69,24 @@ export default function NotePanel({
     if (!response.ok) {
       toast.error(`Unable to delete note: Status ${response.status}`);
       return;
-    } else {
-      toast.success("Note deleted successfully");
-      reloadNotes();
     }
+    toast.success("Note deleted successfully");
+    reloadNotes();
+  }
+
+  async function toggleFeatureNote() {
+    const db = createClient();
+    const { error } = await db.rpc("pin_note", {
+      note_id: noteData.id,
+      pinned: !noteData.pinned,
+    });
+
+    if (error) {
+      toast.error(`Failed to feature note`);
+      return;
+    }
+    toast.success("Note updated successfully!");
+    reloadNotes();
   }
 
   return (
@@ -79,9 +95,9 @@ export default function NotePanel({
         panelRef.current = node;
         if (isDraggable) dragRef(node);
       }}
-      className={`w-[22.5%] h-fit mx-3 my-3 p-4 bg-paper-2 hover:bg-paper-3 rounded-1x1 border border-terra-100 rounded-2xl transition-all duration-200 hover:shadow-sh-4 ${
+      className={`w-[22.5%] h-fit mx-3 my-3 p-4 bg-paper-2 hover:bg-paper-3 rounded-1x rounded-2xl transition-all duration-200 hover:shadow-sh-4 ${
         isDragging ? "scale-70 opacity-50" : "scale-100 opacity-100"
-      }  ${menuOpen ? "z-50 relative" : ""}`}
+      }  ${menuOpen ? "z-50 relative" : ""} ${noteData.pinned ? "border-2 border-honey-300" : "border border-terra-100"}`}
       onClick={() => {
         router.push(
           `${window.location.origin}/notes/${noteData.moduleCode}/${noteData.id}`,
@@ -114,9 +130,13 @@ export default function NotePanel({
       </div>
 
       <div className="flex justify-between items-start">
-        <h2 className="font-semibold text truncate">{noteData.title}</h2>
-
-        <p className="text-sm text-gray-700 whitespace-nowrap shrink-0 translate-y-0.5">
+        <div className="flex w-[72%] my-1">
+          {noteData.pinned && (
+            <GraduationCap className="w-5 h-5 mr-0.5 -translate-y-0.5 text-honey-500 fill-honey-100" />
+          )}
+          <h2 className="font-semibold text-sm truncate">{noteData.title}</h2>
+        </div>
+        <p className="text-sm text-gray-700 whitespace-nowrap shrink-0 translate-y-0.5 tracking-tighter">
           {noteData.semester}
         </p>
       </div>
@@ -207,7 +227,21 @@ export default function NotePanel({
                 </button>
               )}
 
-              {!noteData.deletePermission && (
+              {noteData.featurePermission && (
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setMenuOpen(false);
+                    toggleFeatureNote();
+                  }}
+                  className="w-full px-4 py-2 text-left text-sm text-gray-900 transition-colors duration-150 hover:bg-paper-2"
+                >
+                  {noteData.pinned ? "Unfeature note" : "Feature note"}
+                </button>
+              )}
+
+              {!noteData.deletePermission && !noteData.featurePermission && (
                 <p className="w-full px-4 py-2 text-left text-sm text-gray-500">
                   No actions available
                 </p>

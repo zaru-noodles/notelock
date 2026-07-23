@@ -26,12 +26,6 @@ export default async function Favourites({ userID }: { userID: string }) {
           <p className="text-gray-500 mb-3">
             You have no favourite modules yet
           </p>
-          <Link
-            href="/modules"
-            className="text-sm font-medium text-terra-500 hover:underline"
-          >
-            Browse modules to get started
-          </Link>
         </div>
       ) : (
         <div className="flex flex-col gap-8">
