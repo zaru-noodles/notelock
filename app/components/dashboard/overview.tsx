@@ -5,6 +5,7 @@ import {
   ThumbsUp,
   Download,
   MessageSquare,
+  LayoutDashboardIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
@@ -78,9 +79,11 @@ const ROWS = [
 export default async function Overview({
   userID,
   username,
+  authLevel,
 }: {
   userID: string;
   username: string;
+  authLevel: number;
 }) {
   const db = createClient(await cookies());
   const { data, error } = await db.rpc("get_user_stats", {
@@ -106,6 +109,14 @@ export default async function Overview({
         >
           <User className="w-4 h-4" /> My uploads
         </Link>
+        {authLevel === 2 && (
+          <Link
+            href={`/admin`}
+            className="flex items-center gap-2 px-4 py-2 bg-paper-3 text-ink-1 rounded-xl text-sm font-medium hover:bg-paper-4 transition-colors border border-paper-4"
+          >
+            <LayoutDashboardIcon className="w-4 h-4" /> Admin Dashboard
+          </Link>
+        )}
       </div>
 
       {!error && stats && overall && (
