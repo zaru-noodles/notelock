@@ -10,6 +10,7 @@ const searchParams: NoteListSearchParams = {
   selectedModuleCode: "",
   selectedSemester: "",
   selectedAuthorID: "",
+  selectedAuthLevel: -1,
   sortBy: SortOrder.DownloadCount,
   tagIds: [],
 };
