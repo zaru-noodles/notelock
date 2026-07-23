@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDownWideNarrow, Clock, Search } from "lucide-react";
+import { ArrowDownWideNarrow, Clock, Search, User } from "lucide-react";
 import NotePanel from "@/app/components/notes/NotePanel";
 import BinderPreview from "@/app/components/notes/binders/BinderPreview";
 import { useState } from "react";
@@ -67,6 +67,7 @@ export default function NotesPreview({
       selectedModuleCode: params.selectedModuleCode,
       selectedSemester: params.selectedSemester,
       selectedAuthorID: params.selectedAuthorID,
+      selectedAuthLevel: params.selectedAuthLevel.toString(),
       sortBy: params.sortBy,
     });
     params.tagIds.forEach((id) => query.append("tagIds", id.toString()));
@@ -198,6 +199,34 @@ export default function NotesPreview({
               ))}
             </select>
           </div>
+
+          {/* author input */}
+          {showAuthor && (
+            <>
+              <p className="mt-2 ml-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">
+                Author
+              </p>
+              <div className="flex w-[80%] h-10 mb-3 px-4 py-2 rounded-2xl bg-paper-3 text-sm border border-transparent focus-within:border-terra-200 focus-within:bg-paper-2 transition-all duration-200">
+                <User className="h-5 w-5 text-ink-1 stroke-2 shrink-0" />
+                <select
+                  value={searchParams.selectedAuthLevel}
+                  onChange={(e) => {
+                    const updated = {
+                      ...searchParams,
+                      selectedAuthLevel: Number(e.target.value),
+                    };
+                    setSearchParams(updated);
+                    fetchNotesData(updated, setNotesData);
+                  }}
+                  className="rounded focus:outline-none w-full pl-2 bg-transparent"
+                >
+                  <option value="-1">All Users</option>
+                  <option value="1">Professors</option>
+                  <option value="0">Students</option>
+                </select>
+              </div>
+            </>
+          )}
 
           {/* tags input */}
           <p className="mt-2 ml-2 mb-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-2">

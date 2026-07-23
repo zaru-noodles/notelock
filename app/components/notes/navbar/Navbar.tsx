@@ -9,26 +9,13 @@ import Link from "next/link";
 import { authLevelLabel } from "@/types/auth";
 
 type props = {
+  username: string;
+  userID: string;
   authLevel: 0 | 1 | 2;
 };
 
-export default function Navbar({ authLevel }: props) {
+export default function Navbar({ username, userID, authLevel }: props) {
   const router = useRouter();
-  const [username, setUsername] = useState("");
-  const [userID, setUserID] = useState("");
-
-  useEffect(() => {
-    async function getUser() {
-      const db = createClient();
-      const {
-        data: { user },
-      } = await db.auth.getUser();
-
-      setUsername(user?.user_metadata?.username ?? "");
-      setUserID(user?.id ?? "");
-    }
-    getUser();
-  }, []);
 
   function selectModule(moduleCode: string) {
     if (moduleCode !== "") {

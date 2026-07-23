@@ -83,6 +83,7 @@ export async function getNotesList(params: NoteListSearchParams) {
     module_code: params.selectedModuleCode,
     selected_semester: params.selectedSemester,
     selected_author_id: params.selectedAuthorID,
+    selected_auth_level: params.selectedAuthLevel,
     sort_by: params.sortBy,
     tag_ids: params.tagIds,
   });

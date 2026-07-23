@@ -17,10 +17,13 @@ export type Note = {
   downloadCount: number;
   upvoteCount: number;
   downvoteCount: number;
+  pinned: boolean;
   thumbnailUrl?: string;
   userId?: string;
   username?: string;
+  userAuthLevel?: number;
   deletePermission: boolean;
+  featurePermission: boolean;
   tags?: Tag[];
   totalCount: number;
 };
@@ -32,6 +35,7 @@ export type NoteListSearchParams = {
   selectedModuleCode: string;
   selectedSemester: string;
   selectedAuthorID: string;
+  selectedAuthLevel: number;
   sortBy: SortOrder;
   tagIds: number[];
 };
