@@ -7,6 +7,7 @@ import type { UploadRequest } from "@/types/api";
 import { SEMESTERS } from "@/utils/constants";
 import { extractPdfText } from "@/utils/notes/extract-text";
 import { summariseNotes } from "@/utils/notes/AIsummarise";
+import { after } from "next/server";
 
 export async function POST(req: Request) {
   const db = createClient(await cookies());
@@ -97,23 +98,6 @@ export async function POST(req: Request) {
     return Response.json({ error: "Unable to create note" }, { status: 500 });
   }
 
-  // Generate AI summary and insert into summary column
-  try {
-    const bytes = new Uint8Array(await uploadReq.file.arrayBuffer());
-    const text = await extractPdfText(bytes);
-    const summary = await summariseNotes(text);
-
-    if (summary) {
-      const { error } = await db
-        .from("notes")
-        .update({ summary })
-        .eq("id", note.id);
-      if (error) console.error("Summary failed to update to db");
-    }
-  } catch (e) {
-    console.error("AI summarise failed: ", e);
-  }
-
   // upload file
   const { error: uploadError } = await db.storage
     .from("notes")
@@ -145,6 +129,27 @@ export async function POST(req: Request) {
       tag_id: id,
     })),
   );
+
+  const file = uploadReq.file;
+
+  // Generate AI summary and insert into summary column
+  after(async () => {
+    try {
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const text = await extractPdfText(bytes);
+      const summary = await summariseNotes(text);
+
+      if (summary) {
+        const { error } = await db
+          .from("notes")
+          .update({ summary })
+          .eq("id", note.id);
+        if (error) console.error("Summary failed to update to db");
+      }
+    } catch (e) {
+      console.error("AI summarise failed: ", e);
+    }
+  });
 
   return Response.json(
     { message: "Note uploaded successfully", noteId: note.id },
