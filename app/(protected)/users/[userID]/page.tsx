@@ -11,15 +11,16 @@ type Props = {
   }>;
 };
 
-const fetchUsername = async (userID: string) => {
+const fetchUserData = async (userID: string) => {
   const db = createClient(await cookies());
 
   const { data, error } = await db
-    .from("users")
+    .from("user_profiles")
     .select("username")
     .eq("id", userID)
     .single();
 
+  console.log(error);
   if (error) return null;
 
   return data.username;
@@ -34,17 +35,18 @@ export default async function UserPage({ params }: Props) {
   const searchParams: NoteListSearchParams = {
     searchText: "",
     start: 0,
-    count: 50,
+    count: 40,
     selectedModuleCode: "",
     selectedSemester: "",
     selectedAuthorID: userID,
+    selectedAuthLevel: -1,
     sortBy: SortOrder.DownloadCount,
     tagIds: [],
   };
 
   const [noteData, username, tagsData] = await Promise.all([
     fetchNoteData(searchParams),
-    fetchUsername(userID),
+    fetchUserData(userID),
     getTags(),
   ]);
 
@@ -67,6 +69,13 @@ export default async function UserPage({ params }: Props) {
       {/* header */}
       <div className="mb-6 ml-6">
         <h1 className="text-5xl font-bold mb-0.5">{`${username}'s Notes`}</h1>
+        <p className="text-lg text-ink-2 tracking-widest">
+          {noteData.length === 0
+            ? "0 notes"
+            : noteData.length === 1
+              ? "1 note"
+              : `${noteData[0].totalCount} notes`}
+        </p>
       </div>
 
       <NotesPreview

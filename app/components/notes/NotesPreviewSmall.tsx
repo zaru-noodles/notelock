@@ -30,6 +30,7 @@ export default function NotesPreview({
       selectedModuleCode: params.selectedModuleCode,
       selectedSemester: params.selectedSemester,
       selectedAuthorID: params.selectedAuthorID,
+      selectedAuthLevel: params.selectedAuthLevel.toString(),
       sortBy: params.sortBy,
     });
     const response = await fetch(`/api/notes/fetchNotesList?${query}`);
@@ -48,16 +49,18 @@ export default function NotesPreview({
   };
 
   return (
-    <div className="flex flex-wrap content-start grow px-2 gap-4">
-      {notesError && !notesData && <p>{notesError}</p>}
-      {notesData.map((note: Note) => (
-        <NotePanel
-          key={note.id}
-          noteData={note}
-          reloadNotes={() => fetchNotesData(initialSearchParams)}
-          showAuthor={showAuthor}
-        />
-      ))}
+    <div className="overflow-x-auto px-2 py-1">
+      <div className="flex min-w-max flex-nowrap gap-4">
+        {notesError && !notesData && <p>{notesError}</p>}
+        {notesData.map((note: Note) => (
+          <NotePanel
+            key={note.id}
+            noteData={note}
+            reloadNotes={() => fetchNotesData(initialSearchParams)}
+            showAuthor={showAuthor}
+          />
+        ))}
+      </div>
     </div>
   );
 }

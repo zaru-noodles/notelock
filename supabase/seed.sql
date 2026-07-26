@@ -9,3 +9,6 @@ insert into storage.buckets (id, name, public, allowed_mime_types)
 values ('thumbnail', 'thumbnail', false, array['image/png'])
 on conflict (id) do nothing;
 
+insert into public.tags (id, label) values
+(1, 'Test Tag');
+

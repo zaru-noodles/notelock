@@ -4,10 +4,18 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 
+function normaliseComment(text: string) {
+  return text
+    .replace(/\r\n/g, "\n")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 export async function postComment(_prev: unknown, formData: FormData) {
   const noteId = String(formData.get("noteId"));
   const moduleCode = String(formData.get("moduleCode"));
-  const content = String(formData.get("content") ?? "").trim();
+  const content = normaliseComment(String(formData.get("content") ?? ""));
 
   if (!content) return { error: "Comment cannot be empty" };
   if (content.length > 2000) return { error: "Comment is too long" };

@@ -4,6 +4,9 @@ export type Module = {
   title: string;
   faculty: string;
   department: string;
+  notes?: {
+    count: number;
+  };
 };
 
 export type Note = {
@@ -12,10 +15,17 @@ export type Note = {
   semester: string;
   moduleCode: string;
   downloadCount: number;
+  upvoteCount: number;
+  downvoteCount: number;
+  pinned: boolean;
   thumbnailUrl?: string;
+  userId?: string;
   username?: string;
+  userAuthLevel?: number;
   deletePermission: boolean;
+  featurePermission: boolean;
   tags?: Tag[];
+  totalCount: number;
 };
 
 export type NoteListSearchParams = {
@@ -25,6 +35,7 @@ export type NoteListSearchParams = {
   selectedModuleCode: string;
   selectedSemester: string;
   selectedAuthorID: string;
+  selectedAuthLevel: number;
   sortBy: SortOrder;
   tagIds: number[];
 };
@@ -32,6 +43,7 @@ export type NoteListSearchParams = {
 export enum SortOrder {
   DownloadCount = "downloadCount",
   Semester = "semester",
+  Rating = "rating",
 }
 
 export type Comments = {
@@ -45,4 +57,9 @@ export type Comments = {
 export type Tag = {
   id: number;
   label: string;
+};
+
+export type Binder = {
+  id: string;
+  title: string;
 };

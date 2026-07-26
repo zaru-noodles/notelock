@@ -1,19 +1,20 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import NUSModsSync from "./NUSModsSync";
 
-type Tab = "Overview" | "Favourites" | "NUSMods";
-const tabs: Tab[] = ["Overview", "Favourites", "NUSMods"];
+type Tab = "Overview" | "Favourites" | "Binders" | "NUSMods";
+const tabs: Tab[] = ["Overview", "Favourites", "Binders", "NUSMods"];
 
 type Props = {
   overview: React.ReactNode;
   favourites: React.ReactNode;
+  binders: React.ReactNode;
   nusmodsSync: React.ReactNode;
 };
 
 export default function DashboardTabs({
   overview,
   favourites,
+  binders,
   nusmodsSync,
 }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>("Overview");
@@ -49,11 +50,12 @@ export default function DashboardTabs({
 
       <div
         style={{ height: height === "auto" ? "auto" : `${height}px` }}
-        className="flex-1 overflow-hidden transition-[height] duration-300 ease-in-out"
+        className="flex-1 overflow-hidden transition-[height] duration-300 ease-in-out mt-6"
       >
         <div ref={contentRef}>
           {activeTab === "Overview" && overview}
           {activeTab === "Favourites" && favourites}
+          {activeTab === "Binders" && binders}
           {activeTab === "NUSMods" && nusmodsSync}
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
+import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { Module, Note, NoteListSearchParams, Tag } from "@/types/index";
 import { NOTES_BUCKET, notePath } from "./storage";
@@ -16,7 +17,9 @@ export async function getNoteWithSignedUrl(noteId: string) {
 
   const { data: note, error: noteError } = await db
     .from("notes")
-    .select("id::text, title, semester, module_id")
+    .select(
+      "id::text, title, semester, module_id, created_at, author_id, summary",
+    )
     .eq("id", noteId)
     .single();
 
@@ -28,6 +31,12 @@ export async function getNoteWithSignedUrl(noteId: string) {
     .from("modules")
     .select("moduleCode")
     .eq("id", note.module_id)
+    .single();
+
+  const { data: author_user } = await db
+    .from("user_profiles")
+    .select("username")
+    .eq("id", note.author_id)
     .single();
 
   if (moduleError || !moduleRow) {
@@ -48,6 +57,7 @@ export async function getNoteWithSignedUrl(noteId: string) {
 
   return {
     ...note,
+    ...author_user,
     moduleCode,
     signedUrl: urlData.signedUrl,
     downloadUrl,
@@ -56,6 +66,10 @@ export async function getNoteWithSignedUrl(noteId: string) {
 
 export async function getNotesList(params: NoteListSearchParams) {
   const db = createClient(await cookies());
+  const serviceDB = createServiceClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_PRIVATE_KEY!,
+  );
 
   const {
     data: { user },
@@ -71,28 +85,55 @@ export async function getNotesList(params: NoteListSearchParams) {
     module_code: params.selectedModuleCode,
     selected_semester: params.selectedSemester,
     selected_author_id: params.selectedAuthorID,
+    selected_auth_level: params.selectedAuthLevel,
     sort_by: params.sortBy,
     tag_ids: params.tagIds,
   });
 
-  if (error) {
+  if (error || !data) {
+    console.log(error);
     return null;
   }
 
-  // generate signed URLs for thumbnails
-  const { data: signedUrls } = await db.storage
-    .from("thumbnail")
-    .createSignedUrls(
-      data.map((note: Note) => `${note.moduleCode}/${note.id}.png`),
-      3600,
+  const now = Date.now();
+  const expiredThumbnails = data.filter(
+    (note: { thumbnailUrl: string; thumbnailExpiry: Date }) =>
+      !note.thumbnailUrl ||
+      !note.thumbnailExpiry ||
+      new Date(note.thumbnailExpiry).getTime() < now,
+  );
+
+  if (expiredThumbnails.length > 0) {
+    // generate signed URLs for thumbnails
+    const { data: signedUrls } = await db.storage
+      .from("thumbnail")
+      .createSignedUrls(
+        expiredThumbnails.map(
+          (note: Note) => `${note.moduleCode}/${note.id}.png`,
+        ),
+        3600,
+      );
+
+    Promise.all(
+      expiredThumbnails.map((note: Note, index: number) => {
+        const signedUrl = signedUrls?.[index]?.signedUrl;
+        if (!signedUrl) return;
+        return serviceDB
+          .from("notes")
+          .update({
+            thumbnail_url: signedUrl,
+            thumbnail_expiry: new Date(Date.now() + 3599 * 1000).toISOString(),
+          })
+          .eq("id", note.id);
+      }),
     );
 
-  const notesWithThumbnail = data.map((note: Note, index: number) => ({
-    ...note,
-    thumbnailUrl: signedUrls?.[index]?.signedUrl ?? null,
-  }));
+    expiredThumbnails.map((note: Note, index: number) => {
+      note.thumbnailUrl = signedUrls?.[index]?.signedUrl ?? undefined;
+    });
+  }
 
-  return notesWithThumbnail;
+  return data;
 }
 
 export async function getComments(noteId: string) {

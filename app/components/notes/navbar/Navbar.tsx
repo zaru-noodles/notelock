@@ -1,26 +1,21 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import ModuleInputNavbar from "./ModuleInputNavbar";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 import LogoutButton from "../../auth/LogoutButton";
 import Link from "next/link";
+import { authLevelLabel } from "@/types/auth";
 
-export default function Navbar() {
+type props = {
+  username: string;
+  userID: string;
+  authLevel: 0 | 1 | 2;
+};
+
+export default function Navbar({ username, userID, authLevel }: props) {
   const router = useRouter();
-  const [username, setUsername] = useState("");
-
-  useEffect(() => {
-    async function getUser() {
-      const db = createClient();
-      const {
-        data: { user },
-      } = await db.auth.getUser();
-      setUsername(user?.user_metadata?.username ?? "");
-    }
-    getUser();
-  }, []);
 
   function selectModule(moduleCode: string) {
     if (moduleCode !== "") {
@@ -42,9 +37,14 @@ export default function Navbar() {
           Upload notes
         </Link>
         <div className="border-r-2 border-paper-4 pr-1.5">
-          <p className="text-right leading-none pb-0.5">{username}</p>
+          <Link
+            href={`/users/${userID}`}
+            className="text-right leading-none pb-0.5"
+          >
+            {username}
+          </Link>
           <p className="text-sm text-gray-600 text-right leading-none">
-            Student
+            {authLevelLabel(authLevel)}
           </p>
         </div>
         <LogoutButton />
