@@ -52,12 +52,16 @@ const fetchBinderData = async (moduleCode: string) => {
   if (!userID) return null;
   const { data, error } = await db
     .from("binders")
-    .select("id::text, title, modules!inner(moduleCode)")
+    .select("id::text, title, modules!inner(moduleCode), binder_notes(count)")
     .eq("modules.moduleCode", moduleCode)
     .eq("author_id", userID);
 
   if (error) return null;
-  return data as Binder[];
+  return data.map((b) => ({
+    ...b,
+    noteCount:
+      (b.binder_notes as unknown as { count: number }[])[0]?.count ?? 0,
+  })) as Binder[];
 };
 
 export default async function ModulePage({ params }: Props) {
