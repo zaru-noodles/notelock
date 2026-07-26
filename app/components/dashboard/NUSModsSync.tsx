@@ -37,6 +37,7 @@ export default function NUSMods({ userID }: { userID: string }) {
 
     const moduleData = await Promise.all(
       moduleCodes.map(async (moduleCode) => {
+        if (moduleCode === "hidden") return;
         const { data, error } = await db
           .from("modules")
           .select()

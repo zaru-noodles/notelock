@@ -23,7 +23,7 @@ export default async function Dashboard() {
   if (error || data === null) return <p>Unable to fetch user data</p>;
 
   return (
-    <div className="grid-bg min-h-screen min-w-screen">
+    <div className="grid-bg min-h-screen max-w-screen">
       <div className="px-8 py-10 w-[80vw] mx-auto bg-paper-1 rounded-3xl shadow-sh-4">
         <DashboardTabs
           overview={

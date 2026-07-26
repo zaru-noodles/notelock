@@ -24,6 +24,7 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/api/notes/upload": ["./node_modules/pdfjs-dist/legacy/build/**"],
   },
+  devIndicators: false,
 };
 
 export default nextConfig;

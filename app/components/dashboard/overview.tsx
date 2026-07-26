@@ -39,16 +39,6 @@ function getGrade(percentile: number): {
   return { grade: "D", color: "text-ink-3", bg: "bg-paper-3" };
 }
 
-function getOverallGrade(stats: UserStats) {
-  const avg =
-    (Number(stats.noteCountPercentile) +
-      Number(stats.totalLikesPercentile) +
-      Number(stats.totalDownloadsPercentile) +
-      Number(stats.totalCommentsPercentile)) /
-    4;
-  return getGrade(avg);
-}
-
 const ROWS = [
   {
     key: "noteCount",
@@ -90,7 +80,6 @@ export default async function Overview({
     target_user_id: userID,
   });
   const stats: UserStats | null = data?.[0] ?? null;
-  const overall = stats ? getOverallGrade(stats) : null;
 
   return (
     <div className="mb-8">
@@ -119,7 +108,7 @@ export default async function Overview({
         )}
       </div>
 
-      {!error && stats && overall && (
+      {!error && stats && (
         <div className="bg-paper-1 border border-paper-4 overflow-hidden">
           {/* title bar */}
           <div className="px-7 pt-6 pb-4 flex items-start justify-between border-b border-paper-4">
@@ -166,7 +155,7 @@ export default async function Overview({
 
                   {/* rank */}
                   <p className="w-16 text-right text-sm text-ink-2 shrink-0">
-                    {percentile > 0 ? `top ${top < 1 ? "<1" : top}%` : "—"}
+                    {percentile >= 0 ? `top ${top < 1 ? "<1" : top}%` : "—"}
                   </p>
 
                   {/* grade pill */}
@@ -174,7 +163,7 @@ export default async function Overview({
                     className={`w-8 h-8 rounded-full ${bg} flex items-center justify-center shrink-0`}
                   >
                     <p className={`text-sm font-bold ${color}`}>
-                      {percentile > 0 ? grade : "—"}
+                      {percentile >= 0 ? grade : "—"}
                     </p>
                   </div>
                 </div>

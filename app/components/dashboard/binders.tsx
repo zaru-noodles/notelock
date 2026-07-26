@@ -26,7 +26,7 @@ export default async function Binders({ userID }: { userID: string }) {
         <div>
           <h2 className="text-5xl font-bold">Binders</h2>
           <p className="text-lg text-ink-2 mb-4">
-            Manage your saved binder collections and open them for review
+            Manage your saved binder collections
           </p>
         </div>
         <div className="text-lg text-ink-2 mb-5 mr-10">
@@ -47,7 +47,7 @@ export default async function Binders({ userID }: { userID: string }) {
             <Link
               key={binder.id}
               href={`/binders/${binder.id}`}
-              className="group block rounded-3xl border border-paper-4 bg-paper-3 p-6 transition-shadow duration-200 hover:shadow-sh-4"
+              className="group block rounded-3xl border border-paper-4 bg-paper-3 px-6 py-3 transition-shadow duration-200 hover:shadow-sh-4"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex">

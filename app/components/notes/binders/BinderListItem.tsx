@@ -34,7 +34,7 @@ export default function BinderListItem({
       onClick={() => router.push(`/binders/${binder.id}`)}
     >
       <div className="flex justify-between items-center">
-        <div className="flex">
+        <div className="flex w-[90%]">
           <Folder className="h-4 w-4 text-ink-2 stroke-2 mr-1.5 translate-y-0.5" />
           {editingId === binder.id ? (
             <input
@@ -50,7 +50,12 @@ export default function BinderListItem({
               className="bg-transparent border-b border-terra-400 outline-none w-[75%]"
             />
           ) : (
-            <p className="truncate">{binder.title}</p>
+            <div className="flex gap-2 items-baseline max-w-[80%]">
+              <p className="truncate">{binder.title}</p>
+              <p className="text-xs text-ink-0 bg-honey-200 rounded-4xl px-1 py-0.5">
+                {binder.noteCount}
+              </p>
+            </div>
           )}
         </div>
 

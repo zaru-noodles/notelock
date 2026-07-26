@@ -51,7 +51,7 @@ export default function NotesPreview({
   return (
     <div className="overflow-x-auto px-2 py-1">
       <div className="flex min-w-max flex-nowrap gap-4">
-        {notesError && !notesData && <p>{notesError}</p>}
+        {notesError && <p className="w-full text-center mt-10">{notesError}</p>}
         {notesData.map((note: Note) => (
           <NotePanel
             key={note.id}
