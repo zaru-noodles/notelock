@@ -14,12 +14,6 @@ export default function Navbar() {
         <a className={navElemStyling} href="#modules">
           Modules
         </a>
-        <a className={navElemStyling} href="#stories">
-          Stories
-        </a>
-        <a className={navElemStyling} href="#faq">
-          FAQ
-        </a>
       </div>
     </nav>
   );
