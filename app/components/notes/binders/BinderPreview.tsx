@@ -8,15 +8,16 @@ import { toast } from "react-hot-toast";
 import BinderListItem from "./BinderListItem";
 
 type Props = {
-  initialBinder?: Binder[];
+  binderData?: Binder[];
   selectedModuleCode: string;
+  setBinderData: React.Dispatch<React.SetStateAction<Binder[]>>;
 };
 
 export default function BinderPreview({
-  initialBinder = [],
+  binderData = [],
   selectedModuleCode,
+  setBinderData,
 }: Props) {
-  const [binderData, setBinderData] = useState<Binder[]>(initialBinder);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingTitle, setEditingTitle] = useState<string>("");
 
@@ -57,7 +58,7 @@ export default function BinderPreview({
         return;
       }
 
-      setBinderData((prev) => [...prev, data]);
+      setBinderData((prev) => [...prev, { noteCount: 0, ...data }]);
       toast.success("Binder created successfully.");
     } finally {
       toast.dismiss(toastLoading);
@@ -110,7 +111,9 @@ export default function BinderPreview({
       <div className="flex flex-col w-full px-4 py-2 border border-paper-4 grid-bg text-sm h-[60vh] text-center justify-center">
         {binderData.length === 0 ? (
           <p>
-            No binders yet. <br />
+            <b>No binders yet</b>
+            <br /> Click the &quot;+&quot; icon to create one.
+            <br />
             <br /> Combine notes into one document by dragging them into
             binders.
           </p>

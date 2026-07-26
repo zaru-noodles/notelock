@@ -62,4 +62,5 @@ export type Tag = {
 export type Binder = {
   id: string;
   title: string;
+  noteCount: number;
 };

@@ -148,9 +148,9 @@ export default function BinderClient({
         Back
       </button>
 
-      <div className="flex items-start justify-between mb-8">
+      <div className="w-full flex items-start justify-between mb-8">
         <div>
-          <h1 className="text-4xl font-bold cursor-pointer hover:text-ink-2 transition-colors">
+          <h1 className="w-100 text-4xl font-bold cursor-pointer hover:text-ink-2 transition-colors truncate">
             {binder.title}
           </h1>
           <p className="text-ink-3 mt-1">{notes.length} notes</p>
@@ -213,7 +213,7 @@ export default function BinderClient({
           <select
             value={pagesPerSheet}
             onChange={(event) => setPagesPerSheet(event.target.value)}
-            className="rounded-lg border border-paper-4 bg-white px-3 py-2 text-sm text-ink-1 focus:outline-none focus:ring-2 focus:ring-terra-300"
+            className="rounded-lg border border-paper-4 bg-white px-3 py-2 text-sm text-ink-1 focus:outline-none focus:ring-2 focus:ring-terra-200"
             aria-label="Pages per sheet"
           >
             <option value="1">1</option>
@@ -225,7 +225,7 @@ export default function BinderClient({
         <button
           onClick={downloadPDF}
           disabled={downloading || notes.length === 0}
-          className="flex items-center gap-2 px-4 py-3 rounded-xl bg-terra-300 text-white hover:bg-terra-400 text-sm transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-3 rounded-xl bg-honey-400 text-white hover:bg-honey-500 text-sm transition-colors disabled:opacity-50"
         >
           <Download className="h-4 w-4" />
           {downloading ? "Generating..." : "Download PDF"}

@@ -30,6 +30,7 @@ export default function NotesPreview({
   showBinders = false,
 }: Props) {
   const [notesData, setNotesData] = useState<Note[]>(initialNotes);
+  const [binderData, setBinderData] = useState<Binder[]>(initialBinder);
   const [notesError, setNotesError] = useState<string>(
     initialNotes.length === 0 ? "No notes found" : "",
   );
@@ -118,6 +119,14 @@ export default function NotesPreview({
         toast.error("Note already in binder!");
         return;
       }
+
+      setBinderData((prev) =>
+        prev.map((binder) =>
+          binder.id === target.id.toString()
+            ? { ...binder, noteCount: (binder.noteCount ?? 0) + 1 }
+            : binder,
+        ),
+      );
 
       toast.success("Note added to binder!");
     } finally {
@@ -287,7 +296,8 @@ export default function NotesPreview({
 
         {showBinders && (
           <BinderPreview
-            initialBinder={initialBinder}
+            binderData={binderData}
+            setBinderData={setBinderData}
             selectedModuleCode={searchParams.selectedModuleCode}
           />
         )}
